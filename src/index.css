@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
+@import "tailwindcss";
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.font_giest {
+  font-family: "Geist", sans-serif;
+}
+
+.font_Kumbh{
+  font-family: "Kumbh Sans", sans-serif;
+}
