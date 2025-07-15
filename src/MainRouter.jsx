@@ -31,6 +31,9 @@ import HostMySubmissionsPage from "./pages/HostPages/HostMySubmissionsPage";
 import HostMessagesPage from "./pages/HostPages/HostMessagesPage";
 import HostSettingsPage from "./pages/HostPages/HostSettingsPage";
 import HostConciergeSupportPage from "./pages/HostPages/HostConciergeSupportPage";
+import HostCompanyInfo from "./components/Host/HostSignup/HostOnboarding/HostCompanyInfo/HostCompanyInfo";
+import HostExpectation from "./components/Host/HostSignup/HostOnboarding/HostExpectation/HostExpectation";
+import HostPortfolio from "./components/Host/HostSignup/HostOnboarding/HostPortfolio/HostPortfolio";
 
 const MainRouter = () => {
   return (
@@ -72,6 +75,11 @@ const MainRouter = () => {
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/expectation" element={<Expectation />} />
       <Route path="/submitting" element={<Submitting />} />
+
+      {/* Host Routes */}
+      <Route path="/hostcompanyinfo" element={<HostCompanyInfo />} />
+      <Route path="/hostexpectation" element={<HostExpectation />} />
+      <Route path="/hostportfolio" element={<HostPortfolio />} />
 
     </Routes>
   );

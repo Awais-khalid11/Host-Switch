@@ -33,22 +33,22 @@ const Submitting = () => {
   }, [index, navigate]);
 
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-between p-5 gap-[30px]">
-      <div className="w-[50%] transition-opacity duration-500">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-between p-5 md:gap-[30px] gap-5">
+      <div className="md:w-[50%] w-full transition-opacity duration-500">
         <img
           src={images[index]}
           alt="portfolio"
-          className={`rounded-2xl w-full min-h-[759px] transition-opacity duration-500 ${
+          className={`rounded-2xl w-full md:min-h-[759px] transition-opacity duration-500 ${
             fade ? "opacity-100" : "opacity-0"
           }`}
         />
       </div>
 
-      <div className="md:w-[50%] max-w-[448px] mx-auto w-full flex flex-col justify-center hide-scrollbar h-[759px] overflow-y-auto">
+      <div className="md:w-[50%] md:max-w-[448px] mx-auto w-full flex flex-col justify-center hide-scrollbar md:h-[759px] overflow-y-auto">
         <img
           src={LogoSVG}
           alt="logoImg"
-          className="max-w-[285px] mx-auto min-h-[29px] mb-14"
+          className="max-w-[285px] mx-auto min-h-[29px] mb-9 md:mb-14"
         />
         <h2 className="lg:text-[30px] md:text-[25px] text-[22px] font-bold mb-4 text-center">
           Thank You for Submitting Your Information!

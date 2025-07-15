@@ -3,13 +3,14 @@ import LoginForm from "./LoginForm";
 import { LogoSVG } from "../../../Constants/Icons";
 import { LoginPNG } from "../../../constants/Imgs";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/Routes";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/companyinfo");
+    navigate(ROUTES.COMPANYINFO);
   };
   return (
     <div className="flex md:flex-row flex-col items-center bg-white justify-center p-2.5 gap-[30px]">
@@ -24,9 +25,9 @@ const Login = () => {
         <img
           src={LogoSVG}
           alt="logoImg"
-          className="md:max-w-[285px] max-w-[180px] mx-auto min-h-[29px] mb-5 md:mb-14"
+          className="md:max-w-[285px] max-w-[180px] mx-auto min-h-[29px] mb-9 md:mb-14"
         />
-        <h2 className="lg:text-[30px] md:text-[30px] text-[28px] font-bold md:mb-3.5 mb-1 text-center">
+        <h2 className="lg:text-[30px] md:text-[30px] text-[25px] md:leading-7 sm:leading-6  font-bold mb-3.5 text-center">
           Login to Host Switch
         </h2>
         <LoginForm />

@@ -5,6 +5,7 @@ import SelectField from "../../../SelectField/SelectField";
 import RadioField from "../../RadioField/RadioField";
 import CheckBox from "../../../CheckBox/CheckBox";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../../constants/Routes";
 
 const CompanyInfoForm = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const CompanyInfoForm = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/portfolio");
+    navigate(ROUTES.PORTFOLIO);
   };
 
   return (
@@ -152,7 +153,7 @@ const CompanyInfoForm = () => {
         </div>
 
         {/* Full-time */}
-        <div className="flex items-center gap-5 mb-5">
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm">Is this your full-time business?</h3>
           <div className="flex items-center gap-5">
             <RadioField
@@ -210,11 +211,12 @@ const CompanyInfoForm = () => {
         />
 
         {/* Licensed */}
-        <div className="flex items-center gap-5 mb-5">
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm">
             Are you licensed to operate in all markets?
           </h3>
-          <RadioField
+          <div className="flex items-center gap-5">
+            <RadioField
             id="licensedYes"
             name="isLicensed"
             value="yes"
@@ -230,14 +232,16 @@ const CompanyInfoForm = () => {
             checked={isLicensed === "no"}
             onChange={(e) => setIsLicensed(e.target.value)}
           />
+          </div>
         </div>
 
         {/* Permitting */}
-        <div className="flex items-center gap-5 mb-5">
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm">
             Do you handle permitting for new clients?
           </h3>
-          <RadioField
+          <div className="flex items-center gap-5">
+            <RadioField
             id="permitYes"
             name="doesPermit"
             value="yes"
@@ -253,6 +257,7 @@ const CompanyInfoForm = () => {
             checked={doesPermit === "no"}
             onChange={(e) => setDoesPermit(e.target.value)}
           />
+          </div>
         </div>
 
         {/* Checkbox */}
@@ -271,13 +276,13 @@ const CompanyInfoForm = () => {
           <Button
             variant="graybtn"
             className="mb-5 w-[30%]"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate(ROUTES.LOGIN)}
           >
             Back
           </Button>
           <Button
             variant="defaultBtn"
-            className="mb-5 w-[70%] md:py-[16px] rounded-[8px] bg-[#0050B3]"
+            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#0050B3]"
             onClick={handleClick}
           >
             Save & Continue

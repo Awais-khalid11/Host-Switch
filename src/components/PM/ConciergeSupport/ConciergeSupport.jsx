@@ -10,8 +10,8 @@ const ConciergeSupport = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-2xl font-bold text-[#1f2123]">Help & Support</h2>
-        <Button variant="defaultBtn" prefixImg={ChatSVG} onClick={()=>navigate(ROUTES.LIVECHAT)}>
+        <h2 className="md:text-2xl text-base font-bold text-[#1f2123]">Help & Support</h2>
+        <Button variant="defaultBtn"  prefixImg={ChatSVG} onClick={()=>navigate(ROUTES.LIVECHAT)}>
           Start Live Chat
         </Button>
       </div>

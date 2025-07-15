@@ -1,10 +1,11 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { ROUTES } from "../../../constants/Routes";
 
 const steps = [
-  { label: "Company Info", path: "/companyinfo" },
-  { label: "Portfolio", path: "/portfolio" },
-  { label: "Expectations", path: "/expectation" },
+  { label: "Company Info", path: ROUTES.COMPANYINFO },
+  { label: "Portfolio", path: ROUTES.PORTFOLIO },
+  { label: "Expectations", path: ROUTES.EXPECTATIONS },
 ];
 
 const OnboardingStepper = () => {

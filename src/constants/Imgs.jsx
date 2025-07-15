@@ -15,7 +15,10 @@ import Property4PNG from "@/assets/Images/property4.png";
 import FilePNG from "@/assets/Images/file.png";
 import Portfolio2PNG from "@/assets/Images/portfolio2.png";
 import Portfolio3PNG from "@/assets/Images/portfolio3.png";
-import PdffilePNG from "@/assets/Images/pdffile.png"
+import PdffilePNG from "@/assets/Images/pdffile.png";
+import LuxePNG from "@/assets/Images/luxe.png";
+import ManImgPNG from "@/assets/Images/manImg.png";
+import ProfessionPNG from "@/assets/Images/profession.png";
 
 export { 
     OtpPNG, 
@@ -35,5 +38,8 @@ export {
     FilePNG,
     Portfolio2PNG,
     Portfolio3PNG,
-    PdffilePNG
+    PdffilePNG,
+    LuxePNG,
+    ManImgPNG,
+    ProfessionPNG
 };

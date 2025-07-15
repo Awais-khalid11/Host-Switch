@@ -8,6 +8,7 @@ import SelectField from "../../../SelectField/SelectField";
 import ScopeBox from "./ScopeBox";
 import RadioField from "../../RadioField/RadioField";
 import SmartHome from "./SmartHome";
+import { ROUTES } from "../../../../constants/Routes";
 
 const PortfolioForm = ({ onNext }) => {
   const navigate = useNavigate();
@@ -62,18 +63,18 @@ const PortfolioForm = ({ onNext }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/expectation");
+    navigate(ROUTES.EXPECTATIONS);
   };
   return (
     <div>
       {/* <form> */}
-      <div className="flex items-center gap-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
         <InputField
           label="Number of Active STR Properties Managed"
           id="num"
           name="num"
           type="number"
-          fieldName="w-1/2"
+          fieldName="md:w-1/2 w-full"
           placeholder="Enter number"
         />
         <InputField
@@ -81,7 +82,7 @@ const PortfolioForm = ({ onNext }) => {
           id="no"
           name="no"
           type="number"
-          fieldName="w-1/2"
+         fieldName="md:w-1/2 w-full"
           placeholder="Enter number"
         />
       </div>
@@ -123,12 +124,12 @@ const PortfolioForm = ({ onNext }) => {
         selectClass="mb-7 w-full"
       />
       <ScopeBox />
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Do you provide a dedicated account manager to home owners?
         </h3>
         <div className="flex items-center gap-5">
-          <RadioField
+            <RadioField
             id="accountYes"
             name="accountManager"
             value="yes"
@@ -163,7 +164,7 @@ const PortfolioForm = ({ onNext }) => {
         fieldName="w-full"
         placeholder="Enter number"
       />
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Do you provide linens & consumables?
         </h3>
@@ -202,7 +203,7 @@ const PortfolioForm = ({ onNext }) => {
         fieldName="w-full"
         placeholder="Enter number"
       />
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Use Smart Lock / Self-Check-in Tech?
         </h3>
@@ -341,7 +342,7 @@ const PortfolioForm = ({ onNext }) => {
         selectClass="mb-7 w-full"
         className="font-bold"
       />
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">Owner Reporting Portal Provided?</h3>
         <div className="flex items-center gap-5">
           <RadioField
@@ -363,7 +364,7 @@ const PortfolioForm = ({ onNext }) => {
         </div>
       </div>
       <SmartHome />
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Maintenance Ticketing System Used?
         </h3>
@@ -395,13 +396,13 @@ const PortfolioForm = ({ onNext }) => {
         <Button
           variant="graybtn"
           className="mb-5 w-[30%]"
-          onClick={() => navigate("/companyinfo")}
+          onClick={() => navigate(ROUTES.COMPANYINFO)}
         >
           Back
         </Button>
         <Button
           variant="defaultBtn"
-          className="mb-5 w-[70%] md:py-[16px] rounded-[8px] bg-[#0050B3]"
+          className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#0050B3]"
           onClick={handleClick}
         >
           Next

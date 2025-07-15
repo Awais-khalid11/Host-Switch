@@ -20,7 +20,7 @@ const ScopeBox = () => {
   return (
     <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
       <h4 className="text-sm font-bold mb-4">Scope of Services</h4>
-      <div className="flex items-center gap-5 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
           name="terms"
           id="terms"
@@ -43,7 +43,7 @@ const ScopeBox = () => {
           onChange={(e) => setYard(e.target.checked)}
         />
       </div>
-      <div className="flex items-center justify-between mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center justify-between md:gap-0 gap-5 mb-3.5">
         <CheckBox
           name="own"
           id="own"
@@ -66,7 +66,7 @@ const ScopeBox = () => {
           onChange={(e) => setClean(e.target.checked)}
         />
       </div>
-      <div className="flex items-center gap-5 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
           name="house"
           id="house"
@@ -82,7 +82,7 @@ const ScopeBox = () => {
           onChange={(e) => setPermit(e.target.checked)}
         />
       </div>
-      <div className="flex items-center gap-5 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
           name="light"
           id="light"
@@ -98,7 +98,7 @@ const ScopeBox = () => {
           onChange={(e) => setHeavy(e.target.checked)}
         />
       </div>
-      <div className="flex items-center gap-5 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
           name="reno"
           id="reno"
@@ -114,7 +114,7 @@ const ScopeBox = () => {
           onChange={(e) => setConstruct(e.target.checked)}
         />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex md:flex-nowrap flex-wrap items-center justify-between md:gap-0 gap-5">
         <CheckBox
           name="utility"
           id="utility"

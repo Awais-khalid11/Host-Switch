@@ -4,34 +4,35 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../Button/Button";
 import { OtpPNG } from "../../../constants/Imgs";
 import { LogoSVG } from "../../../Constants/Icons";
+import { ROUTES } from "../../../constants/Routes";
 
 const Otp = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const [otp, setOtp] = useState("");
-  const [from, setFrom] = useState("unknown");
+  // const [from, setFrom] = useState("unknown");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  useEffect(() => {
-    if (location.state?.from) {
-      setFrom(location.state.from);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.state?.from) {
+  //     setFrom(location.state.from);
+  //   }
+  // }, [location]);
 
-  const handleClick = (e) => {
-    e.preventDefault();
+  // const handleClick = (e) => {
+  //   e.preventDefault();
 
-    if (from === "login") {
-      navigate("/admin-dashboard");
-    } else if (from === "signup") {
-      navigate("/vault");
-    } else {
-      navigate("/admin-dashboard");
-    }
-  };
+  //   if (from === "login") {
+  //     navigate("/admin-dashboard");
+  //   } else if (from === "signup") {
+  //     navigate("/vault");
+  //   } else {
+  //     navigate("/admin-dashboard");
+  //   }
+  // };
 
   return (
-    <div className="flex md:flex-row flex-col gap-[30px] items-center bg-white justify-center p-2.5">
+    <div className="flex md:flex-row flex-col gap-[50px] items-center bg-white justify-center p-2.5">
       <div className="w-1/2 ">
          <img src={OtpPNG} alt="otpImg" className="rounded-2xl max-w-[645px]"/>
       </div>
@@ -65,16 +66,18 @@ const Otp = () => {
           />
         </div>
 
-       <div className="flex gap-4">
+       <div className="flex gap-4 justify-center">
         <Button
           variant="graybtn"
           className="mb-5 w-[30%]"
+          onClick={()=>navigate(ROUTES.PASSWORD)}
         >
          Back
         </Button>
         <Button
           variant="defaultBtn"
-          className="mb-5 w-[70%] md:py-[16px] rounded-[8px] hover:none"
+          className="mb-5 w-full md:py-[16px] rounded-[8px] hover:none"
+          onClick={()=>navigate(ROUTES.NEWPASSWORD)}
         >
           Verify
         </Button>

@@ -4,8 +4,8 @@ const SemiCircleProgress = ({ percentage = 94 }) => {
   const angle = (percentage / 100) * 180;
 
   return (
-    <div style={{ width: 160, textAlign: 'center' }}>
-      <svg width="160" height="80" viewBox="0 0 160 80">
+    <div >
+      <svg width="80" height="38" viewBox="0 0 160 80">
         {/* Grey Background Arc */}
         <path
           d="M10,80 A70,70 0 0,1 150,80"
@@ -35,7 +35,7 @@ const SemiCircleProgress = ({ percentage = 94 }) => {
           {percentage}%
         </text>
       </svg>
-      <div style={{ fontSize: 18, fontWeight: 'bold', marginTop: 5 }}>Match Score</div>
+      <div style={{ fontSize: 16, fontWeight: 'semibold', marginTop: 5, color: "#727272"}}>Match Score</div>
     </div>
   );
 };

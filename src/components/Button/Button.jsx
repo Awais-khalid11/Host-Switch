@@ -13,7 +13,7 @@ const Button = ({
     "whitespace-nowrap md:px-6.5 px-3 rounded-[8px] font-bold text-base transition duration-300 flex items-center gap-2 items-center justify-center cursor-pointer";
 
   const variants = {
-    defaultBtn: "bg-[#4D72FF] text-[#ffffff] cursor-pointer py-[12px] px-[10px] gap-0 font-semibold",
+    defaultBtn: "bg-[#4D72FF] text-[#ffffff] md:h-[55px]  w-[160px] cursor-pointer md:px-[10px] px-0 gap-0 font-semibold  h-[40px]",
     graybtn: "bg-[#2525251A] text-[#2525254d]",
     whitebtn: "bg-white w-full",
     borderbtn: "border border-[#4D72FF] w-full bg-white text-[#4D72FF] font-medium h-[48px]",

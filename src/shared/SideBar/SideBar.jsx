@@ -122,7 +122,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
     <>
       {showSidebar && (
         <div
-          className="z-40 lg:hidden fixed inset-0 bg-black bg-opacity-20"
+          className="z-40 lg:hidden fixed  "
           onClick={() => setShowSidebar(false)}
         />
       )}
@@ -138,7 +138,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
           
           {/* Top Section with Logo */}
           <div>
-            <div className="mb-4 flex items-center justify-between">
+            <div className="md:hidden sm:block mb-4 flex items-center justify-between">
               <img
                 src={HeaderlogoSVG}
                 alt="Logo"

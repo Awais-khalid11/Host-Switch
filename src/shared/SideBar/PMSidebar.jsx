@@ -47,7 +47,7 @@ export const pmSideBarLinks = [
   },
   {
       label: "Log Out",
-      to: "/login",
+      to: ROUTES.LOGIN,
       labelIcon: LogoutSVG,
       activeIcon: LogoutSVG,
     },

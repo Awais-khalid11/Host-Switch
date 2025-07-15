@@ -6,6 +6,7 @@ import SelectField from "../../../SelectField/SelectField";
 import FileUpload from "../../../UploadFile/UploadFile";
 import TextArea from "../../../TextArea/TextArea";
 import RadioField from "../../RadioField/RadioField";
+import { ROUTES } from "../../../../constants/Routes";
 
 const ExpectationForm = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const ExpectationForm = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/submitting");
+    navigate(ROUTES.SUBMITTING);
   };
 
   return (
@@ -108,7 +109,7 @@ const ExpectationForm = () => {
           placeholder={"Enter message..."}
           label={"Termination Terms"}
         />
-        <div className="flex items-center gap-5 mb-5">
+        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">
             Require Furniture/Décor Upgrade?
           </h3>
@@ -131,7 +132,7 @@ const ExpectationForm = () => {
             />
           </div>
         </div>
-        <div className="flex gap-5">
+        <div className="flex md:flex-nowrap flex-wrap md:gap-5 ">
           <FileUpload label="Upload Logo" />
           <FileUpload label="Upload Welcome Video" />
         </div>
@@ -270,13 +271,13 @@ const ExpectationForm = () => {
           <Button
             variant="graybtn"
             className="mb-5 w-[30%]"
-             onClick={() => navigate("/portfolio")}
+             onClick={() => navigate(ROUTES.PORTFOLIO)}
           >
             Back
           </Button>
           <Button
             variant="defaultBtn"
-            className="mb-5 w-[70%] md:py-[16px] rounded-[8px] bg-[#0050B3]"
+            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#0050B3]"
             onClick={handleClick}
           >
             Submit

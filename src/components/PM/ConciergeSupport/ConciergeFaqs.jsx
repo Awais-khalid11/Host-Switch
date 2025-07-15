@@ -43,11 +43,11 @@ const ConciergeFaqs = () => {
             onClick={() => toggleFAQ(index)}
           >
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-lg">{faq.question}</h3>
+              <h3 className="font-semibold md:text-lg text-base leading-5">{faq.question}</h3>
               <img
                 src={openIndex === index ? MinusSVG : PlusSVG}
                 alt="toggle icon"
-                className="w-5 h-5"
+                className="md:w-5 md:h-5 w-2.5 h-2.5"
               />
             </div>
             <div

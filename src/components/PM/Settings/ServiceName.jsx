@@ -13,7 +13,7 @@ const ServiceName = () => {
     <div>
       <form>
         <div className="border border-[#2F354233] rounded-[12px] p-3 md:p-5 bg-[#FAFAFA] mb-5">
-          <div className="flex md:flex-nowrap flex-wrap md:gap-8 md:mb-5">
+          <div className="flex lg:flex-nowrap flex-wrap lg:gap-8 md:gap-5 gap-2.5 md:mb-5 mb-2.5">
             <CheckBox
               name="Communication"
               id="pool"
@@ -36,7 +36,7 @@ const ServiceName = () => {
               onChange={(e) => setTools(e.target.checked)}
             />
           </div>
-          <div className="flex md:flex-nowrap flex-wrap md:gap-8">
+          <div className="flex md:flex-nowrap flex-wrap gap-8">
             <CheckBox
               name="Local"
               id="local"

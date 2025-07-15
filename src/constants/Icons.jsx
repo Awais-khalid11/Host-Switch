@@ -57,6 +57,17 @@ import MinusSVG from "@/assets/Icons/minus.svg";
 import PlusSVG from "@/assets/Icons/plus.svg";
 import HalfcircleSVG from "@/assets/Icons/halfcircle.svg";
 import BluearcSVG from "@/assets/Icons/bluearc.svg";
+import WhitecircleSVG from "@/assets/Icons/whitecircle.svg";
+import TotalSVG from "@/assets/Icons/total.svg";
+import StarSVG from "@/assets/Icons/star.svg";
+import AvatorSVG from "@/assets/Icons/avator.svg";
+import RedlocationSVG from "@/assets/Icons/redlocation.svg";
+import ProfileSVG from "@/assets/Icons/profile.svg";
+import StaySVG from "@/assets/Icons/stay.svg";
+import DellSVG from "@/assets/Icons/dell.svg";
+import LinkSVG from "@/assets/Icons/link.svg";
+import PropertySVG from "@/assets/Icons/property.svg";
+import BuildingSVG from "@/assets/Icons/building.svg";
 
 export {
   DashboardSVG,
@@ -117,5 +128,16 @@ export {
   PlusSVG,
   MinusSVG,
   HalfcircleSVG,
-  BluearcSVG
+  BluearcSVG,
+  WhitecircleSVG,
+  TotalSVG,
+  StarSVG,
+  AvatorSVG,
+  RedlocationSVG,
+  ProfileSVG,
+  StaySVG,
+  DellSVG,
+  PropertySVG,
+  LinkSVG,
+  BuildingSVG
 };

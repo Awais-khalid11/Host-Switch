@@ -16,7 +16,7 @@ const SmartHome = () => {
   return (
     <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
       <h4 className="text-sm font-bold mb-4">Scope of Services</h4>
-      <div className="flex items-center gap-6 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-3 mb-3.5">
         <CheckBox
           name="lock"
           id="lock"
@@ -39,7 +39,7 @@ const SmartHome = () => {
           onChange={(e) => setSmart(e.target.checked)}
         />
       </div>
-      <div className="flex items-center gap-6 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-4 mb-3.5">
         <CheckBox
           name="door"
           id="door"
@@ -62,7 +62,7 @@ const SmartHome = () => {
           onChange={(e) => setLocal(e.target.checked)}
         />
       </div>
-      <div className="flex items-center gap-6 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-3 mb-3.5">
         <CheckBox
           name="plug"
           id="plug"

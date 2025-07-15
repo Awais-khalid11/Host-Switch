@@ -5,6 +5,7 @@ import Modal from "../../Modal/Modal";
 import PasswordModal from "../../Modal/PasswordModal";
 import { Thumbsup } from "../../../Constants/Icons";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/Routes";
 
 const NewPasswordForm = () => {
   const navigate = useNavigate();
@@ -31,12 +32,12 @@ const NewPasswordForm = () => {
           InputClass="h-[56px]"
         />
         <div className="flex gap-4">
-          <Button variant="graybtn" className="mb-5 w-[30%]" onClick={()=>navigate("/password")}>
+          <Button variant="graybtn" className="mb-5 w-[30%]" onClick={()=>navigate(ROUTES.OTP)}>
             Back
           </Button>
           <Button
             variant="defaultBtn"
-            className="mb-5 w-[70%] md:py-[16px] rounded-[8px]"
+            className="mb-5 w-full md:py-[16px] rounded-[8px]"
             onClick={(e) => {
               e.preventDefault();
               setShowModal(true);
@@ -62,33 +63,3 @@ const NewPasswordForm = () => {
 };
 
 export default NewPasswordForm;
-
-// import { useState } from "react";
-// import Button from "./Button"; // assuming this is your custom button
-// import Modal from "./Modal";
-// import VideoModal from "./VideoModal";
-
-// const YourComponent = () => {
-//   const [showModal, setShowModal] = useState(false);
-
-//   return (
-//     <>
-//       <Button
-//         variant="defaultBtn"
-//         className="mb-5 w-[70%] md:py-[16px] rounded-[8px]"
-//         onClick={() => setShowModal(true)} // 👈 handle click here
-//       >
-//         Save
-//       </Button>
-
-//       {showModal && (
-//         <Modal
-//           modelTitle="Add Video Message"
-//           onClose={() => setShowModal(false)} // 👈 allow closing modal
-//         >
-//           <VideoModal />
-//         </Modal>
-//       )}
-//     </>
-//   );
-// };
