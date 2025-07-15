@@ -26,7 +26,7 @@ const InputField = ({
         <div className="flex">
           <label
             htmlFor={id}
-            className="block mb-3.5 text-[#323232] text-sm font-semibold leading-[100%] "
+            className="block mb-3.5 text-[#323232] text-sm  font-bold leading-[100%] "
           >
             {label}
           </label>
@@ -40,7 +40,7 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full h-[56px] bg-[#FBFCFD] mb-3.5 border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none ${InputClass}`}
+          className={`w-full h-[48px] mb-3.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none ${InputClass}`}
           {...rest}
         />
 
@@ -55,7 +55,11 @@ const InputField = ({
             {showPassword ? (
               <IoEyeOutline size={18} onClick={handleToggle} color="#292D32" />
             ) : (
-              <IoEyeOffOutline size={18} onClick={handleToggle} color="#292D32" />
+              <IoEyeOffOutline
+                size={18}
+                onClick={handleToggle}
+                color="#292D32"
+              />
             )}
           </div>
         )}

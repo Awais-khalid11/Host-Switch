@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../Button/Button";
-import otpimg from "../../../assets/otp.png";
-import logo from "../../../assets/logo.svg"
+import { OtpPNG } from "../../../constants/Imgs";
+import { LogoSVG } from "../../../Constants/Icons";
 
 const Otp = () => {
   const navigate = useNavigate();
@@ -31,12 +31,12 @@ const Otp = () => {
   };
 
   return (
-    <div className="flex md:flex-row flex-col gap-10 items-center bg-white justify-center p-5">
+    <div className="flex md:flex-row flex-col gap-[30px] items-center bg-white justify-center p-2.5">
       <div className="w-1/2 ">
-         <img src={otpimg} alt="otpImg" className="rounded-2xl max-w-[645px]"/>
+         <img src={OtpPNG} alt="otpImg" className="rounded-2xl max-w-[645px]"/>
       </div>
-      <div className="md:w-[43.5%] w-full max-w-[455px] mx-auto font-bold">
-        <img src={logo} alt="logoImg" className="max-w-[285px] mx-auto min-h-[29px] mb-14"/>
+      <div className="w-1/2 font-bold">
+        <img src={LogoSVG} alt="logoImg" className="max-w-[285px] mx-auto min-h-[29px] mb-14"/>
         <h2 className="lg:text-[40px] md:text-[30px] text-[28px] md:mb-2 mb-1 font-bold text-center text-[#2F3542]">
           Please Check Your Email
         </h2>

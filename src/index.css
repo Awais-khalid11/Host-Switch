@@ -4,7 +4,12 @@
 @import "tailwindcss";
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 10px;
+}
+
+.font_inter{
+  font-family: "inter", sans-serif;
 }
 
 .font_giest {
@@ -13,4 +18,14 @@ body {
 
 .font_Kumbh{
   font-family: "Kumbh Sans", sans-serif;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+@font-face {
+  font-family: 'Segoe UI', sans-serif;
+  src: url(../src/assets/Fonts/Segoe\ UI.ttf);
 }

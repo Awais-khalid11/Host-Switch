@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import Router from './Router'
+import MainRouter from './MainRouter'
 
 function App() {
 
   return (
     <>
-     <Router/>
+     <MainRouter/>
     </>
   )
 }
