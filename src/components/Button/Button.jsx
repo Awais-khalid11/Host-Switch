@@ -10,7 +10,7 @@ const Button = ({
   ...rest
 }) => {
   const baseStyles =
-    "whitespace-nowrap md:px-6.5 px-3 rounded-[8px] font-bold text-base transition duration-300 flex items-center gap-2 items-center justify-center cursor-pointer";
+    "whitespace-nowrap md:px-6.5 px-3 rounded-[8px] font-bold text-[12px] transition duration-300 flex items-center gap-2 items-center justify-center cursor-pointer";
 
   const variants = {
     defaultBtn: "bg-[#4D72FF] text-[#ffffff] md:h-[55px]  w-[160px] cursor-pointer md:px-[10px] px-0 gap-0 font-semibold  h-[40px]",
@@ -18,7 +18,7 @@ const Button = ({
     whitebtn: "bg-white w-full",
     borderbtn: "border border-[#4D72FF] w-full bg-white text-[#4D72FF] font-medium h-[48px]",
     filterbtn: "border border-[#E9EAEB] w-[80px] h-[37px] rounded-[4px] font-semibold font-sm",
-    greenbtn: "border border-[#1A932E] text-[#1A932E] font-medium h-[48px]"
+    greenbtn: "border border-[#1A932E] text-[#1A932E] text-[12px] font-medium h-[48px]"
   };
 
   return (

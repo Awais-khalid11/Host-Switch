@@ -8,33 +8,33 @@ const Match = ({matchdata}) => {
     <div>
       {matchdata.map((item, index) => (
         <div key={index} className="flex items-center border border-[#2525251A] rounded-[20px] p-5 mb-5 w-full">
-          <div className="flex gap-6 pr-3.5 border-r border-r-[#3636361A] w-1/2">
+          <div className="flex gap-3 pr-3 border-r border-r-[#3636361A]  w-1/2">
             <img src={item.image} alt="img" className="w-[290px] h-[190px] flex [flex:0_0_52px] rounded-[10px]" />
             <div>
-              <div className="flex gap-2.5 items-center mb-4">
+              <div className="flex gap-2.5 items-center mb-3">
                 <img
                   src={item.globalImg}
                   alt="img"
                   className="w-[50px] h-[50px]"
                 />
                 <div>
-                  <h4 className="text-base font-semibold">{item.name}</h4>
-                  <h5 className="text-[#1B252B99] text-sm font-normal flex items-center gap-2">
+                  <h4 className="text-base font-semibold whitespace-nowrap">{item.name}</h4>
+                  <div className="text-[#1B252B99] whitespace-nowrap text-sm font-normal flex items-center gap-1">
                     <img src={StarSVG} alt="starImg" className="w-3.5 h-3.5" />
-                    {item.points}
-                  </h5>
+                    <p>{item.points}</p>
+                  </div>
                 </div>
               </div>
-              <div className="text-sm font-normal text-[#1B252B80] max-w-[273px] mb-4">
+              <div className="text-sm font-normal text-[#1B252B80] max-w-[273px] mb-2">
                 <p>{item.desc}</p>
               </div>
-              <h5 className="text-[12px] font-normal text-black flex items-center gap-2">
+              <div className="text-[11px] whitespace-nowrap font-normal text-black flex items-center gap-1">
                 <img src={RedlocationSVG} alt="img" />
-                {item.location}
-              </h5>
+                <p>{item.location}</p>
+              </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-5 pl-5 w-1/2">
+          <div className="flex items-center justify-between gap-5 pl-3 w-1/2">
             <div>
               <h3 className="text-base font-bold text-[#1B252B] mb-4">
                 Services
@@ -72,7 +72,7 @@ const Match = ({matchdata}) => {
                 <div className="mb-6">
                     <SemiCircleProgress/>
                 </div>
-                <Button variant="greenbtn" className="mb-2.5" prefixImg={ProfileSVG}>Request a Parposal</Button>
+                <Button variant="greenbtn" className="mb-2.5 !px-2" prefixImg={ProfileSVG}>Request a Parposal</Button>
                 <Button variant="borderbtn" className="border-[#555555] text-[#555555] text-[12px]" prefixImg={CrossSVG}>Decline Match</Button>
             </div>
           </div>
