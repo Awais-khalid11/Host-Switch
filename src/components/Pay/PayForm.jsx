@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import InputField from "../InputField/InputField";
 import { CiCreditCard1 } from "react-icons/ci";
 import Button from "../Button/Button";
@@ -7,8 +7,8 @@ import ConfirmModal from "../Modal/ConfirmModal";
 import { Thumbsup } from "../../constants/Icons";
 
 const PayForm = () => {
-      const [showModal, setShowModal] = useState(false);
-    
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="border border-[#E4E5E8] rounded-[12px] p-5 pt-4">
       <h2 className="text-xl font-semibold mb-3.5">Payment Summary</h2>
@@ -73,7 +73,7 @@ const PayForm = () => {
           <Button
             variant=" defaultBtn"
             className="bg-[#4D72FF] text-sm text-white h-[48px] md:w-[183px] w-full"
-             onClick={(e) => {
+            onClick={(e) => {
               e.preventDefault();
               setShowModal(true);
             }}
@@ -86,6 +86,8 @@ const PayForm = () => {
               modalText="Thank you! Your payment has been received. A receipt has been sent to your email. This invoice is now marked as PAID in your dashboard."
               modalImg={Thumbsup}
               onClose={() => setShowModal(false)}
+              showTitle={true}
+              showText={true}
             >
               <ConfirmModal />
             </Modal>

@@ -34,6 +34,19 @@ import HostConciergeSupportPage from "./pages/HostPages/HostConciergeSupportPage
 import HostCompanyInfo from "./components/Host/HostSignup/HostOnboarding/HostCompanyInfo/HostCompanyInfo";
 import HostExpectation from "./components/Host/HostSignup/HostOnboarding/HostExpectation/HostExpectation";
 import HostPortfolio from "./components/Host/HostSignup/HostOnboarding/HostPortfolio/HostPortfolio";
+import HostLiveChat from "./components/Host/ConciergeSupport/HostLiveChat";
+import HostSubmission from "./components/Host/MySubmissions/HostSubmission";
+import HostProposalView from "./components/Host/HostProposals/HostProposalView/HostProposalView";
+import HostFeedback from "./components/Host/HostProposals/HostFeedback/HostFeedback";
+import MyMatchProposal from "./components/Host/MyMatch/MyMatchProposal/MyMatchProposal";
+import AdminDashboardPage from "./pages/AdminPages/AdminDashboardPage";
+import AdminLayout from "./components/Layout/AdminLayout/AdminLayout";
+import AdminHostsLeadsPage from "./pages/AdminPages/AdminHostsLeadsPage";
+import AdminPMCompaniesPage from "./pages/AdminPages/AdminPMCompaniesPage";
+import AdminInvoicesPage from "./pages/AdminPages/AdminInvoicesPage";
+import AdminSettingsPage from "./pages/AdminPages/AdminSettingsPage";
+import AdminConciergeMessagesPage from "./pages/AdminPages/AdminConciergeMessagesPage";
+import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
 
 const MainRouter = () => {
   return (
@@ -64,6 +77,23 @@ const MainRouter = () => {
         <Route path="hostmessages" element={< HostMessagesPage />} />
         <Route path="hostsettings" element={< HostSettingsPage />} />
         <Route path="hostconciergesupport" element={< HostConciergeSupportPage />} />
+        <Route path="hostlivechat" element={< HostLiveChat />} />
+        <Route path="hostsubmission" element={< HostSubmission />} />
+        <Route path="hostproposalview" element={< HostProposalView />} />
+        <Route path="hostfeedback" element={< HostFeedback />} />
+        <Route path="mymatchproposal" element={< MyMatchProposal />} />
+      </Route>
+
+      {/* Admin Dashboard Pages */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="/admin/admindashboard" />} />
+        <Route path="admindashboard" element={<AdminDashboardPage />} />
+        <Route path="adminhostsleads" element={<AdminHostsLeadsPage />} />
+        <Route path="adminpmcompanies" element={<AdminPMCompaniesPage />} />
+        <Route path="admininvoices" element={<AdminInvoicesPage />} />
+        <Route path="adminsettings" element={<AdminSettingsPage />} />
+        <Route path="adminconciergemessages" element={<AdminConciergeMessagesPage />} />
+        <Route path="adminlivechat" element={<AdminLiveChat />} />
       </Route>
 
       {/* Auth Routes (without layout) */}

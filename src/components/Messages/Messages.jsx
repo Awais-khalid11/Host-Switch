@@ -34,18 +34,20 @@ const Messages = () => {
   }, []);
 
   return (
-    <div className="relative grid grid-cols-1 md:grid-cols-[359px_1fr] gap-1">
-      {/* <h2>Messages</h2> */}
-      {!isMobile || !showBoxOnly ? (
-        <TrainerMessages
-          userData={userData}
-          onSelectUser={() => isMobile && setShowBoxOnly(true)}
-        />
-      ) : null}
+    <div>
+      <h2 className="text-[32px] font-bold mb-5">Messages</h2>
+      <div className="relative grid grid-cols-1 md:grid-cols-[359px_1fr] gap-1">
+        {!isMobile || !showBoxOnly ? (
+          <TrainerMessages
+            userData={userData}
+            onSelectUser={() => isMobile && setShowBoxOnly(true)}
+          />
+        ) : null}
 
-      {(!isMobile || showBoxOnly) && (
-        <MessageBox onBack={() => setShowBoxOnly(false)} />
-      )}
+        {(!isMobile || showBoxOnly) && (
+          <MessageBox onBack={() => setShowBoxOnly(false)} />
+        )}
+      </div>
     </div>
   );
 };

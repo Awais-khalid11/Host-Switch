@@ -14,11 +14,14 @@ import {
 } from "../../../constants/Icons";
 import { UserPNG } from "../../../constants/Imgs";
 import { useNavigate } from "react-router-dom";
+import AcceptedProposal from "./AcceptedProposal/AcceptedProposal";
+import AwaitingPropsal from "./AwaitingPropsal/AwaitingPropsal";
 
 const Proposalstable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [acceptPage, setAcceptPage] = useState(false);
 
   const allData = [
     {
@@ -179,15 +182,46 @@ const Proposalstable = () => {
     { header: "Projection", accessor: "projection", showSort: true },
   ];
 
-  const rowActions = (rowData) => (
-    <ActionMenu
-      actions={[
-        {
-          label: "View",
-          icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => navigate("/pm/views"),
-        },
-        {
+  // const rowActions = (rowData) => (
+  //   const isAwaiting = rowData.status === Awaiting
+    
+  //    const actions=[
+  //       {
+  //         label: "View",
+  //         icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+  //         onClick: () => setAcceptPage(<AcceptedProposal setClose={setAcceptPage}/>),
+  //       },
+  //       {
+  //         label: "Message",
+  //         icon: <img src={MsgsSVG} alt="view" className="w-4 h-4" />,
+  //         onClick: () => console.log("Message", rowData),
+  //       },
+  //       {
+  //         label: "Download Contract",
+  //         icon: <img src={DownloadSVG} alt="view" className="w-4 h-4" />,
+  //         onClick: () => console.log("Download", rowData),
+  //       },
+  //     ]
+  
+  // );
+  
+    const rowActions = (rowData) => {
+    const isAwaiting = rowData.status === "Awaiting";
+
+    const actions = [
+      {
+        label: "View",
+        icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+        onClick: () =>
+          setAcceptPage(
+            isAwaiting? (
+              <AwaitingPropsal setClose={setAcceptPage} />
+            ) : (
+              <AcceptedProposal setClose={setAcceptPage} />
+            )
+          ),
+      },
+      {
           label: "Message",
           icon: <img src={MsgsSVG} alt="view" className="w-4 h-4" />,
           onClick: () => console.log("Message", rowData),
@@ -197,11 +231,16 @@ const Proposalstable = () => {
           icon: <img src={DownloadSVG} alt="view" className="w-4 h-4" />,
           onClick: () => console.log("Download", rowData),
         },
-      ]}
-    />
-  );
+    ];
 
-  return (
+  
+
+    return <ActionMenu actions={actions} />;
+  };
+
+
+  return acceptPage ? (acceptPage) : (
+
     <div className="rounded-[12px]">
       <div className="rounded-xl bg-white overflow-hidden">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
@@ -246,7 +285,8 @@ const Proposalstable = () => {
         />
       </div>
     </div>
-  );
+
+  )
 };
 
 export default Proposalstable;

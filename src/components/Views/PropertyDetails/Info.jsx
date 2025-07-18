@@ -15,9 +15,9 @@ const Info = () => {
     <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-full lg:w-1/2">
       <div>
         {infoData.map((item, index) => (
-        <div key={index} className="text-sm font-inter flex md:flex-nowrap flex-wrap mb-3">
+        <div key={index} className="text-sm font-inter flex md:flex-nowrap flex-wrap mb-1">
           <div className="font-semibold w-[160px]">{item.title}</div>
-          <div className="text-[#1B252B]">{item.text}</div>
+          <div className="text-[#1B252B] whitespace-nowrap">{item.text}</div>
         </div>
       ))}
       </div>

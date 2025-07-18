@@ -1,5 +1,5 @@
 import React from 'react'
-import IncomingLeads from '../../components/IncomingLeads/IncomingLeads'
+import IncomingLeads from '../../components/PM/IncomingLeads/IncomingLeads'
 
 const IncomingLeadsPage = () => {
   return (

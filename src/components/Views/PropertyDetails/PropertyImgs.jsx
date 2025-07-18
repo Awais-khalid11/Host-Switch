@@ -41,13 +41,13 @@ const PropertyImgs = () => {
 
   return (
     <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-full lg:w-1/2">
-      <div className="flex flex-wrap justify-between gap-1.5">
+      <div className="flex  gap-1.5 ">
         {images.map((img, index) => (
           <img
             key={index}
             src={img}
             alt={`img-${index}`}
-            className="rounded-[10px] w-[calc(25%-6px)] max-w-[119px] object-cover"
+            className="rounded-[10px] w-[24%] h-[192px] object-cover"
           />
         ))}
       </div>

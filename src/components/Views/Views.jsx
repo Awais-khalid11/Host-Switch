@@ -1,5 +1,10 @@
-import React from "react";
-import { BackarrowSVG, CrossSVG, DocumentSVG, MsgSVG } from "../../constants/Icons";
+import React, {useState} from "react";
+import {
+  BackarrowSVG,
+  CrossSVG,
+  DocumentSVG,
+  MsgSVG,
+} from "../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import Sam from "./Sam";
@@ -8,28 +13,77 @@ import HostExpectations from "./HostExpectations";
 import CurrentPM from "./CurrentPM";
 import Documents from "./Documents";
 import { ROUTES } from "../../constants/Routes";
+import Modal from "../Modal/Modal";
+import HostDeclineModal from "../Modal/HostDeclineModal";
+import SendProposal from "../SendProposal/SendProposal";
 
-const Views = () => {
-    const navigate = useNavigate()
-  return (
+const Views = ({setClose}) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [sendPage, setSendPage] = useState();
+
+  return sendPage ? (sendPage) : (
     <div className="pb-2.5 pt-5">
       <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
         <h2 className="font-bold text-2xl flex items-center gap-2 md:mb-0 mb-2.5">
-          <img src={BackarrowSVG} alt="img" className="cursor-pointer" onClick={()=>navigate(-1)}/> Incoming Leads
+          <img
+            src={BackarrowSVG}
+            alt="img"
+            className="cursor-pointer"
+            onClick={() => setClose(false)}
+          />
+          Incoming Leads
         </h2>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
-            <Button variant="borderbtn" className="border-[#555555] text-[#555555] max-w-[157px]" prefixImg={CrossSVG}>Decline Lead</Button>
-            <Button variant="borderbtn" className="border-[#4D72FF] text-[#4D72FF] max-w-[157px]" prefixImg={DocumentSVG} onClick={()=>navigate(ROUTES.SENDPROPOSAL)}>Send Proposal</Button>
-            <Button variant="greenbtn" className="w-[157px] px-5" prefixImg={MsgSVG} onClick={()=>navigate(ROUTES.MESSAGES)}>Message Host</Button>
+          <Button
+            variant="borderbtn"
+            className="border-[#555555] text-[#555555] max-w-[157px]"
+            prefixImg={CrossSVG}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowModal(true);
+            }}
+          >
+            Decline Lead
+          </Button>
+          {showModal && (
+            <Modal
+              onClose={() => setShowDeclineModal(false)}
+              width="582px"
+              height="263px"
+              useBgImage={false}
+              bgColor="#4D72FF" // or any custom solid color
+              showModalIcon={false}
+              updateClass="px-8"
+            >
+              <HostDeclineModal /> {/* Optional: Add buttons or message */}
+            </Modal>
+          )}
+          <Button
+            variant="borderbtn"
+            className="border-[#4D72FF] text-[#4D72FF] max-w-[157px]"
+            prefixImg={DocumentSVG}
+            onClick={() => setSendPage(<SendProposal setClose={setSendPage}/>)}
+          >
+            Send Proposal
+          </Button>
+          <Button
+            variant="greenbtn"
+            className="w-[157px] px-5"
+            prefixImg={MsgSVG}
+            onClick={() => navigate(ROUTES.MESSAGES)}
+          >
+            Message Host
+          </Button>
         </div>
       </div>
       <Sam />
-      <PropertyDetails/>
-      <HostExpectations/>
-      <CurrentPM/>
-      <Documents/>
+      <PropertyDetails />
+      <HostExpectations />
+      <CurrentPM />
+      <Documents />
     </div>
-  );
+  )
 };
 
 export default Views;

@@ -1,0 +1,30 @@
+import React, { useState } from "react";
+import Button from "../../Button/Button";
+import { WhitecircleSVG } from "../../../constants/Icons";
+import PropertySubmission from "./PropertySubmission";
+import HostSubmission from "./HostSubmission";
+
+const MySubmissions = () => {
+  const [isEditing, setIsEditing] = useState(false); 
+
+  return isEditing ? (
+    <HostSubmission setClose={() => setIsEditing(false)} />
+  ) : (
+    <div>
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-xl font-bold">My Submission</h2>
+        <Button
+          variant="defaultBtn"
+          prefixImg={WhitecircleSVG}
+          className="!w-[179px] !h-[40px] text-base"
+          onClick={() => setIsEditing(true)}
+        >
+          Add New Property
+        </Button>
+      </div>
+      <PropertySubmission onEditClick={() => setIsEditing(true)} />
+    </div>
+  );
+};
+
+export default MySubmissions;

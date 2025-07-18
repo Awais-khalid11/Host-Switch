@@ -1,15 +1,47 @@
-import React from "react";
-import { CrossSVG, ProfileSVG, RedlocationSVG, StarSVG } from "../../../constants/Icons";
+import React, { useState } from "react";
+import {
+  CrossSVG,
+  ModalmsgSVG,
+  ProfileSVG,
+  RedlocationSVG,
+  StarSVG,
+} from "../../../constants/Icons";
 import SemiCircleProgress from "../MatchScore";
 import Button from "../../Button/Button";
+import Modal from "../../Modal/Modal";
+import HostDeclineModal from "../../Modal/HostDeclineModal";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/Routes";
 
-const Match = ({matchdata}) => {
+const Match = ({ matchdata }) => {
+  const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate()
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (location.pathname === ROUTES.HOSTMYMATCHES) {
+      // Navigate to Invoices page if on My Match
+      navigate(ROUTES.HOSTMYMATCHPROPOSAL);
+    } else {
+      // Otherwise, do something else, like open modal
+      setShowModal(true);
+    }
+  };
+
   return (
     <div>
       {matchdata.map((item, index) => (
-        <div key={index} className="flex items-center border border-[#2525251A] rounded-[20px] p-5 mb-5 w-full">
-          <div className="flex gap-3 pr-3 border-r border-r-[#3636361A]  w-1/2">
-            <img src={item.image} alt="img" className="w-[290px] h-[190px] flex [flex:0_0_52px] rounded-[10px]" />
+        <div
+          key={index}
+          className="flex items-center md:flex-nowrap flex-wrap border border-[#2525251A] rounded-[20px] p-5 mb-5 w-full"
+        >
+          <div className="flex md:flex-nowrap flex-wrap gap-3 pb-3 md:pr-3 md:border-r border-b border-b-[#3636361A] border-r-[#3636361A]  md:w-1/2 ">
+            <img
+              src={item.image}
+              alt="img"
+              className="md:w-[241px] md:h-[190px] rounded-[10px]"
+            />
             <div>
               <div className="flex gap-2.5 items-center mb-3">
                 <img
@@ -18,7 +50,9 @@ const Match = ({matchdata}) => {
                   className="w-[50px] h-[50px]"
                 />
                 <div>
-                  <h4 className="text-base font-semibold whitespace-nowrap">{item.name}</h4>
+                  <h4 className="text-base font-semibold whitespace-nowrap">
+                    {item.name}
+                  </h4>
                   <div className="text-[#1B252B99] whitespace-nowrap text-sm font-normal flex items-center gap-1">
                     <img src={StarSVG} alt="starImg" className="w-3.5 h-3.5" />
                     <p>{item.points}</p>
@@ -34,13 +68,13 @@ const Match = ({matchdata}) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-5 pl-3 w-1/2">
+          <div className="flex items-center justify-between gap-5 pl-3 md:w-1/2">
             <div>
               <h3 className="text-base font-bold text-[#1B252B] mb-4">
                 Services
               </h3>
               <div>
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center md:flex-nowrap flex-wrap gap-4 mb-4">
                   <h5 className="border text-[12px] font-normal border-[#0050B333] rounded-[90px] w-[134px] h-[24px]  text-center">
                     Property Maintenance
                   </h5>
@@ -69,11 +103,42 @@ const Match = ({matchdata}) => {
               </div>
             </div>
             <div className="flex flex-col justify-center items-center">
-                <div className="mb-6">
-                    <SemiCircleProgress/>
-                </div>
-                <Button variant="greenbtn" className="mb-2.5 !px-2" prefixImg={ProfileSVG}>Request a Parposal</Button>
-                <Button variant="borderbtn" className="border-[#555555] text-[#555555] text-[12px]" prefixImg={CrossSVG}>Decline Match</Button>
+              <div className="mb-6">
+                <SemiCircleProgress />
+              </div>
+              <Button
+                variant="greenbtn"
+                className="mb-2.5 !md:px-2"
+                prefixImg={ProfileSVG}
+                onClick={handleClick}
+              >
+                Request a Parposal
+              </Button>
+              {showModal && (
+                <Modal
+                  modalTitle="Send Proposal Request"
+                  modalText="You’re about to request a proposal from this Property Manager."
+                  modalImg={ModalmsgSVG}
+                  onClose={() => setShowModal(false)}
+                  width="586px"
+                  height="346px"
+                  useBgImage={true}
+                  showModalIcon={true}
+                  showTitle={true}
+                  showText={true}
+                  updateClass="pt-10 px-8  items-start"
+                  textClass="!mx-0"
+                >
+                  <HostDeclineModal />
+                </Modal>
+              )}
+              <Button
+                variant="borderbtn"
+                className="border-[#555555] text-[#555555] text-[12px]"
+                prefixImg={CrossSVG}
+              >
+                Decline Match
+              </Button>
             </div>
           </div>
         </div>

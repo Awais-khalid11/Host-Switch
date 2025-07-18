@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import ActionMenu from "../../DropDown/Dropdown";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
@@ -6,50 +5,31 @@ import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
 
 import Table from "../../Table/Table";
-import { AllSVG, ClockSVG, DownloadSVG, EyeSVG, FilterSVG, ImportSVG, MsgsSVG, PaySVG, SmsSVG } from "../../../Constants/Icons";
+import {
+  AllSVG,
+  ClockSVG,
+  DownloadSVG,
+  EyeSVG,
+  FilterSVG,
+  ImportSVG,
+  MsgsSVG,
+  PaySVG,
+  SmsSVG,
+} from "../../../Constants/Icons";
 import { ROUTES } from "../../../constants/Routes";
-
+import PaidInvoice from "../../PaidInvoice/PaidInvoice";
+import InvoiceView from "../../InvoiceView/InvoiceView";
+import Pay from "../../Pay/Pay";
 
 const InvoicesTable = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState(""); // NEW: filter state
+  const [activePage, setActivePage] = useState(false);
 
   const allData = [
-    { 
-      id: "#INV-20-1012",  
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Unpaid",
-      date: "01-01-2025",
-    },
-    { 
-      id: "#INV-20-1012",   
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
     {
-      id: "#INV-20-1012",   
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
-    {
-       id: "#INV-20-1012",   
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-       id: "#INV-20-1012",   
+      id: "#INV-20-1012",
       property: "3BR Apartment",
       name: "Harry Gorge",
       amount: "$1899.09",
@@ -57,23 +37,7 @@ const InvoicesTable = () => {
       date: "01-01-2025",
     },
     {
-      id: "#INV-20-1012",   
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-       id: "#INV-20-1012",   
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",   
+      id: "#INV-20-1012",
       property: "3BR Apartment",
       name: "Harry Gorge",
       amount: "$1899.09",
@@ -81,7 +45,23 @@ const InvoicesTable = () => {
       date: "01-01-2025",
     },
     {
-      id: "#INV-20-1012",   
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Paid",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Overdue",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
       property: "3BR Apartment",
       name: "Harry Gorge",
       amount: "$1899.09",
@@ -89,7 +69,39 @@ const InvoicesTable = () => {
       date: "01-01-2025",
     },
     {
-      id: "#INV-20-1012",   
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Overdue",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Overdue",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Paid",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
+      property: "3BR Apartment",
+      name: "Harry Gorge",
+      amount: "$1899.09",
+      status: "Unpaid",
+      date: "01-01-2025",
+    },
+    {
+      id: "#INV-20-1012",
       property: "3BR Apartment",
       name: "Harry Gorge",
       amount: "$1899.09",
@@ -104,7 +116,6 @@ const InvoicesTable = () => {
     : allData;
 
   const columns = [
-   
     { header: "Invoice ID", accessor: "id", showSort: true },
     { header: "Property", accessor: "property", showSort: true },
     { header: "Host Name", accessor: "name", showSort: true },
@@ -135,81 +146,94 @@ const InvoicesTable = () => {
     { header: "Date Sent", accessor: "date", showSort: true },
   ];
 
-const rowActions = (rowData) => {
-  const isPaid = rowData.status === "Paid";
+  const rowActions = (rowData) => {
+    const isPaid = rowData.status === "Paid";
 
-  const actions = [
-    {
-      label: "View",
-      icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-      onClick: () =>
-        navigate(isPaid ? ROUTES.PAIDINVOICE : ROUTES.UNPAID),
-    },
-    {
-      label: "Download",
-      icon: <img src={ImportSVG} alt="download" className="w-4 h-4" />,
-      onClick: () => console.log("Download", rowData),
-    },
-  ];
+    const actions = [
+      {
+        label: "View",
+        icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+        onClick: () =>
+          setActivePage(
+            isPaid ? (
+              <PaidInvoice setClose={setActivePage} />
+            ) : (
+              <InvoiceView setClose={setActivePage} />
+            )
+          ),
+      },
+      {
+        label: "Download",
+        icon: <img src={ImportSVG} alt="download" className="w-4 h-4" />,
+        onClick: () => console.log("Download", rowData),
+      },
+    ];
 
-  if (isPaid) {
-    actions.push({
-      label: "Pay",
-      icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
-      onClick: () => navigate(ROUTES.PAY),
-    });
-  }
+    if (isPaid) {
+      actions.push({
+        label: "Pay",
+        icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
+        onClick: () => setActivePage(<Pay setClose={setActivePage}/>),
+      });
+    }
 
-  return <ActionMenu actions={actions} />;
-};
-
+    return <ActionMenu actions={actions} />;
+  };
 
   return (
-    <div className="rounded-[12px]">
-      <div className="rounded-xl bg-white overflow-hidden">
-        <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
-          <h2 className="text-xl text-[#181D27] font-bold">
-           Invoices
-          </h2>
+    <>
+      {activePage ? (
+        activePage
+      ) : (
+        <div className="rounded-[12px]">
+          <div className="rounded-xl bg-white overflow-hidden">
+            <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
+              <h2 className="text-xl text-[#181D27] font-bold">Invoices</h2>
 
-          <FilterDropdown
-            button={
-              <Button variant="filterbtn" suffixImg={FilterSVG}>
-                Filter
-              </Button>
-            }
-            onSelect={(val) => setFilterStatus(val)} 
-            options={[
-              { label: "All", value: "", icon: <img src={AllSVG} alt="All" /> },
-              {
-                label: "Unpaid",
-                value: "Unpaid",
-                icon: <img src={ClockSVG} alt="Awaiting" />,
-              },
-              {
-                label: "Paid",
-                value: "Paid",
-                icon: <img src={ClockSVG} alt="Accepted" />,
-              },
-              {
-                label: "Overdue",
-                value: "Overdue",
-                icon: <img src={ClockSVG} alt="Rejected" />,
-              },
-            ]}
-          />
+              <FilterDropdown
+                button={
+                  <Button variant="filterbtn" suffixImg={FilterSVG}>
+                    Filter
+                  </Button>
+                }
+                onSelect={(val) => setFilterStatus(val)}
+                options={[
+                  {
+                    label: "All",
+                    value: "",
+                    icon: <img src={AllSVG} alt="All" />,
+                  },
+                  {
+                    label: "Unpaid",
+                    value: "Unpaid",
+                    icon: <img src={ClockSVG} alt="Awaiting" />,
+                  },
+                  {
+                    label: "Paid",
+                    value: "Paid",
+                    icon: <img src={ClockSVG} alt="Accepted" />,
+                  },
+                  {
+                    label: "Overdue",
+                    value: "Overdue",
+                    icon: <img src={ClockSVG} alt="Rejected" />,
+                  },
+                ]}
+              />
+            </div>
+
+            <Table
+              columns={columns}
+              data={filteredData}
+              showActions
+              actions={rowActions}
+              search={search}
+              rowStyle="full-border"
+            />
+          </div>
         </div>
-
-        <Table
-          columns={columns}
-          data={filteredData} 
-          showActions
-          actions={rowActions}
-          search={search}
-          rowStyle="full-border"
-        />
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

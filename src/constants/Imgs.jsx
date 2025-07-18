@@ -19,6 +19,11 @@ import PdffilePNG from "@/assets/Images/pdffile.png";
 import LuxePNG from "@/assets/Images/luxe.png";
 import ManImgPNG from "@/assets/Images/manImg.png";
 import ProfessionPNG from "@/assets/Images/profession.png";
+import IntroPNG from "@/assets/Images/intro.png";
+import Gallery1PNG from "@/assets/Images/gallery1.png";
+import Gallery2PNG from "@/assets/Images/gallery2.png";
+import Gallery3PNG from "@/assets/Images/gallery3.png";
+import Gallery4PNG from "@/assets/Images/gallery4.png";
 
 export { 
     OtpPNG, 
@@ -41,5 +46,10 @@ export {
     PdffilePNG,
     LuxePNG,
     ManImgPNG,
-    ProfessionPNG
+    ProfessionPNG,
+    IntroPNG,
+    Gallery1PNG,
+    Gallery2PNG,
+    Gallery3PNG,
+    Gallery4PNG
 };

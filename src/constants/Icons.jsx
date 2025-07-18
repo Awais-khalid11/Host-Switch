@@ -68,6 +68,36 @@ import DellSVG from "@/assets/Icons/dell.svg";
 import LinkSVG from "@/assets/Icons/link.svg";
 import PropertySVG from "@/assets/Icons/property.svg";
 import BuildingSVG from "@/assets/Icons/building.svg";
+import EditSVG from "@/assets/Icons/edit.svg";
+import ProfiletickSVG from "@/assets/Icons/profiletick.svg";
+import ProfildeleteSVG from "@/assets/Icons/profiledelete.svg";
+import ConsiderSVG from "@/assets/Icons/consider.svg";
+import GreentickSVG from "@/assets/Icons/greentick.svg";
+import RedcrossSVG from "@/assets/Icons/redcross.svg";
+import FillmsgSVG from "@/assets/Icons/fillmsg.svg";
+import TransparentlocationSVG from "@/assets/Icons/transparentlocation.svg";
+import HandSVG from "@/assets/Icons/hand.svg";
+import PriceSVG from "@/assets/Icons/price.svg";
+import CleanSVG from "@/assets/Icons/clean.svg";
+import BlackpdfSVG from "@/assets/Icons/blackpdf.svg";
+import WhiteeditSVG from "@/assets/Icons/whiteedit.svg";
+import ModalmsgSVG from "@/assets/Icons/modalmsg.svg";
+import GreenprofileSVG from "@/assets/Icons/greenprofile.svg";
+import QuestionSVG from "@/assets/Icons/question.svg";
+import InvoiceSVG from "@/assets/Icons/invoice.svg";
+import PmsSVG from "@/assets/Icons/pms.svg";
+import HostSVG from "@/assets/Icons/host.svg";
+import HleadsSVG from "@/assets/Icons/hleads.svg";
+import PmcompanySVG from "@/assets/Icons/pmcompany.svg";
+import HleadactiveSVG from "@/assets/Icons/hleads-active.svg";
+import PmcompanyactiveSVG from "@/assets/Icons/pmcompany-active.svg";
+import BlueeyeSVG from "@/assets/Icons/blueeye.svg";
+import ProfSVG from "@/assets/Icons/prof.svg";
+import ResendSVG from "@/assets/Icons/resend.svg";
+import WhitedotsSVG from "@/assets/Icons/whitedots.svg";
+import WhitecallSVG from "@/assets/Icons/whitecall.svg";
+import BlueplusSVG from "@/assets/Icons/blueplus.svg";
+import ReddelSVG from "@/assets/Icons/reddel.svg";
 
 export {
   DashboardSVG,
@@ -139,5 +169,35 @@ export {
   DellSVG,
   PropertySVG,
   LinkSVG,
-  BuildingSVG
+  BuildingSVG,
+  EditSVG,
+  ProfiletickSVG,
+  ProfildeleteSVG,
+  ConsiderSVG,
+  GreentickSVG,
+  RedcrossSVG,
+  FillmsgSVG,
+  TransparentlocationSVG,
+  HandSVG,
+  PriceSVG,
+  CleanSVG,
+  BlackpdfSVG,
+  WhiteeditSVG,
+  ModalmsgSVG,
+  GreenprofileSVG,
+  QuestionSVG,
+  HostSVG,
+  PmsSVG,
+  InvoiceSVG,
+  HleadsSVG,
+  PmcompanySVG,
+  HleadactiveSVG,
+  PmcompanyactiveSVG,
+  BlueeyeSVG,
+  ProfSVG,
+  ResendSVG,
+  WhitecallSVG,
+  WhitedotsSVG,
+  BlueplusSVG,
+  ReddelSVG
 };

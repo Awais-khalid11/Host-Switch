@@ -2,7 +2,7 @@ import { ROUTES } from "../../constants/Routes";
 import { DashboardSVG, DashboardactiveSVG, IncomingactiveSVG, IncomingSVG, LogoutSVG, MesaagesactiveSVG, MesaagesSVG, NoteactiveSVG, NoteSVG, RankingactiveSVG, RankingSVG, SettingactiveSVG, SettingSVG, SupportSVG, SupportactiveSVG } from "../../Constants/Icons";
 
 
-export const HostSidbar = [
+export const hostSideBarLinks = [
   {
     label: "Dashboard",
     to: ROUTES.HOSTDASHBOARD,

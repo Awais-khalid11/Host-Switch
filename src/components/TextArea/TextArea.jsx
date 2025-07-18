@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-const TextArea = ({ label, rows = 4, value, onChange, placeholder, type }) => {
+const TextArea = ({ label, rows = 4, value, onChange, placeholder, type, labelClass }) => {
   return (
     <div className="w-full mb-2.5">
       
-      <label className="text-[#323232] text-sm font-bold mb-1.5 block">{label}</label>
+      <label className={`${labelClass} text-[#323232] text-sm font-bold mb-1.5 block`}>{label}</label>
       <textarea
         type={type}
         value={value}

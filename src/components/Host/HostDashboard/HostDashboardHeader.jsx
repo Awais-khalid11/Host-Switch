@@ -1,15 +1,20 @@
 import React from "react";
 import Button from "../../Button/Button";
-import { AcceptSVG, LeadsSVG, TotalSVG, WhitecircleSVG } from "../../../constants/Icons";
+import {
+  AcceptSVG,
+  LeadsSVG,
+  TotalSVG,
+  WhitecircleSVG,
+} from "../../../constants/Icons";
 import DashboardCards from "../../DashboardCards/DashboardCards";
 
 const hostcards = [
-    { img: LeadsSVG, text: "New Leads", title: "2534+" },
-    { img: TotalSVG, text: "Total Matches", title: "1007" },
-    { img: AcceptSVG, text: "The Best Matches", title: "100" },
+  { img: LeadsSVG, text: "New Leads", title: "2534+" },
+  { img: TotalSVG, text: "Total Matches", title: "1007" },
+  { img: AcceptSVG, text: "The Best Matches", title: "100" },
 ];
 
-const HostDashboardHeader = () => {
+const HostDashboardHeader = ({ onAddClick }) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-5">
@@ -18,11 +23,14 @@ const HostDashboardHeader = () => {
           variant="defaultBtn"
           prefixImg={WhitecircleSVG}
           className="w-[206px]"
+          onClick={onAddClick}
         >
           Add New Submissions
         </Button>
       </div>
-      <div className="mb-5"><DashboardCards data={hostcards} /></div>
+      <div className="mb-5">
+        <DashboardCards data={hostcards} />
+      </div>
     </div>
   );
 };

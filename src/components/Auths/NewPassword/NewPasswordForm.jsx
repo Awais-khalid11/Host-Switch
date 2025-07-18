@@ -32,7 +32,11 @@ const NewPasswordForm = () => {
           InputClass="h-[56px]"
         />
         <div className="flex gap-4">
-          <Button variant="graybtn" className="mb-5 w-[30%]" onClick={()=>navigate(ROUTES.OTP)}>
+          <Button
+            variant="graybtn"
+            className="mb-5 w-[30%]"
+            onClick={() => navigate(ROUTES.OTP)}
+          >
             Back
           </Button>
           <Button
@@ -52,6 +56,12 @@ const NewPasswordForm = () => {
               modalText="Please press sign in to continue"
               modalImg={Thumbsup}
               onClose={() => setShowModal(false)}
+              width="384px"
+              height="238px"
+              useBgImage={true}
+              showModalIcon={true}
+              showTitle={true}
+              showText={true}
             >
               <PasswordModal />
             </Modal>

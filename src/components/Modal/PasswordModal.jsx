@@ -4,8 +4,8 @@ import Button from "../Button/Button";
 const PasswordModal = () => {
   return (
     <div>
-        <div className="flex items-center gap-2.5 mb-4">
-          <Button variant="whitebtn" className="px-6 py-4">
+        <div>
+          <Button variant="whitebtn" className="px-6 py-4 ! w-[339px]">
             Sign In
           </Button>
         </div>

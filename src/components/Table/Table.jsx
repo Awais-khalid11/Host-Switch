@@ -8,7 +8,7 @@ const Table = ({
   actions,
   search = "",
   className,
-  rowStyle = "bottom-border", // "full-border" or "bottom-border"
+  rowStyle = "bottom-border", 
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [sortingKey, setSortingKey] = useState(null);

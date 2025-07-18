@@ -233,7 +233,7 @@ const TrainerMessages = ({ onSelectUser }) => {
   ];
 
   return (
-    <div className="bg-white py-2 rounded-xl h-[510px] overflow-y-auto w-full">
+    <div className="bg-white border border-[#F5F5F5] py-2 rounded-xl h-[510px] overflow-y-auto w-full">
       <h2 className="font-semibold text-xl mb-4 px-4">Inbox</h2>
       <div>
         {recentMessages.map((msg, index) => (

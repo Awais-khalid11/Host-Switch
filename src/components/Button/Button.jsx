@@ -10,7 +10,7 @@ const Button = ({
   ...rest
 }) => {
   const baseStyles =
-    "whitespace-nowrap md:px-6.5 px-3 rounded-[8px] font-bold text-[12px] transition duration-300 flex items-center gap-2 items-center justify-center cursor-pointer";
+    "whitespace-nowrap md:px-6.5 px-3 rounded-[8px] font-bold text-base transition duration-300 flex items-center gap-0.5 md:gap-2 items-center justify-center cursor-pointer";
 
   const variants = {
     defaultBtn: "bg-[#4D72FF] text-[#ffffff] md:h-[55px]  w-[160px] cursor-pointer md:px-[10px] px-0 gap-0 font-semibold  h-[40px]",

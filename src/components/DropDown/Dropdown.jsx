@@ -55,11 +55,11 @@ const Dropdown = ({
               top:
                 btnRef.current?.getBoundingClientRect().bottom +
                 window.scrollY +
-                4,
+                -25,
               left:
                 btnRef.current?.getBoundingClientRect().left +
                 window.scrollX -
-                135 +
+                205 +
                 (btnRef.current?.offsetWidth || 0),
               position: "absolute",
             }}

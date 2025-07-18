@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { HeaderlogoSVG } from "../../constants/Icons"; // adjust if PNG
+import { HeaderlogoSVG } from "../../constants/Icons";
 
 const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
   const mainLinks = links.filter((link) => link.label !== "Log Out");

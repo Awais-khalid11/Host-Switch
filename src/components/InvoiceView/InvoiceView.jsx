@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BackarrowSVG, DownloadSVG } from "../../constants/Icons";
 import Button from "../Button/Button";
-import { useNavigate } from "react-router-dom";
 import Methods from "./Methods/Methods";
 import InvoiceTotal from "./InvoiceTotal.jsx/InvoiceTotal";
+import Pay from "../Pay/Pay"; 
 
-const InvoiceView = () => {
-  const navigate = useNavigate();
+const InvoiceView = ({ setClose }) => {
+  const [payPage, setPayPage] = useState(false); 
+
+  if (payPage) {
+    return <Pay setClose={setPayPage} />;
+  }
+
   return (
     <div className="pb-2.5 pt-5">
       <div className="flex items-center justify-between mb-5">
@@ -15,8 +20,8 @@ const InvoiceView = () => {
             src={BackarrowSVG}
             alt="img"
             className="cursor-pointer"
-            onClick={() => navigate(-1)}
-          />{" "}
+            onClick={() => setClose(false)}
+          />
           Invoice Summary
         </h2>
         <div className="flex items-center gap-2.5">
@@ -29,8 +34,8 @@ const InvoiceView = () => {
           </Button>
         </div>
       </div>
-      <Methods/>
-      <InvoiceTotal/>
+      <Methods />
+      <InvoiceTotal setPayPage={setPayPage} />
     </div>
   );
 };
