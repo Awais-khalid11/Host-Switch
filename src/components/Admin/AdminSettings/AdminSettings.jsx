@@ -38,17 +38,18 @@ const AdminSettings = () => {
     <div className="pt-5">
       <h2 className="text-2xl font-bold mb-2">Settings</h2>
 
-      <div className="flex gap-5 mb-3 p-1 w-[700px] lg:w-full overflow-auto">
+      <div className="flex mb-3 p-1 w-[700px] lg:w-full overflow-auto">
         {tabs.map((tab) => (
           <Button
             key={tab}
-            variant={selectedTab === tab ? "black" : ""}
-            className={` text-base rounded-[10px] transition-all ${
-              selectedTab === tab
-                ? "font-bold bg-[#EDEDED] py-3 "
-                : "font-normal !px-0"
-            }`}
             onClick={() => setSelectedTab(tab)}
+            className={`text-base font-medium !px-2.5 py-3 rounded-[10px] min-w-max transition-all duration-300
+         ${
+           selectedTab === tab
+             ? "bg-[#EDEDED] font-semibold"
+             : "bg-white text-black"
+         }
+       `}
           >
             {tab}
           </Button>

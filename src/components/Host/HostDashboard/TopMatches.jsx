@@ -23,9 +23,9 @@ const dashboarddata = [
     },
 ]
 
-const TopMatches = () => {
+const TopMatches = ({matchClass}) => {
   return (
-    <div>
+    <div className={`${matchClass}`}>
         <div className='flex justify-between items-center mb-2.5'>
             <h2 className='text-2xl font-bold'>Top Matches</h2>
             <Button className='bg-transparent text-[#25252599] text-[12px] font-normal'>View All</Button>

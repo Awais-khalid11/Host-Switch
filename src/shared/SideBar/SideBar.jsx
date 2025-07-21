@@ -31,7 +31,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
           
           {/* Top Section with Logo */}
           <div>
-            <div className="md:hidden sm:block mb-4 flex items-center justify-between">
+            <div className="lg:hidden block mb-4 flex items-center justify-between">
               <img
                 src={HeaderlogoSVG}
                 alt="Logo"

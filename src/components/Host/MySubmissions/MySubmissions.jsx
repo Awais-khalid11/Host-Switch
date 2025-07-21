@@ -11,8 +11,8 @@ const MySubmissions = () => {
     <HostSubmission setClose={() => setIsEditing(false)} />
   ) : (
     <div>
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl font-bold">My Submission</h2>
+      <div className="flex flex-wrap md:flex-nowrap justify-between items-center mb-5">
+        <h2 className="text-xl font-bold md:mb-0 mb-2.5">My Submission</h2>
         <Button
           variant="defaultBtn"
           prefixImg={WhitecircleSVG}

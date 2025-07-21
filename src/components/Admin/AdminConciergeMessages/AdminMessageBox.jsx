@@ -7,48 +7,21 @@ import { UserPNG, PdffilePNG } from "../../../constants/Imgs";
 import { AllSVG, WhitecallSVG, WhitedotsSVG } from "../../../constants/Icons";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import Button from "../../Button/Button";
+import AwaitingViews from "../AwaitingViews/AwaitingViews";
 
-const AdminMessageBox = ({ onBack }) => {
+const AdminMessageBox = ({ onBack, setViewPage }) => {
   const [message, setMessage] = useState("");
 
+  const handleSend = () => {
+    if (message.trim() !== "") {
+      console.log("Send Message:", message);
+      setMessage("");
+    }
+  };
+
   return (
-    <div>
-      <div className="bg-[#4D72FF] p-3 rounded-t-[10px] ">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img
-              src={UserPNG}
-              alt="img"
-              className="rounded-full w-[46px] h-[46px]"
-            />
-            <div>
-              <h4 className="text-base font-semibold text-white">
-                Alex Stewart (Host)
-              </h4>
-              <h5 className="text-[12px] font-normal text-white">
-                sarah@email.com{" "}
-              </h5>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <img src={WhitecallSVG} alt="img" className="w-6 h-6" />
-            {/* <img src={WhitedotsSVG} alt="img" className="w-6 h-6" /> */}
-            <FilterDropdown
-              button={
-                <Button className="!p-0"  suffixImg={WhitedotsSVG}>
-                </Button>
-              }
-              onSelect={(val) => setFilterStatus(val)} 
-              options={[
-                {
-                  label: "View Profile ",
-                  value: "View Profile ",
-                }
-              ]}
-            />
-          </div>
-        </div>
-      </div>
+    <div className="bg-white h-[calc(100vh-75px)] rounded-[10px] flex flex-col justify-between">
+      {/* Top Header */}
       <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl  overflow-hidden">
         <button
           onClick={onBack}
@@ -56,15 +29,57 @@ const AdminMessageBox = ({ onBack }) => {
         >
           <IoArrowBackOutline size={20} />
         </button>
+         <div className="bg-[#4D72FF] p-3 rounded-t-[10px]">
+        <div className="flex justify-between items-center">
+          {/* User Info */}
+          <div className="flex items-center gap-2">
+            <img
+              src={UserPNG}
+              alt="User"
+              className="rounded-full w-[46px] h-[46px]"
+            />
+            <div>
+              <h4 className="text-base font-semibold text-white">
+                Alex Stewart (Host)
+              </h4>
+              <h5 className="text-[12px] font-normal text-white">
+                sarah@email.com
+              </h5>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2.5">
+            <img src={WhitecallSVG} alt="Call" className="w-6 h-6" />
+
+            <FilterDropdown
+              button={<Button className="!p-0" suffixImg={WhitedotsSVG} />}
+              onSelect={(val) => {
+                if (val === "View Profile") {
+                  setViewPage(
+                    <AwaitingViews setClose={() => setViewPage(null)} />
+                  );
+                }
+              }}
+              options={[
+                {
+                  label: "View Profile",
+                  value: "View Profile",
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
           <div className="flex items-start gap-3">
-            <div className="relative flex [flex:0_0_52px]">
+            <div className="relative [flex:0_0_52px]">
               <img
                 src={UserPNG}
                 alt="avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
-              <span className="absolute bottom-0 md:right-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+              <span className="absolute bottom-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
             </div>
             <div>
               <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">
@@ -107,13 +122,13 @@ const AdminMessageBox = ({ onBack }) => {
             <div className="mt-1 text-xl">❤️ 👌</div>
           </div>
           <div className="flex  items-start gap-3">
-            <div className="relative flex [flex:0_0_52px]">
+            <div className="relative [flex:0_0_52px]">
               <img
                 src={UserPNG}
                 alt="avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
-              <span className="absolute bottom-0 md:right-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+              <span className="absolute bottom-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
             </div>
             <div>
               <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">

@@ -22,7 +22,7 @@ const FilterDropdown = ({ button, options = [], onSelect, className = "" }) => {
   }, []);
 
   return (
-    <div className={` inline-block ${className}`}>
+    <div className={`relative inline-block ${className}`}>
       <div ref={buttonRef} onClick={() => setIsOpen((prev) => !prev)}>
         {button}
       </div>
@@ -35,7 +35,7 @@ const FilterDropdown = ({ button, options = [], onSelect, className = "" }) => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             ref={dropdownRef}
-            className="absolute -top-2 right-20 mt-2 w-[155px] z-50 bg-white border border-gray-200 shadow-md rounded-md"
+            className="absolute -top-2 right-24 mt-2 w-[155px] z-50 bg-white border border-gray-200 shadow-md rounded-md"
           >
             {options.map((opt, index) => (
               <button

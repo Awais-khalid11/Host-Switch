@@ -22,7 +22,7 @@ const MessageBox = ({onBack}) => {
               alt="avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="absolute bottom-0 md:right-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            <span className="absolute bottom-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div>
             <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">
@@ -73,7 +73,7 @@ const MessageBox = ({onBack}) => {
               alt="avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="absolute bottom-0 md:right-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            <span className="absolute bottom-0  right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div>
             <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">

@@ -13,7 +13,7 @@ const HostDashboard = () => {
   ) : (
     <div>
       <HostDashboardHeader onAddClick={() => setIsAdding(true)} />
-      <TopMatches />
+      <TopMatches matchClass={"lg:pt-[200px]"}/>
       <div className="flex md:flex-nowrap flex-wrap gap-2.5 lg:gap-5">
         <div className="md:w-[65%] w-full">
           <PropertySummary />

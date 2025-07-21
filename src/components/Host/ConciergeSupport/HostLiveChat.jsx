@@ -3,21 +3,31 @@ import { IoIosSend } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PdffilePNG, UserPNG } from "../../../constants/Imgs";
+import { BackarrowSVG } from "../../../constants/Icons";
+import { useNavigate } from "react-router-dom";
 
 const HostLiveChat = () => {
   const [message, setMessage] = useState("");
+  const navigate = useNavigate()
 
   return (
+    <>
+     <div className="flex items-center gap-2.5 mb-5">
+            <img src={BackarrowSVG} alt="img" onClick={() => navigate(-1)} className="cursor-pointer"/>
+            <h2 className="lg:text-2xl md:text-xl text-sm font-bold">
+              Chat with Your HostSwitch Concierge
+            </h2>
+          </div>
     <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
          <div className="flex items-start gap-3">
-          <div className="relative">
+          <div className="relative flex-[0_0_52px]">
             <img
               src={UserPNG}
               alt="avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            <span className="absolute bottom-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div>
             <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">
@@ -62,13 +72,13 @@ const HostLiveChat = () => {
           <div className="mt-1 text-xl">❤️ 👌</div>
         </div>
         <div className="flex items-start gap-3">
-          <div className="relative">
+          <div className="relative flex-[0_0_52px]">
             <img
               src={UserPNG}
               alt="avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            <span className="absolute bottom-0 right-2.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
           </div>
           <div>
             <div className="text-sm text-gray-500 mb-1 flex justify-between items-center">
@@ -118,6 +128,7 @@ const HostLiveChat = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

@@ -42,22 +42,7 @@ const SettingButtons = () => {
     <div className="pt-5">
       <h2 className="text-2xl font-bold mb-2">Settings</h2>
 
-      <div className="flex mb-3 p-1 w-[700px] lg:w-full overflow-auto">
-        {tabs.map((tab) => (
-          <Button
-            key={tab}
-            variant={selectedTab === tab ? "black" : ""}
-            className={` text-base rounded-[10px] transition-all ${
-              selectedTab === tab
-                ? "font-bold bg-[#EDEDED] py-3 px-5"
-                : "font-normal px-0"
-            }`}
-            onClick={() => setSelectedTab(tab)}
-          >
-            {tab}
-          </Button>
-        ))}
-      </div>
+     a
 
       <div>{renderTabContent()}</div>
     </div>

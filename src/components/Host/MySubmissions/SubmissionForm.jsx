@@ -109,7 +109,7 @@ const SubmissionForm = () => {
         </div>
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-4">
           <h4 className="font-bold text-sm mb-4">Reason for Switching</h4>
-          <div className="flex items-center gap-5 mb-3">
+          <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-3">
             <CheckBox
               name="terms"
               id="terms"
@@ -153,7 +153,7 @@ const SubmissionForm = () => {
               onChange={(e) => setUnclear(e.target.checked)}
             />
           </div>
-          <div className="flex items-center gap-5 mb-3">
+          <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-3">
             <CheckBox
               name="upkeep"
               id="upkeep"
@@ -170,7 +170,7 @@ const SubmissionForm = () => {
             />
           </div>
         </div>
-        <div className="flex items-center gap-5 mb-5">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Do You Currently Have a Property Manager?
           </h3>
@@ -212,7 +212,7 @@ const SubmissionForm = () => {
             selectClass="mb-7 md:1/2 w-full"
           />
         </div>
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-4 mb-4">
           <div className="md:w-1/2 w-full">
             <h3 className="text-sm font-bold mb-4">
               Would You Consider Co-hosting?
@@ -280,7 +280,7 @@ const SubmissionForm = () => {
           <h3 className="text-sm font-bold mb-2.5">
             Renovations in Last 3 Years
           </h3>
-          <div className="flex items-center gap-4">
+          <div className="flex md:flex-nowrap flex-wrap items-center gap-4">
             <CheckBox
               name="floor"
               id="floor"
@@ -339,7 +339,7 @@ const SubmissionForm = () => {
             />
           </div>
         </div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-between mb-4">
           <div className="md:w-[40%] w-full">
             <h3 className="text-sm font-bold mb-4">
               Are You Open to Upgrade Suggestions?
@@ -440,7 +440,7 @@ const SubmissionForm = () => {
           label={"Anything else you'd like us to know?"}
         />
         <div className="flex justify-end">
-            <Button variant="defaultBtn">Submit</Button>
+            <Button variant="defaultBtn" className="md:w-[160px] w-full">Submit</Button>
         </div>
       </form>
     </div>

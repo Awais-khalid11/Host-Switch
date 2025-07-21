@@ -36,7 +36,7 @@ const Match = ({ matchdata }) => {
           key={index}
           className="flex items-center md:flex-nowrap flex-wrap border border-[#2525251A] rounded-[20px] p-5 mb-5 w-full"
         >
-          <div className="flex md:flex-nowrap flex-wrap gap-3 pb-3 md:pr-3 md:border-r border-b border-b-[#3636361A] border-r-[#3636361A]  md:w-1/2 ">
+          <div className="flex  lg:flex-nowrap flex-wrap gap-3 pb-3 md:pr-3 md:border-r border-b border-b-[#3636361A] border-r-[#3636361A]  md:w-1/2 ">
             <img
               src={item.image}
               alt="img"
@@ -68,7 +68,7 @@ const Match = ({ matchdata }) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between gap-5 pl-3 md:w-1/2">
+          <div className="flex lg:flex-nowrap flex-wrap  items-center justify-between gap-5 pl-3 md:w-1/2">
             <div>
               <h3 className="text-base font-bold text-[#1B252B] mb-4">
                 Services
@@ -120,8 +120,8 @@ const Match = ({ matchdata }) => {
                   modalText="You’re about to request a proposal from this Property Manager."
                   modalImg={ModalmsgSVG}
                   onClose={() => setShowModal(false)}
-                  width="586px"
-                  height="346px"
+                  width="md:586px"
+                  height="md:46px"
                   useBgImage={true}
                   showModalIcon={true}
                   showTitle={true}

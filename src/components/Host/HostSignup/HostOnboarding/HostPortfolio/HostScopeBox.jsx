@@ -16,13 +16,6 @@ const HostScopeBox = () => {
     <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
       <h4 className="text-sm font-bold mb-4">Reason for Switching</h4>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-8 mb-3.5">
-        {/* <CheckBox
-          name="terms"
-          id="terms"
-          label="Newly acquired property"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-        /> */}
         <CheckBox
           name="clr"
           id="clr"

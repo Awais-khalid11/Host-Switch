@@ -10,6 +10,10 @@ import {
   StarSVG,
 } from "../../../constants/Icons";
 import { UserPNG } from "../../../constants/Imgs";
+import { useNavigate } from "react-router-dom";
+import VerifiedSam from "../PmVerfied/VerifiedSam";
+import PmVerified from "../PmVerfied/PmVerified";
+import PmUnverified from "../PmUnverified/PmUnverified";
 
 const matchData = [
   {
@@ -57,7 +61,9 @@ const matchData = [
 ];
 
 const PMCompaniesCards = () => {
+  const navigate = useNavigate();
   const [filterStatus, setFilterStatus] = useState("");
+  const [verify, setVerify] = useState();
 
   const filteredData = filterStatus
     ? matchData.filter((item) => item.status === filterStatus)
@@ -68,7 +74,9 @@ const PMCompaniesCards = () => {
     Unverified: "text-[#CE1B1B] border-[#CE1B1B] bg-[#CE1B1B1A]",
   };
 
-  return (
+  return verify ? (
+    verify
+  ) : (
     <div>
       <div className=" flex items-center justify-between mb-5">
         <h2 className="md:text-xl text-lg text-[#181D27] font-bold ">
@@ -108,7 +116,7 @@ const PMCompaniesCards = () => {
         {filteredData.map((user, index) => (
           <div
             key={index}
-            className="border border-gray-300 rounded-xl max-w-[32%] w-full p-4"
+            className="border border-gray-300 rounded-xl md:max-w-[32%] w-full p-4"
           >
             <div className="flex gap-1 justify-between border-b border-b-[#25252526] pb-3 mb-2">
               <div className="flex gap-1.5">
@@ -136,7 +144,6 @@ const PMCompaniesCards = () => {
                   statusColor[user.status]
                 }`}
               >
-                
                 <h2>{user.status}</h2>
               </div>
             </div>
@@ -156,7 +163,17 @@ const PMCompaniesCards = () => {
               </div>
             </div>
 
-            <Button variant="borderbtn" prefixImg={BlueeyeSVG}>
+            <Button
+              variant="borderbtn"
+              prefixImg={BlueeyeSVG}
+              onClick={() => {
+                if (user.status === "Verified") {
+                  setVerify(<PmVerified setClose={setVerify} />);
+                } else if (user.status === "Unverified") {
+                  setVerify(<PmUnverified setClose={setVerify} />);
+                } 
+              }}
+            >
               View Profile
             </Button>
           </div>

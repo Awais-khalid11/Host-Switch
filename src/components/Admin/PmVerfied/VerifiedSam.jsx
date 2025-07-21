@@ -1,0 +1,62 @@
+import React from "react";
+import { UserPNG } from "../../../constants/Imgs";
+import { AccepthostSVG, CalenderSVG, CallSVG, LocationSVG, Send2SVG, SmsSVG, StatusSVG } from "../../../constants/Icons";
+import SemiCircleProgress from "../../Host/MatchScore";
+
+const VerifiedSam = () => {
+  return (
+    <div className="border border-[#E4E5E8] p-5 rounded-[12px] mb-5 flex items-center justify-between">
+     <div className="md:w-[60%] w-full">
+       <div className="flex items-center gap-2 mb-5">
+        <img
+          src={UserPNG}
+          alt="img"
+          className="rounded-full h-[58px] w-[58px]"
+        />
+        <div>
+          <h4 className="text-xl font-bold">Sam S.</h4>
+          <h5 className="font-normal text-sm text-[#727272]">Property Owner</h5>
+        </div>
+      </div>
+      <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between">
+        <div>
+          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+            <img src={SmsSVG} alt="img" />
+            sarah.t@email.com
+          </h3>
+          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+            <img src={CallSVG} alt="img" />
+            11 033 456 889
+          </h3>
+          <h3 className="flex items-center gap-1 text-sm font-normal">
+            <img src={LocationSVG} alt="img" />
+            123 Palm Ave, Miami
+          </h3>
+        </div>
+        <div>
+          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+            <img src={Send2SVG} alt="img" />
+            <span className="font-semibold">Proposal sent:</span>   -
+          </h3>
+          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+            <img src={AccepthostSVG} alt="img" />
+            <span className="font-semibold">Accepted by Hosts: </span>   -
+          </h3>
+          <h3 className="flex items-center gap-1 text-sm font-bold mb-2.5">
+            <img src={StatusSVG} alt="img" />
+            Status:
+            <span className="bg-[#ECFDF3] font-normal text-[#067647] border border-[#067647] rounded-2xl px-2 py-0.5">
+              Verified 
+            </span>
+          </h3>
+        </div>
+      </div>
+     </div>
+     <div className="md:w-[34%] w-full flex justify-center">
+      <SemiCircleProgress/>
+     </div>
+    </div>
+  );
+};
+
+export default VerifiedSam;

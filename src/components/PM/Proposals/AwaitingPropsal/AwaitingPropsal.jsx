@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import AwaitingSam from "./AwaitingSam";
 import { useNavigate } from "react-router-dom";
-import { BackarrowSVG, DocumentSVG, MsgSVG } from "../../../../Constants/Icons";
+import { BackarrowSVG, CrossSVG, DocumentSVG, MsgSVG } from "../../../../Constants/Icons";
 import Button from "../../../Button/Button";
 import { ROUTES } from "../../../../constants/Routes";
 import PropertyDetails from "../../../Views/PropertyDetails/PropertyDetails";
@@ -24,7 +24,7 @@ const AwaitingPropsal = ({setClose}) => {
             className="cursor-pointer"
             onClick={() => setClose(false)}
           />
-         Accepted Proposal
+         Awaiting Proposal
         </h2>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
           <Button
@@ -33,15 +33,15 @@ const AwaitingPropsal = ({setClose}) => {
             prefixImg={DocumentSVG}
             onClick={() => setSend(<SendProposal setClose={setSend}/>)}
           >
-            Send Proposal
+           Message Host
           </Button>
           <Button
-            variant="greenbtn"
-            className="w-[157px] px-5"
-            prefixImg={MsgSVG}
+            variant="borderBtn"
+            className="!w-[162px] !text-sm font-normal h-[48px] px-5 border border-[#555555]"
+            prefixImg={CrossSVG}
             onClick={() => navigate(ROUTES.MESSAGES)}
           >
-            Message Host
+           Withdraw Proposal
           </Button>
         </div>
       </div>

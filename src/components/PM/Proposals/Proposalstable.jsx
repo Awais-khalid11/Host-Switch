@@ -126,32 +126,31 @@ const Proposalstable = () => {
       accessor: "first_name",
       header: "Provider’s Name",
       showSort: true,
-     cell: ({ row }) => {
-  const {
-    first_name = "Unknown",
-    email = "No Email",
-    UserImg = UserPNG,
-  } = row;
+      cell: ({ row }) => {
+        const {
+          first_name = "Unknown",
+          email = "No Email",
+          UserImg = UserPNG,
+        } = row;
 
-  return (
-    <div className="flex items-center gap-3">
-      <img
-        src={UserImg}
-        alt={first_name}
-        className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
-      />
-      <div className="flex flex-col">
-        <span className="font-medium text-sm text-[#252525] leading-tight">
-          {first_name}
-        </span>
-        <span className="text-xs text-gray-500 leading-tight">
-          {email}
-        </span>
-      </div>
-    </div>
-  );
-},
-
+        return (
+          <div className="flex items-center gap-3">
+            <img
+              src={UserImg}
+              alt={first_name}
+              className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
+            />
+            <div className="flex flex-col">
+              <span className="font-medium text-sm text-[#252525] leading-tight">
+                {first_name}
+              </span>
+              <span className="text-xs text-gray-500 leading-tight">
+                {email}
+              </span>
+            </div>
+          </div>
+        );
+      },
     },
 
     { header: "Property Address", accessor: "property", showSort: true },
@@ -179,68 +178,77 @@ const Proposalstable = () => {
       },
     },
     { header: "Date Sent", accessor: "date", showSort: true },
-    { header: "Projection", accessor: "projection", showSort: true },
+    {
+      header: "Projection",
+      accessor: "projection",
+      showSort: true,
+      cell: ({ getValue }) => (
+        <span className="text-[#535862] font-bold">{getValue()}</span>
+      ),
+    },
   ];
 
-  // const rowActions = (rowData) => (
-  //   const isAwaiting = rowData.status === Awaiting
-    
-  //    const actions=[
-  //       {
-  //         label: "View",
-  //         icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-  //         onClick: () => setAcceptPage(<AcceptedProposal setClose={setAcceptPage}/>),
-  //       },
-  //       {
-  //         label: "Message",
-  //         icon: <img src={MsgsSVG} alt="view" className="w-4 h-4" />,
-  //         onClick: () => console.log("Message", rowData),
-  //       },
-  //       {
-  //         label: "Download Contract",
-  //         icon: <img src={DownloadSVG} alt="view" className="w-4 h-4" />,
-  //         onClick: () => console.log("Download", rowData),
-  //       },
-  //     ]
-  
-  // );
-  
-    const rowActions = (rowData) => {
-    const isAwaiting = rowData.status === "Awaiting";
+ const rowActions = (rowData) => {
+  const status = rowData.status;
 
-    const actions = [
-      {
-        label: "View",
-        icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-        onClick: () =>
-          setAcceptPage(
-            isAwaiting? (
-              <AwaitingPropsal setClose={setAcceptPage} />
-            ) : (
-              <AcceptedProposal setClose={setAcceptPage} />
-            )
-          ),
-      },
-      {
-          label: "Message",
-          icon: <img src={MsgsSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => console.log("Message", rowData),
-        },
-        {
-          label: "Download Contract",
-          icon: <img src={DownloadSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => console.log("Download", rowData),
-        },
-    ];
-
-  
-
-    return <ActionMenu actions={actions} />;
+  const commonViewAction = {
+    label: "View",
+    icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+    onClick: () =>
+      setAcceptPage(
+        status === "Awaiting" ? (
+          <AwaitingPropsal setClose={setAcceptPage} />
+        ) : (
+          <AcceptedProposal setClose={setAcceptPage} />
+        )
+      ),
   };
 
+  const actions =
+    status === "Awaiting"
+      ? [
+          commonViewAction,
+          {
+            label: "Message",
+            icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
+            onClick: () => console.log("Message", rowData),
+          },
+          {
+            label: "Withdraw",
+            icon: <img src={SmsSVG} alt="withdraw" className="w-4 h-4" />,
+            onClick: () => console.log("Withdraw", rowData),
+          },
+        ]
+      : status === "Accepted"
+      ? [
+          commonViewAction,
+          {
+            label: "Message",
+            icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
+            onClick: () => console.log("Message", rowData),
+          },
+          {
+            label: "Download Contract",
+            icon: <img src={DownloadSVG} alt="download" className="w-4 h-4" />,
+            onClick: () => console.log("Download", rowData),
+          },
+        ]
+      : [
+          // Rejected
+          commonViewAction,
+          {
+            label: "Send Feedback",
+            icon: <img src={SmsSVG} alt="feedback" className="w-4 h-4" />,
+            onClick: () => console.log("Send Feedback", rowData),
+          },
+        ];
 
-  return acceptPage ? (acceptPage) : (
+  return <ActionMenu actions={actions} />;
+};
 
+  return acceptPage ? (
+    acceptPage
+  ) : (
     <div className="rounded-[12px]">
       <div className="rounded-xl bg-white overflow-hidden">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
@@ -285,8 +293,7 @@ const Proposalstable = () => {
         />
       </div>
     </div>
-
-  )
+  );
 };
 
 export default Proposalstable;

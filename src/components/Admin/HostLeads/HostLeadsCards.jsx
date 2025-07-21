@@ -13,6 +13,8 @@ import {
 } from "../../../constants/Icons";
 import { UserPNG } from "../../../constants/Imgs";
 import AdminViews from "../AdminViews/AdminViews";
+import AcceptedViews from "../AcceptedViews/AcceptedViews";
+import AwaitingViews from "../AwaitingViews/AwaitingViews";
 
 const matchData = [
   {
@@ -103,8 +105,10 @@ const HostLeadsCards = () => {
     Awaiting: "text-yellow-600 border-yellow-300 bg-yellow-100",
   };
 
-  return detailPage ? (detailPage) : (
-      <div>
+  return detailPage ? (
+    detailPage
+  ) : (
+    <div>
       <div className=" flex items-center justify-between mb-5">
         <h2 className="md:text-xl text-lg text-[#181D27] font-bold ">
           Recent Activity Logs
@@ -188,7 +192,7 @@ const HostLeadsCards = () => {
               </div>
               <div className="flex justify-between items-center mb-2">
                 <strong className="flex items-center gap-1.5">
-                  <img src={BuildingSVG} alt="" className="w-4 h-4"/>
+                  <img src={BuildingSVG} alt="" className="w-4 h-4" />
                   Properties:
                 </strong>
                 {user.properties}
@@ -202,14 +206,26 @@ const HostLeadsCards = () => {
               </div>
             </div>
 
-            <Button variant="borderbtn" prefixImg={BlueeyeSVG} onClick={()=>setDetailPage(<AdminViews setClose={setDetailPage}/>)}>
+            <Button
+              variant="borderbtn"
+              prefixImg={BlueeyeSVG}
+              onClick={() => {
+                if (user.status === "Rejected") {
+                  setDetailPage(<AdminViews setClose={setDetailPage} />);
+                } else if (user.status === "Accepted") {
+                  setDetailPage(<AcceptedViews setClose={setDetailPage} />);
+                } else if (user.status === "Awaiting") {
+                  setDetailPage(<AwaitingViews setClose={setDetailPage} />);
+                }
+              }}
+            >
               View Profile
             </Button>
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 };
 
 export default HostLeadsCards;

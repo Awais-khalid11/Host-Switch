@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   BackarrowSVG,
   CrossSVG,
@@ -17,12 +17,15 @@ import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendProposal from "../SendProposal/SendProposal";
 
-const Views = ({setClose}) => {
+const Views = ({ setClose }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [sendPage, setSendPage] = useState();
+  const [isOpen, setIsOpen] = useState(false);
 
-  return sendPage ? (sendPage) : (
+  return sendPage ? (
+    sendPage
+  ) : (
     <div className="pb-2.5 pt-5">
       <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
         <h2 className="font-bold text-2xl flex items-center gap-2 md:mb-0 mb-2.5">
@@ -34,7 +37,7 @@ const Views = ({setClose}) => {
           />
           Incoming Leads
         </h2>
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
+        <div className="flex flex-col sm:flex-row items-center gap-2.5">
           <Button
             variant="borderbtn"
             className="border-[#555555] text-[#555555] max-w-[157px]"
@@ -48,22 +51,23 @@ const Views = ({setClose}) => {
           </Button>
           {showModal && (
             <Modal
-              onClose={() => setShowDeclineModal(false)}
+              setIsOpen={setShowModal} // Close control passed here
               width="582px"
               height="263px"
               useBgImage={false}
-              bgColor="#4D72FF" // or any custom solid color
+              bgColor="#4D72FF"
               showModalIcon={false}
               updateClass="px-8"
             >
-              <HostDeclineModal /> {/* Optional: Add buttons or message */}
+              <HostDeclineModal setClose={() => setShowModal(false)} />
             </Modal>
           )}
+
           <Button
             variant="borderbtn"
             className="border-[#4D72FF] text-[#4D72FF] max-w-[157px]"
             prefixImg={DocumentSVG}
-            onClick={() => setSendPage(<SendProposal setClose={setSendPage}/>)}
+            onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
           >
             Send Proposal
           </Button>
@@ -83,7 +87,7 @@ const Views = ({setClose}) => {
       <CurrentPM />
       <Documents />
     </div>
-  )
+  );
 };
 
 export default Views;

@@ -2,11 +2,11 @@ import React from "react";
 
 const DashboardCards = ({data}) => {
   return (
-   <div className="flex flex-wrap lg:flex-nowrap justify-between md:gap-5 gap-1">
+   <div className="flex flex-wrap lg:flex-nowrap justify-between md:gap-5 gap-1 w-full">
       {data.map((item, index) => (
         <div
           key={index}
-          className="bg-[#F2F7F9] min-h-[100px] md:mb-0 mb-2.5 md:w-[48%] w-full rounded-[12px] p-5 pl-2.5"
+          className="bg-[#F2F7F9] min-h-[100px] md:mb-0 mb-2.5  w-full rounded-[12px] p-5 pl-2.5"
         >
           <div className="flex items-center gap-2.5">
             <img src={item.img} alt="" className="h-[56px] w-[56px]" />

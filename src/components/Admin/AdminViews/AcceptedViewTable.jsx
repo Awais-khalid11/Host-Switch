@@ -1,28 +1,6 @@
-// import React from 'react'
-
-// const AcceptedViewTable = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default AcceptedViewTable
-
-
 import React, { useState } from "react";
-import ActionMenu from "../../DropDown/Dropdown";
-import FilterDropdown from "../../FilterDropdown/FilterDropdown";
-import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
-
 import Table from "../../Table/Table";
-import {
-  AllSVG,
-  ClockSVG,
-  FilterSVG,
-} from "../../../Constants/Icons";
 
 
 const AcceptedViewTable = () => {
@@ -63,7 +41,6 @@ const AcceptedViewTable = () => {
             <Table
               columns={columns}
               data={filteredData}
-             
               search={search}
               rowStyle="full-border"
             />

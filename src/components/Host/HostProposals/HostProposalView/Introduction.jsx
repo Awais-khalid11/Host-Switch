@@ -39,9 +39,9 @@ const nameData = [
 const Introduction = ({ mainClass, text }) => {
   return (
     <div className="shadow-[4px_0px_10px_0px_#0000000F] p-5 rounded-[20px]">
-      <div className="flex items-center gap-[30px]">
-        <div className="w-[50%]">
-          <div className="flex items-end justify-between border-b border-b-[#D8D8D8] pb-5 mb-2">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-[30px]">
+        <div className="md:w-[50%] w-full">
+          <div className="flex  items-end justify-between border-b border-b-[#D8D8D8] pb-5 mb-2">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <img src={DellSVG} alt="" className="w-[86px] h-[86px]" />
@@ -106,7 +106,7 @@ const Introduction = ({ mainClass, text }) => {
             </h4>
           </div>
         </div>
-        <div className="w-[50%]">
+        <div className="md:w-[50%] w-full">
           <div className="mb-5">
             <h3 className="text-xl font-bold mb-5">Introduction Video</h3>
             <img

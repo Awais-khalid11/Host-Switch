@@ -15,6 +15,7 @@ const ConciergeSupport = () => {
         <h2 className="md:text-2xl text-base font-bold text-[#1f2123]">Help & Support</h2>
         <Button
           variant="defaultBtn"
+          className="!h-[48px]"
           prefixImg={ChatSVG}
           onClick={() => setLiveChat(true)} // toggle liveChat state
         >

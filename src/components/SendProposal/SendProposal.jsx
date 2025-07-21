@@ -39,7 +39,7 @@ const SendProposal = ({setClose}) => {
             modalText="Your proposal has been sent. You’ll be notified when the host views or responds. Track it in your Proposals tab."
             modalImg={Thumbsup}
             onClose={() => setShowModal(false)}
-            width="500px"
+            width="md:500px w-full"
             height="263px"
             useBgImage={true}
             showModalIcon={true}

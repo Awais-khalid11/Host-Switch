@@ -46,7 +46,7 @@ const HostFeedback = () => {
       </div>
       <div className="border border-[#2525251A] rounded-[20px] min-h-[246px] flex justify-center items-center mb-5">
         <div className="max-w-[706px] text-center">
-          <h2 className="text-[30px] font-bold">
+          <h2 className="md:text-[30px] text-xl mb-2.5 font-bold">
             Congratulations! 🎉You've Hired a New Property Manager.
           </h2>
           <div className="text-sm font-normal">
@@ -59,7 +59,7 @@ const HostFeedback = () => {
       </div>
       <div className="border border-[#2525251A] p-5 rounded-[20px] mb-8">
         <form>
-          <div className="flex items-center gap-[35px]">
+          <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px]">
             <SelectField
               label="Business Entity Type"
               name="entityType"
@@ -77,7 +77,7 @@ const HostFeedback = () => {
               placeholder="They seemed really responsive and had great local market knowledge."
             />
           </div>
-          <div className="flex items-center gap-[35px]">
+          <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px]">
             <InputField
               label="How would you rate their communication during the process?"
               id="text"

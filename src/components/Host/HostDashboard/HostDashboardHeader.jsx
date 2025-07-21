@@ -17,19 +17,21 @@ const hostcards = [
 const HostDashboardHeader = ({ onAddClick }) => {
   return (
     <div>
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">Overview</h2>
-        <Button
-          variant="defaultBtn"
-          prefixImg={WhitecircleSVG}
-          className="w-[206px]"
-          onClick={onAddClick}
-        >
-          Add New Submissions
-        </Button>
-      </div>
-      <div className="mb-5">
-        <DashboardCards data={hostcards} />
+      <div className="lg:fixed w-full bg-white -mt-5 lg:pr-[300px] pt-5">
+        <div className="flex justify-between md:flex-row flex-col md:items-center mb-5">
+          <h2 className="text-2xl font-bold md:mb-0 mb-2.5">Overview</h2>
+          <Button
+            variant="defaultBtn"
+            prefixImg={WhitecircleSVG}
+            className="w-[206px]"
+            onClick={onAddClick}
+          >
+            Add New Submissions
+          </Button>
+        </div>
+        <div className="mb-5">
+          <DashboardCards data={hostcards} />
+        </div>
       </div>
     </div>
   );

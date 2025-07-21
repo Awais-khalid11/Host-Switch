@@ -148,40 +148,6 @@ const AdminInvoiceTable = () => {
     { header: "Date Sent", accessor: "date", showSort: true },
   ];
 
-  //   const rowActions = (rowData) => {
-  //     const isPaid = rowData.status === "Paid";
-
-  //     const actions = [
-  //       {
-  //         label: "View",
-  //         icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-  //         onClick: () =>
-  //           setActivePage(
-  //             isPaid ? (
-  //               <PaidInvoice setClose={setActivePage} />
-  //             ) : (
-  //               <InvoiceView setClose={setActivePage} />
-  //             )
-  //           ),
-  //       },
-  //       {
-  //         label: "Remind",
-  //         icon: <img src={ImportSVG} alt="Remind" className="w-4 h-4" />,
-  //         onClick: () => console.log("Remind", rowData),
-  //       },
-  //     ];
-
-  //     if (isPaid) {
-  //       actions.push({
-  //         label: "Pay",
-  //         icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
-  //         onClick: () => setActivePage(<Pay setClose={setActivePage}/>),
-  //       });
-  //     }
-
-  //     return <ActionMenu actions={actions} />;
-  //   };
-
   const rowActions = (rowData) => {
     const isPaid = rowData.status === "Paid";
     const isUnpaid = rowData.status === "Unpaid";

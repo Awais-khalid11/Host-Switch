@@ -98,6 +98,15 @@ import WhitedotsSVG from "@/assets/Icons/whitedots.svg";
 import WhitecallSVG from "@/assets/Icons/whitecall.svg";
 import BlueplusSVG from "@/assets/Icons/blueplus.svg";
 import ReddelSVG from "@/assets/Icons/reddel.svg";
+import TrashSVG from "@/assets/Icons/trash.svg";
+import Send2SVG from "@/assets/Icons/send2.svg";
+import AccepthostSVG from "@/assets/Icons/accepthost.svg";
+import OwnerSVG from "@/assets/Icons/owner.svg";
+import ClaimsSVG from "@/assets/Icons/claims.svg";
+import TaxSVG from "@/assets/Icons/tax.svg";
+import ToolboxSVG from "@/assets/Icons/toolbox.svg";
+import SlashSVG from "@/assets/Icons/slash.svg";
+import VerifySVG from "@/assets/Icons/verify.svg";
 
 export {
   DashboardSVG,
@@ -199,5 +208,14 @@ export {
   WhitecallSVG,
   WhitedotsSVG,
   BlueplusSVG,
-  ReddelSVG
+  ReddelSVG,
+  TrashSVG,
+  Send2SVG,
+  AccepthostSVG,
+  SlashSVG,
+  ToolboxSVG,
+  TaxSVG,
+  ClaimsSVG,
+  OwnerSVG,
+  VerifySVG
 };

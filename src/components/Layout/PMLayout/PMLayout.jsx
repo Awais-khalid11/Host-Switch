@@ -13,6 +13,7 @@ const PMLayout = () => {
       <DashboardHeader
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
+        property={"Property Manager"}
       />
       <div className="flex relative bg-white h-screen">
         <SideBar
@@ -21,7 +22,7 @@ const PMLayout = () => {
           setShowSidebar={setShowSidebar}
         />
 
-        <div className="flex flex-col flex-1  lg:ml-65 ml-0 bg-white h-[100vh]">
+        <div className="flex flex-col flex-1 lg:ml-65 ml-0 bg-white h-[100vh]">
           {/* <div className="relative">
             <button
               onClick={() => setShowSidebar((prev) => !prev)}

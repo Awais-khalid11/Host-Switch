@@ -14,7 +14,7 @@ const Messages = () => {
 
   return (
     <div>
-      <h2 className="text-[32px] font-bold mb-5">Messages</h2>
+      <h2 className="text-2xl font-bold mb-3">Messages</h2>
       <div className="relative grid grid-cols-1 md:grid-cols-[359px_1fr] gap-1">
         {!isMobile || !showBoxOnly ? (
           <TrainerMessages
