@@ -41,8 +41,23 @@ const SettingButtons = () => {
   return (
     <div className="pt-5">
       <h2 className="text-2xl font-bold mb-2">Settings</h2>
-
-     a
+      <div className="flex mb-3 p-1 w-[700px] lg:w-full overflow-auto">
+        {tabs.map((tab) => (
+          <Button
+            key={tab}
+            onClick={() => setSelectedTab(tab)}
+            className={`text-base font-medium !px-2.5 py-3 rounded-[10px] min-w-max transition-all duration-300
+         ${
+           selectedTab === tab
+             ? "bg-[#EDEDED] font-semibold"
+             : "bg-white text-black"
+         }
+       `}
+          >
+            {tab}
+          </Button>
+        ))}
+      </div>
 
       <div>{renderTabContent()}</div>
     </div>
