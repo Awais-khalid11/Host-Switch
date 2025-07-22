@@ -9,6 +9,7 @@ import ScopeBox from "./ScopeBox";
 import RadioField from "../../RadioField/RadioField";
 import SmartHome from "./SmartHome";
 import { ROUTES } from "../../../../constants/Routes";
+import MultiCheckboxDropdown from "./MultiCheckboxDropdown";
 
 const PortfolioForm = ({ onNext }) => {
   const navigate = useNavigate();
@@ -29,37 +30,44 @@ const PortfolioForm = ({ onNext }) => {
   const [tool, setTool] = useState("");
   const [ticket, setTicket] = useState("");
 
-  const Property = [
-    { label: "Select Property type", value: "Select Property type" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Distance = [
-    { label: "Select an option", value: "Select an option" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Handle = [
-    { label: "Select an option", value: "Select an option" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Choose = [
-    { label: "Choose", value: "Choose" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const PMS = [
-    { label: "Select or type...", value: "Select or type..." },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const TOOL = [
-    { label: "Select or type...", value: "Select or type..." },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
+  // const Property = [
+  //   { label: "Select Property type", value: "Select Property type" },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
+  // const Distance = [
+  //   { label: "Select an option", value: "Select an option" },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
+  // const Handle = [
+  //   { label: "Select an option", value: "Select an option" },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
+  // const Choose = [
+  //   { label: "Choose", value: "Choose" },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
+  // const PMS = [
+  //   { label: "Select or type...", value: "Select or type..." },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
+  // const TOOL = [
+  //   { label: "Select or type...", value: "Select or type..." },
+  //   { label: "2 Months", value: "2 Months" },
+  //   { label: "1 Months", value: "1 Months" },
+  // ];
 
+  const [propertyTypes, setPropertyTypes] = useState([]);
+  const [agreementTypes, setAgreementTypes] = useState([]);
+  const [cohostOptions, setCohostOptions] = useState([]);
+  const [cleaningHandledBy, setCleaningHandledBy] = useState([]);
+  const [pmsTools, setPmsTools] = useState([]);
+  const [pricingTools, setPricingTools] = useState([]);
+  const [guest, setGuest] = useState([]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -82,7 +90,7 @@ const PortfolioForm = ({ onNext }) => {
           id="no"
           name="no"
           type="number"
-         fieldName="md:w-1/2 w-full"
+          fieldName="md:w-1/2 w-full"
           placeholder="Enter number"
         />
       </div>
@@ -94,42 +102,47 @@ const PortfolioForm = ({ onNext }) => {
         fieldName="w-full"
         placeholder="Enter url.."
       />
-      <SelectField
+      <MultiCheckboxDropdown
         label="Property Types Managed"
-        name="role"
-        value={property}
-        onChange={(e) => setProperty(e.target.value)}
-        options={Property}
-        selectClass="mb-7 w-full"
+        options={[
+          "Single-Family Home",
+          "Condominium",
+          "Apartment",
+          "Luxury Property / Villa",
+          "Entire Property",
+          "Vacation Rental",
+        ]}
+        selectedValues={propertyTypes}
+        setSelectedValues={setPropertyTypes}
+        customGrid={true}
       />
+
       <TextArea
         type="text"
         placeholder={"Enter message..."}
         label={"Minimum Property Requirements"}
       />
-      <SelectField
+      <MultiCheckboxDropdown
         label="Exclusive or Non-Exclusive Agreements?"
-        name="role"
-        value={willing}
-        onChange={(e) => setWilling(e.target.value)}
-        options={Distance}
-        selectClass="mb-7 w-full"
+        options={["Exclusive", "Non-Exclusive"]}
+        selectedValues={agreementTypes}
+        setSelectedValues={setAgreementTypes}
       />
-      <SelectField
+
+      <MultiCheckboxDropdown
         label="Co-hosting or Full-Service?"
-        name="role"
-        value={choose}
-        onChange={(e) => setChoose(e.target.value)}
-        options={Choose}
-        selectClass="mb-7 w-full"
+        options={["Co-Host for Owners", "Only Full-Services"]}
+        selectedValues={cohostOptions}
+        setSelectedValues={setCohostOptions}
       />
+
       <ScopeBox />
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Do you provide a dedicated account manager to home owners?
         </h3>
         <div className="flex items-center gap-5">
-            <RadioField
+          <RadioField
             id="accountYes"
             name="accountManager"
             value="yes"
@@ -147,15 +160,13 @@ const PortfolioForm = ({ onNext }) => {
           />
         </div>
       </div>
-      <SelectField
+      <MultiCheckboxDropdown
         label="Who handles cleaning?"
-        name="role"
-        value={handle}
-        onChange={(e) => setHandle(e.target.value)}
-        options={Handle}
-        selectClass="mb-7 w-full"
-        className="font-bold"
+        options={["In-house", "3rd Party", "Hybrid"]}
+        selectedValues={cleaningHandledBy}
+        setSelectedValues={setCleaningHandledBy}
       />
+
       <InputField
         label="Avg Turnover Time (hours)"
         id="num"
@@ -324,24 +335,20 @@ const PortfolioForm = ({ onNext }) => {
           />
         </div>
       </div>
-      <SelectField
+      <MultiCheckboxDropdown
         label="PMS / Channel Manager Used"
-        name="role"
-        value={pms}
-        onChange={(e) => setPms(e.target.value)}
-        options={PMS}
-        selectClass="mb-5 w-full"
-        className="font-bold"
+        options={[ "Guesty", "Hostaway", "Lodgify"]}
+        selectedValues={pmsTools}
+        setSelectedValues={setPmsTools}
       />
-      <SelectField
+
+      <MultiCheckboxDropdown
         label="Dynamic Pricing Tool Used"
-        name="tool"
-        value={tool}
-        onChange={(e) => setTool(e.target.value)}
-        options={TOOL}
-        selectClass="mb-7 w-full"
-        className="font-bold"
+        options={["Beyond", "PriceLabs", "Wheelhouse"]}
+        selectedValues={pricingTools}
+        setSelectedValues={setPricingTools}
       />
+
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">Owner Reporting Portal Provided?</h3>
         <div className="flex items-center gap-5">
@@ -364,6 +371,12 @@ const PortfolioForm = ({ onNext }) => {
         </div>
       </div>
       <SmartHome />
+      <MultiCheckboxDropdown
+        label="Guest Communication Platform"
+        options={["Mnual", "Automated", "Hybrid"]}
+        selectedValues={guest}
+        setSelectedValues={setGuest}
+      />
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <h3 className="text-sm font-bold">
           Maintenance Ticketing System Used?

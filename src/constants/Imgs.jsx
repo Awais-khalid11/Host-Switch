@@ -24,6 +24,12 @@ import Gallery1PNG from "@/assets/Images/gallery1.png";
 import Gallery2PNG from "@/assets/Images/gallery2.png";
 import Gallery3PNG from "@/assets/Images/gallery3.png";
 import Gallery4PNG from "@/assets/Images/gallery4.png";
+import CompPNG from "@/assets/Images/comp.png";
+import PortfolioSPNG from "@/assets/Images/portfolioS.png";
+import AnalogSPNG from "@/assets/Images/analog.png";
+import HostcompanyPNG from "@/assets/Images/hostcompany.png";
+import HostpreferPNG from "@/assets/Images/hostprefer.png";
+import PropertyPNG from "@/assets/Images/property.png";
 
 export { 
     OtpPNG, 
@@ -51,5 +57,11 @@ export {
     Gallery1PNG,
     Gallery2PNG,
     Gallery3PNG,
-    Gallery4PNG
+    Gallery4PNG,
+    CompPNG,
+    PortfolioSPNG,
+    AnalogSPNG,
+    HostcompanyPNG,
+    HostpreferPNG,
+    PropertyPNG
 };

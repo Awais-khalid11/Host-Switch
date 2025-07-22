@@ -62,6 +62,7 @@ const NewPasswordForm = () => {
               showModalIcon={true}
               showTitle={true}
               showText={true}
+              updateClass="px-5 pt-15"
             >
               <PasswordModal />
             </Modal>

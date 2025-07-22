@@ -13,7 +13,8 @@ const HostLayout = () => {
       <DashboardHeader
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
-        property={"Property Manager"}
+        name={"Property Manager"}
+        property="Host"
       />
       <div className="flex relative bg-white h-screen">
         <SideBar

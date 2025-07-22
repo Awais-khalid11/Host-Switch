@@ -4,8 +4,8 @@ import { ROUTES } from "../../../../constants/Routes";
 
 const steps = [
   { label: "Company Info", path: ROUTES.HOSTCOMPANYINFO },
-  { label: "Portfolio", path: ROUTES.HOSTEXPECTATIONS },
-  { label: "Expectations", path: ROUTES.HOSTPORTFOLIO },
+  { label: "Portfolio", path: ROUTES.HOSTPORTFOLIO },
+  { label: "Expectations", path: ROUTES.HOSTEXPECTATIONS },
 ];
 
 const HostOnboardingStepper = () => {

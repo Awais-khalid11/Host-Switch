@@ -34,7 +34,7 @@ const LoginForm = () => {
           placeholder="*************"
           asterisk={true}
         />
-        <div className="text-[14px] font-medium text-right my-3 cursor-pointer">
+        <div className="text-[14px] font-medium text-right my-3 mb-5 cursor-pointer">
           <a href="#" onClick={handleClick}>
             <i>Forget Password?</i>
           </a>

@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import {
   BackarrowSVG,
+  BluemsgSVG,
   CrossSVG,
   DocumentSVG,
   MsgSVG,
+  QuestionSVG,
+  RedcrossSVG,
+  Thumbsup,
+  ViewsndSVG,
 } from "../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
@@ -38,46 +43,53 @@ const Views = ({ setClose }) => {
           Incoming Leads
         </h2>
         <div className="flex flex-col sm:flex-row items-center gap-2.5">
-          <Button
-            variant="borderbtn"
-            className="border-[#555555] text-[#555555] max-w-[157px]"
-            prefixImg={CrossSVG}
-            onClick={(e) => {
-              e.preventDefault();
-              setShowModal(true);
-            }}
-          >
-            Decline Lead
-          </Button>
           {showModal && (
             <Modal
-              setIsOpen={setShowModal} // Close control passed here
-              width="582px"
-              height="263px"
-              useBgImage={false}
+              modalTitle="Please tell us why are you declining this Host property?"
+              modalText="Your feedback helps us improve future matches."
+              onClose={() => setShowDeclineModal(false)}
+              width="750px"
+              height="480px"
               bgColor="#4D72FF"
-              showModalIcon={false}
-              updateClass="px-8"
+              updateClass="!flex-none !justify-start !items-start px-8 pt-18"
+              bgClass="!flex-none !justify-start !items-start"
+              textClass="w-full !mx-0 text-start"
+              useBgImage={true}
+              showModalIcon={true}
+              showTitle={true}
+              showText={true}
+              modalImg={QuestionSVG}
             >
               <HostDeclineModal setClose={() => setShowModal(false)} />
             </Modal>
           )}
 
           <Button
-            variant="borderbtn"
-            className="border-[#4D72FF] text-[#4D72FF] max-w-[157px]"
-            prefixImg={DocumentSVG}
+            variant="greenbtn"
+            className=" max-w-[157px]"
+            prefixImg={ViewsndSVG}
             onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
           >
             Send Proposal
           </Button>
           <Button
-            variant="greenbtn"
-            className="w-[157px] px-5"
-            prefixImg={MsgSVG}
+            variant="borderBtn"
+            className="!w-[157px] h-[48px] text-[#4D72FF] text-[12px] font-normal border border-[#4D72FF] px-5"
+            prefixImg={BluemsgSVG}
             onClick={() => navigate(ROUTES.MESSAGES)}
           >
             Message Host
+          </Button>
+          <Button
+            variant="borderbtn"
+            className="border-[#CE1B1B] text-[#CE1B1B] max-w-[157px]"
+            prefixImg={RedcrossSVG}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowModal(true);
+            }}
+          >
+            Decline Lead
           </Button>
         </div>
       </div>

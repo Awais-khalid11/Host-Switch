@@ -107,6 +107,18 @@ import TaxSVG from "@/assets/Icons/tax.svg";
 import ToolboxSVG from "@/assets/Icons/toolbox.svg";
 import SlashSVG from "@/assets/Icons/slash.svg";
 import VerifySVG from "@/assets/Icons/verify.svg";
+import MarkSVG from "@/assets/Icons/mark.svg";
+import ViewsndSVG from "@/assets/Icons/viewsnd.svg";
+import BluemsgSVG from "@/assets/Icons/bluemsg.svg";
+import TwoSVG from "@/assets/Icons/two.svg";
+import FindSVG from "@/assets/Icons/find.svg";
+import KeyboardSVG from "@/assets/Icons/keyboard.svg";
+import NotimsgSVG from "@/assets/Icons/notimsg.svg";
+import NoticrossSVG from "@/assets/Icons/noticross.svg";
+import GreenmsgSVG from "@/assets/Icons/greenmsg.svg";
+import SkymsgSVG from "@/assets/Icons/skymsg.svg";
+import TextmsgSVG from "@/assets/Icons/textmsg.svg";
+import MoneySVG from "@/assets/Icons/money.svg";
 
 export {
   DashboardSVG,
@@ -217,5 +229,17 @@ export {
   TaxSVG,
   ClaimsSVG,
   OwnerSVG,
-  VerifySVG
+  VerifySVG,
+  MarkSVG,
+  BluemsgSVG,
+  ViewsndSVG,
+  TwoSVG,
+  FindSVG,
+  KeyboardSVG,
+  NoticrossSVG,
+  NotimsgSVG,
+  GreenmsgSVG,
+  SkymsgSVG,
+  TextmsgSVG,
+  MoneySVG
 };

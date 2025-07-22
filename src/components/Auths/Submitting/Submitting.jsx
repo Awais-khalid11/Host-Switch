@@ -33,7 +33,7 @@ const Submitting = () => {
   }, [index, navigate]);
 
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-between p-5 md:gap-[30px] gap-5">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-10 md:gap-[30px] gap-5">
       <div className="md:w-[50%] w-full transition-opacity duration-500">
         <img
           src={images[index]}

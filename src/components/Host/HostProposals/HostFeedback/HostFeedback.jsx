@@ -10,11 +10,18 @@ import InputField from "../../../InputField/InputField";
 import SelectField from "../../../SelectField/SelectField";
 import Modal from "../../../Modal/Modal";
 import FeedbackModal from "../../../Modal/FeedbackModal";
+import MultiCheckboxDropdown from "../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
+import RadioField from "../../../Auths/RadioField/RadioField";
+import { FaStar } from "react-icons/fa";
+import { CiStar } from "react-icons/ci";
+
 
 const HostFeedback = () => {
   const navigate = useNavigate();
   const [entity, setEntity] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [rentTypes, setRentTypes] = useState([]);
+  const [isLocal, setIsLocal] = useState("");
 
   const Entity = [
     { label: "Select what you prefer ", value: "Select what you prefer" },
@@ -34,15 +41,6 @@ const HostFeedback = () => {
           />
           Feedback
         </h2>
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
-          <Button
-            variant="greenbtn"
-            className="w-[157px] px-5"
-            prefixImg={GreentickSVG}
-          >
-            Hired
-          </Button>
-        </div>
       </div>
       <div className="border border-[#2525251A] rounded-[20px] min-h-[246px] flex justify-center items-center mb-5">
         <div className="max-w-[706px] text-center">
@@ -57,16 +55,22 @@ const HostFeedback = () => {
           </div>
         </div>
       </div>
-      <div className="border border-[#2525251A] p-5 rounded-[20px] mb-8">
+      <div className="border border-[#2525251A] p-5 pb-10 rounded-[20px] mb-8">
         <form>
           <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px]">
-            <SelectField
-              label="Business Entity Type"
-              name="entityType"
-              value={entity}
-              onChange={(e) => setEntity(e.target.value)}
-              options={Entity}
-              selectClass="mb-7 md:w-1/2 w-full"
+            <MultiCheckboxDropdown
+              label="What was the biggest reason you chose this PM company"
+              options={[
+                "Commission rate was fair",
+                "Best services offered for my property",
+                "Fast and clear communication",
+                "Strong experience and reviews",
+                "Local knowledge and market expertise",
+                " Other",
+              ]}
+              selectedValues={rentTypes}
+              setSelectedValues={setRentTypes}
+              className="md:w-1/2 -mt-8"
             />
             <InputField
               label="What stood out most about this company?"
@@ -77,15 +81,30 @@ const HostFeedback = () => {
               placeholder="They seemed really responsive and had great local market knowledge."
             />
           </div>
-          <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px]">
-            <InputField
-              label="How would you rate their communication during the process?"
-              id="text"
-              name="text"
-              type="text"
-              fieldName="md:w-1/2 w-full"
-              placeholder="They seemed really responsive and had great local market knowledge."
-            />
+          <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px] ">
+            <div className="mb-5 w-1/2">
+              <h3 className="text-sm font-bold mb-2.5">
+                Are you locally based in the market(s) you serve?
+              </h3>
+             <div className="flex items-center gap-5 w-full h-[48px] mb-3.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none">
+               <RadioField
+                id="localYes"
+                name="isLocal"
+                value="yes"
+                label="Yes"
+                checked={isLocal === "yes"}
+                onChange={(e) => setIsLocal(e.target.value)}
+              />
+              <RadioField
+                id="localNo"
+                name="isLocal"
+                value="no"
+                label="No"
+                checked={isLocal === "no"}
+                onChange={(e) => setIsLocal(e.target.value)}
+              />
+             </div>
+            </div>
             <InputField
               label="Any additional notes about your decision?"
               id="text"
@@ -94,6 +113,17 @@ const HostFeedback = () => {
               fieldName="md:w-1/2 w-full"
               placeholder="Any thoughts you'd like to share with us privately?"
             />
+          </div>
+          <div className="w-full h-[48px] mb-3.5">
+            <h3 className="text-sm font-bold mb-2.5">How satisfied were you with the proposals you received overall?</h3>
+            <div className="flex items-center gap-2.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 py-2.5 placeholder:text-gray-500 focus:outline-none">
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
+              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]"/>
+              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]"/>
+              <h4 className="text-lg font-normal text-[#DBDBDB]">3/5</h4>
+            </div>
           </div>
         </form>
       </div>
@@ -104,10 +134,14 @@ const HostFeedback = () => {
         >
           Skip
         </Button>
-        <Button variant="defaultBtn" className="!w-[160px] !h-[48px]" onClick={(e) => {
+        <Button
+          variant="defaultBtn"
+          className="!w-[160px] !h-[48px]"
+          onClick={(e) => {
             e.preventDefault();
             setShowModal(true);
-          }}>
+          }}
+        >
           Submit Feedback
         </Button>
         {showModal && (

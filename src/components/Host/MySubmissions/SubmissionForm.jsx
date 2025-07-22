@@ -6,6 +6,7 @@ import RadioField from "../../Auths/RadioField/RadioField";
 import CheckBox from "../../CheckBox/CheckBox";
 import TextArea from "../../TextArea/TextArea";
 import Button from "../../Button/Button";
+import MultiCheckboxDropdown from "../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 
 const SubmissionForm = () => {
   const [willing, setWilling] = useState("");
@@ -13,6 +14,10 @@ const SubmissionForm = () => {
   const [type, setType] = useState("");
 
   //   checkbox fields
+  const [rentTypes, setRentTypes] = useState([]);
+  const [propertyTypes, setPropertyTypes] = useState([]);
+  const [topTypes, setTopTypes] = useState([]);
+
   const [agreed, setAgreed] = useState(false);
   const [revenue, setRevenue] = useState(false);
   const [fees, setFees] = useState(false);
@@ -38,26 +43,6 @@ const SubmissionForm = () => {
   const [isOpen, setIsOpen] = useState("");
   const [isDécor, setIsDécor] = useState("");
 
-  const Distance = [
-    {
-      label: "How Often Is Your Property Rented Out?",
-      value: "How Often Is Your Property Rented Out?",
-    },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-
-  const Property = [
-    { label: "Select Property type", value: "Select Property type" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-
-  const Top = [
-    { label: "Select what you prefer ", value: "Select what you prefer " },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
 
   return (
     <div>
@@ -89,22 +74,28 @@ const SubmissionForm = () => {
           placeholder="Unresponsive support"
         />
         <FileUpload label=" Upload Files" />
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-4">
-          <SelectField
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-4 mb-5">
+          <MultiCheckboxDropdown
             label="How Often Is Your Property Rented Out?"
-            name="distance"
-            value={willing}
-            onChange={(e) => setWilling(e.target.value)}
-            options={Distance}
-            selectClass="mb-7 md:1/2 w-full"
+            options={["Full-time", "seasonal", "Ocassionally"]}
+            selectedValues={rentTypes}
+            setSelectedValues={setRentTypes}
+            className="!md:w-1/2 w-full"
           />
-          <SelectField
+          <MultiCheckboxDropdown
             label="Type of Property"
-            name="distance"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            options={Property}
-            selectClass="mb-7 md:1/2 w-full"
+            options={[
+              "Condo",
+              "Multi-Family/Fuplex",
+              "Luxary Home",
+              "Tiny Home",
+              "Single Family Home",
+              "Beachfront/Waterfront",
+              "Other",
+            ]}
+            selectedValues={propertyTypes}
+            setSelectedValues={setPropertyTypes}
+            className="!md:w-1/2 w-full"
           />
         </div>
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-4">
@@ -203,13 +194,21 @@ const SubmissionForm = () => {
             placeholder="Enter Address"
             asterisk="true"
           />
-          <SelectField
+          <MultiCheckboxDropdown
             label="Top Priorities in New PM"
-            name="Top"
-            value={top}
-            onChange={(e) => setTop(e.target.value)}
-            options={Top}
-            selectClass="mb-7 md:1/2 w-full"
+            options={[
+              "Revenue optimization",
+              "trust & Communication",
+              "Transparency & Reporting",
+              "Cleaning quality",
+              "Maintenance responsivness",
+              "Pricing Strategy",
+              "Guest Experience",
+              "Tech & automation"
+            ]}
+            selectedValues={topTypes}
+            setSelectedValues={setTopTypes}
+            className="!md:w-1/2 w-full !-mt-8"
           />
         </div>
         <div className="flex flex-wrap md:flex-nowrap items-center gap-4 mb-4">
@@ -440,7 +439,9 @@ const SubmissionForm = () => {
           label={"Anything else you'd like us to know?"}
         />
         <div className="flex justify-end">
-            <Button variant="defaultBtn" className="md:w-[160px] w-full">Submit</Button>
+          <Button variant="defaultBtn" className="md:w-[160px] w-full">
+            Submit
+          </Button>
         </div>
       </form>
     </div>

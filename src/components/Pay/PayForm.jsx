@@ -88,6 +88,7 @@ const PayForm = () => {
               onClose={() => setShowModal(false)}
               showTitle={true}
               showText={true}
+              updateClass="pt-18"
             >
               <ConfirmModal />
             </Modal>

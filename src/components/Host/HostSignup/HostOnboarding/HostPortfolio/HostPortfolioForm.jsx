@@ -10,49 +10,20 @@ import RadioField from "../../../../Auths/RadioField/RadioField";
 import Button from "../../../../Button/Button";
 import { MdAddLocation } from "react-icons/md";
 import CheckBox from "../../../../CheckBox/CheckBox";
+import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 
 const HostPortfolioForm = ({ onNext }) => {
   const navigate = useNavigate();
+  const [propertyTypes, setPropertyTypes] = useState([]);
+  const [hostingTypes, setHostingTypes] = useState([]);
+  const [cleanTypes, setCleanTypes] = useState([]);
+  const [rentTypes, setRentTypes] = useState([]);
+
   const [property, setProperty] = useState("");
   const [accountManager, setAccountManager] = useState("");
   const [willing, setWilling] = useState("");
   const [choose, setChoose] = useState("");
-    const [condition, setCondition] = useState(false);
-  
-
-  const Property = [
-    {
-      label: "How Often Is Your Property Rented Out?",
-      value: "How Often Is Your Property Rented Out?",
-    },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Distance = [
-    { label: "Select Property type", value: "Select Property type" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Handle = [
-    { label: "Select an option", value: "Select an option" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Choose = [
-    { label: "Select Property type", value: "Select Property type" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const PMS = [
-    { label: "Select or type...", value: "Select or type..." },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const TOOL = [
-    { label: "Select or type...", value: "Select or type..." },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
+  const [condition, setCondition] = useState(false);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -82,13 +53,11 @@ const HostPortfolioForm = ({ onNext }) => {
         />
       </div>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-        <SelectField
+        <MultiCheckboxDropdown
           label="How Often Is Your Property Rented Out?"
-          name="role"
-          value={property}
-          onChange={(e) => setProperty(e.target.value)}
-          options={Property}
-          selectClass="mb-7  w-full"
+          options={["Full-time", "seasonal", "Ocassionally"]}
+          selectedValues={rentTypes}
+          setSelectedValues={setRentTypes}
         />
         <InputField
           label="Airbnb/Vrbo Link"
@@ -99,22 +68,43 @@ const HostPortfolioForm = ({ onNext }) => {
           placeholder="Airbnb/Vrbo listing link"
         />
       </div>
-      <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-        <SelectField
-          label="Exclusive or Non-Exclusive Agreements?"
-          name="role"
-          value={willing}
-          onChange={(e) => setWilling(e.target.value)}
-          options={Distance}
-          selectClass="mb-7 w-full"
+      <div>
+        <MultiCheckboxDropdown
+          label="Type of Property"
+          options={[
+            "Condo",
+            "Multi-Family/Fuplex",
+            "Luxary Home",
+            "Tiny Home",
+            "Single Family Home",
+            "Beachfront/Waterfront",
+            "Other",
+          ]}
+          selectedValues={propertyTypes}
+          setSelectedValues={setPropertyTypes}
+          className="mb-5"
         />
-        <SelectField
-          label="Co-hosting or Full-Service?"
-          name="role"
-          value={choose}
-          onChange={(e) => setChoose(e.target.value)}
-          options={Choose}
-          selectClass="mb-7 w-full"
+        <MultiCheckboxDropdown
+          label="Do you have a preference in size of your PM (Property Manager)?"
+          options={[
+            "20 properties or less",
+            "100 properties or less",
+            "Size doesn't matter",
+          ]}
+          selectedValues={hostingTypes}
+          setSelectedValues={setHostingTypes}
+          className="mb-5"
+        />
+        <MultiCheckboxDropdown
+          label="Do you have a cleaning preference?"
+          options={[
+            "In-house cleaners",
+            "3rd party cleaners",
+            "Doesn't matter to me",
+          ]}
+          selectedValues={cleanTypes}
+          setSelectedValues={setCleanTypes}
+          className="mb-5"
         />
       </div>
       <HostScopeBox />
@@ -141,7 +131,7 @@ const HostPortfolioForm = ({ onNext }) => {
           />
         </div>
       </div>
-     
+
       <TextArea
         type="text"
         placeholder={"Enter message..."}
@@ -151,9 +141,14 @@ const HostPortfolioForm = ({ onNext }) => {
         <CheckBox
           name="terms"
           id="terms"
-          label="I agree to the Terms & Conditions"
           checked={condition}
           onChange={(e) => setCondition(e.target.checked)}
+          label={
+            <>
+              I agree to the
+              <span className="text-[#0050B3] ml-1">Terms & Conditions</span>
+            </>
+          }
         />
       </div>
       <div className="flex gap-4">

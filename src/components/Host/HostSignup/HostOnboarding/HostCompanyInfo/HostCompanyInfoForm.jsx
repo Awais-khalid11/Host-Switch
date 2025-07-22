@@ -100,9 +100,14 @@ const HostCompanyInfoForm = () => {
         <CheckBox
           name="terms"
           id="terms"
-          label="I agree to the Terms & Conditions"
           checked={agreed}
           onChange={(e) => setAgreed(e.target.checked)}
+          label={
+            <>
+              I agree to the
+              <span className="text-[#0050B3] ml-1">Terms & Conditions</span>
+            </>
+          }
         />
       </div>
 

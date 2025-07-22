@@ -47,6 +47,7 @@ import AdminInvoicesPage from "./pages/AdminPages/AdminInvoicesPage";
 import AdminSettingsPage from "./pages/AdminPages/AdminSettingsPage";
 import AdminConciergeMessagesPage from "./pages/AdminPages/AdminConciergeMessagesPage";
 import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
+import BellNotification from "./components/Notification/BellNotification";
 
 const MainRouter = () => {
   return (
@@ -71,17 +72,21 @@ const MainRouter = () => {
       <Route path="/host" element={<HostLayout />}>
         <Route index element={<Navigate to="/host/hostdashboard" />} />
         <Route path="hostdashboard" element={<HostDashboardPage />} />
-        <Route path="hostproposals" element={< HostProposalsPage />} />
-        <Route path="hostmymatches" element={< HostMyMatchesPages />} />
-        <Route path="hostmysubmissions" element={< HostMySubmissionsPage />} />
-        <Route path="hostmessages" element={< HostMessagesPage />} />
-        <Route path="hostsettings" element={< HostSettingsPage />} />
-        <Route path="hostconciergesupport" element={< HostConciergeSupportPage />} />
-        <Route path="hostlivechat" element={< HostLiveChat />} />
-        <Route path="hostsubmission" element={< HostSubmission />} />
-        <Route path="hostproposalview" element={< HostProposalView />} />
-        <Route path="hostfeedback" element={< HostFeedback />} />
-        <Route path="mymatchproposal" element={< MyMatchProposal />} />
+        <Route path="hostproposals" element={<HostProposalsPage />} />
+        <Route path="hostmymatches" element={<HostMyMatchesPages />} />
+        <Route path="hostmysubmissions" element={<HostMySubmissionsPage />} />
+        <Route path="hostmessages" element={<HostMessagesPage />} />
+        <Route path="hostsettings" element={<HostSettingsPage />} />
+        <Route
+          path="hostconciergesupport"
+          element={<HostConciergeSupportPage />}
+        />
+        <Route path="hostlivechat" element={<HostLiveChat />} />
+        <Route path="hostsubmission" element={<HostSubmission />} />
+        <Route path="hostproposalview" element={<HostProposalView />} />
+        <Route path="hostfeedback" element={<HostFeedback />} />
+        <Route path="mymatchproposal" element={<MyMatchProposal />} />
+        <Route path="/host/bellnotification" element={<BellNotification />} />
       </Route>
 
       {/* Admin Dashboard Pages */}
@@ -92,7 +97,10 @@ const MainRouter = () => {
         <Route path="adminpmcompanies" element={<AdminPMCompaniesPage />} />
         <Route path="admininvoices" element={<AdminInvoicesPage />} />
         <Route path="adminsettings" element={<AdminSettingsPage />} />
-        <Route path="adminconciergemessages" element={<AdminConciergeMessagesPage />} />
+        <Route
+          path="adminconciergemessages"
+          element={<AdminConciergeMessagesPage />}
+        />
         <Route path="adminlivechat" element={<AdminLiveChat />} />
       </Route>
 
@@ -110,7 +118,6 @@ const MainRouter = () => {
       <Route path="/hostcompanyinfo" element={<HostCompanyInfo />} />
       <Route path="/hostexpectation" element={<HostExpectation />} />
       <Route path="/hostportfolio" element={<HostPortfolio />} />
-
     </Routes>
   );
 };

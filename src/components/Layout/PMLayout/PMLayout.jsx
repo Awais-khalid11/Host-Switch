@@ -13,7 +13,7 @@ const PMLayout = () => {
       <DashboardHeader
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
-        property={"Property Manager"}
+        name={"Property Manager"}
       />
       <div className="flex relative bg-white h-screen">
         <SideBar

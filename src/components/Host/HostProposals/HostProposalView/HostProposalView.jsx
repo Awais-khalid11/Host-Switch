@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {
   BackarrowSVG,
+  BluemsgSVG,
   FillmsgSVG,
   GreentickSVG,
   ModalmsgSVG,
@@ -15,6 +16,7 @@ import { ROUTES } from "../../../../constants/Routes";
 import Modal from "../../../Modal/Modal";
 import DeclineModal from "../../../Modal/DeclineModal";
 import HostDeclineModal from "../../../Modal/HostDeclineModal";
+import SendMessageModal from "../../../Modal/SendMessageModal";
 
 const HostProposalView = () => {
   const navigate = useNavigate();
@@ -34,6 +36,43 @@ const HostProposalView = () => {
         </h2>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
           <Button
+            variant="greenbtn"
+            className="w-[157px] px-5"
+            prefixImg={GreentickSVG}
+            onClick={() => navigate(ROUTES.HOSTFEEDBACK)}
+          >
+            Mark As Hired
+          </Button>
+           <Button
+            variant="borderbtn"
+            className="border-[#4D72FF] text-[#4D72FF] text-[12px] max-w-[157px]"
+            prefixImg={BluemsgSVG}
+            //  onClick={(e) => {
+            //   e.preventDefault();
+            //   setShowModal(true);
+            // }}
+          >
+            Send a Message
+          </Button>
+           {/* {showModal && (
+          <Modal
+            modalTitle="Send Proposal Request"
+            modalText="You’re about to request a proposal from this Property Manager."
+            modalImg={ModalmsgSVG}
+            onClose={() => setShowModal(false)}
+            width="586px"
+            height="346px"
+            useBgImage={true}
+            showModalIcon={true}
+            showTitle={true}
+            showText={true}
+            updateClass="pt-10 px-8  items-start"
+            textClass="!mx-0"
+          >
+            <SendMessageModal />
+          </Modal>
+        )} */}
+          <Button
             variant="borderbtn"
             className="border-[#C30000] text-[#C30000] text-[12px] max-w-[157px]"
             prefixImg={RedcrossSVG}
@@ -50,33 +89,18 @@ const HostProposalView = () => {
             modalText="You’re about to request a proposal from this Property Manager."
             modalImg={ModalmsgSVG}
             onClose={() => setShowModal(false)}
-            width="586px"
-            height="346px"
+            width="740px"
+            height="450px"
             useBgImage={true}
             showModalIcon={true}
             showTitle={true}
             showText={true}
             updateClass="pt-10 px-8  items-start"
-            textClass="!mx-0"
+            textClass="!mx-0 text-start"
           >
             <HostDeclineModal />
           </Modal>
         )}
-          <Button
-            variant="borderbtn"
-            className="border-[#555555] text-[#555555] text-[12px] max-w-[157px]"
-            prefixImg={FillmsgSVG}
-          >
-            Send a Message
-          </Button>
-          <Button
-            variant="greenbtn"
-            className="w-[157px] px-5"
-            prefixImg={GreentickSVG}
-            onClick={() => navigate(ROUTES.HOSTFEEDBACK)}
-          >
-            Mark As Hired
-          </Button>
         </div>
       </div>
       <Introduction />

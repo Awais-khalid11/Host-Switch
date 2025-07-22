@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import HostOnboardingStepper from "../HostOnboardingStepper";
 import HostPortfolioForm from "./HostPortfolioForm";
-import { PortfolioPNG } from "../../../../../constants/Imgs";
+import {  PropertyPNG } from "../../../../../constants/Imgs";
 import { LogoSVG } from "../../../../../Constants/Icons";
 
 const HostPortfolio = () => {
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-between p-2.5 gap-[30px]">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-10 gap-[30px]">
       <div className="hidden md:block w-1/2">
         <img
-          src={PortfolioPNG}
+          src={PropertyPNG}
           alt="loginImg"
           className="rounded-2xl w-full min-h-[759px]"
         />

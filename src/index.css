@@ -29,3 +29,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   src: url(../src/assets/Fonts/Segoe\ UI.ttf);
 }
+
+::marker {
+    font-size: 23px;
+}

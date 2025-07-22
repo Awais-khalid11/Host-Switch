@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  BluemsgSVG,
   CrossSVG,
   ModalmsgSVG,
   ProfileSVG,
@@ -12,11 +13,12 @@ import Modal from "../../Modal/Modal";
 import HostDeclineModal from "../../Modal/HostDeclineModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
+import SendMessageModal from "../../Modal/SendMessageModal";
 
-const Match = ({ matchdata }) => {
+const Match = ({ matchdata, borderBtn }) => {
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -106,39 +108,73 @@ const Match = ({ matchdata }) => {
               <div className="mb-6">
                 <SemiCircleProgress />
               </div>
-              <Button
-                variant="greenbtn"
-                className="mb-2.5 !md:px-2"
-                prefixImg={ProfileSVG}
-                onClick={handleClick}
-              >
-                Request a Parposal
-              </Button>
-              {showModal && (
-                <Modal
-                  modalTitle="Send Proposal Request"
-                  modalText="You’re about to request a proposal from this Property Manager."
-                  modalImg={ModalmsgSVG}
-                  onClose={() => setShowModal(false)}
-                  width="md:586px"
-                  height="md:46px"
-                  useBgImage={true}
-                  showModalIcon={true}
-                  showTitle={true}
-                  showText={true}
-                  updateClass="pt-10 px-8  items-start"
-                  textClass="!mx-0"
+              <div className="space-y-2.5">
+                <Button
+                  variant="borderbtn"
+                  className="!border-[#1A932E] text-[#555555] text-[12px]"
+                  prefixImg={ProfileSVG}
                 >
-                  <HostDeclineModal />
-                </Modal>
-              )}
-              <Button
-                variant="borderbtn"
-                className="border-[#555555] text-[#555555] text-[12px]"
-                prefixImg={CrossSVG}
-              >
-                Decline Match
-              </Button>
+                  Request a Proposal
+                </Button>
+                <Button
+                  variant="borderbtn"
+                  prefixImg={BluemsgSVG}
+                  className="text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
+                >
+                  Send Message
+                </Button>
+                {showModal && (
+                  <Modal
+                    modalTitle="Send a Message to Host"
+                    modalText="introduce yourself and invite the host to view your services."
+                    modalImg={ModalmsgSVG}
+                    onClose={() => setShowModal(false)}
+                    useBgImage={true}
+                    height="346px"
+                    showModalIcon={true}
+                    showTitle={true}
+                    showText={true}
+                    updateClass="px-5 pt-18 items-start"
+                    textClass="!mx-0 text-start"
+                  >
+                    <SendMessageModal />
+                  </Modal>
+                )}
+                <Button
+                  className="!md:px-2 text-[12px] font-semibold text-[#555555] "
+                  prefixImg={CrossSVG}
+                  onClick={handleClick}
+                >
+                  Decline Match
+                </Button>
+                {showModal && (
+                  <Modal
+                    modalTitle="Send Proposal Request"
+                    modalText="You’re about to request a proposal from this Property Manager."
+                    modalImg={ModalmsgSVG}
+                    onClose={() => setShowModal(false)}
+                    width="750px"
+                    height="480px"
+                    useBgImage={true}
+                    showModalIcon={true}
+                    showTitle={true}
+                    showText={true}
+                    updateClass="pt-13 px-8  items-start"
+                    textClass="!mx-0 text-start"
+                  >
+                    <HostDeclineModal />
+                  </Modal>
+                )}
+                {borderBtn && (
+                  <Button className="!md:px-2 text-[12px] font-semibold text-[#555555] border border-[#555555]">
+                    Decline Match
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

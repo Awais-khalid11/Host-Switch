@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TextArea = ({ label, rows = 4, value, onChange, placeholder, type, labelClass }) => {
+const TextArea = ({ label, rows = 4, value, onChange, placeholder, type, labelClass, placeClass }) => {
   return (
     <div className="w-full mb-2.5">
       
@@ -11,7 +11,7 @@ const TextArea = ({ label, rows = 4, value, onChange, placeholder, type, labelCl
         onChange={onChange}
         rows={rows}
         placeholder={placeholder}
-        className="w-full p-3 border rounded-xl border-gray-300 text-sm font-normal text-[#5B5B5B] resize-none"
+        className={`${placeClass} w-full p-3 border rounded-xl border-gray-300 text-sm font-normal text-[#5B5B5B] resize-none`}
       />
     </div>
   );

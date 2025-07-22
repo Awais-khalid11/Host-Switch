@@ -4,7 +4,6 @@ import Notification from "./Notification";
 import ProfileInfo from "./ProfileInfo";
 import Media from "./Media";
 import CompanyInfo from "./CompanyInfo";
-import Services from "./Services";
 import Button from "../../Button/Button";
 
 const SettingButtons = () => {
@@ -13,7 +12,6 @@ const SettingButtons = () => {
   const tabs = [
     "Company Profile",
     "Profile Info",
-    "Services Offered",
     "Media & Branding",
     "Security",
     "Notifications",
@@ -25,8 +23,6 @@ const SettingButtons = () => {
         return <CompanyInfo />;
       case "Profile Info":
         return <ProfileInfo />;
-      case "Services Offered":
-        return <Services />;
       case "Media & Branding":
         return <Media />;
       case "Security":
@@ -46,7 +42,7 @@ const SettingButtons = () => {
           <Button
             key={tab}
             onClick={() => setSelectedTab(tab)}
-            className={`text-base font-medium !px-2.5 py-3 rounded-[10px] min-w-max transition-all duration-300
+            className={`text-base font-normal !px-5 py-3 rounded-[10px] min-w-max transition-all duration-300
          ${
            selectedTab === tab
              ? "bg-[#EDEDED] font-semibold"

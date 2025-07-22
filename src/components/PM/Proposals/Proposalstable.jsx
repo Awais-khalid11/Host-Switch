@@ -16,6 +16,7 @@ import { UserPNG } from "../../../constants/Imgs";
 import { useNavigate } from "react-router-dom";
 import AcceptedProposal from "./AcceptedProposal/AcceptedProposal";
 import AwaitingPropsal from "./AwaitingPropsal/AwaitingPropsal";
+import RejectedPropsal from "./RejectedProposal/RejectedPropsal";
 
 const Proposalstable = () => {
   const navigate = useNavigate();
@@ -188,63 +189,67 @@ const Proposalstable = () => {
     },
   ];
 
- const rowActions = (rowData) => {
-  const status = rowData.status;
+  const rowActions = (rowData) => {
+    const status = rowData.status;
 
-  const commonViewAction = {
-    label: "View",
-    icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-    onClick: () =>
-      setAcceptPage(
-        status === "Awaiting" ? (
-          <AwaitingPropsal setClose={setAcceptPage} />
-        ) : (
-          <AcceptedProposal setClose={setAcceptPage} />
-        )
-      ),
+    const commonViewAction = {
+      label: "View",
+      icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+      onClick: () =>
+        setAcceptPage(
+          status === "Awaiting" ? (
+            <AwaitingPropsal setClose={setAcceptPage} />
+          ) : status === "Accepted" ? (
+            <AcceptedProposal setClose={setAcceptPage} />
+          ) : (
+            <RejectedPropsal setClose={setAcceptPage} />
+          )
+        ),
+    };
+
+    const actions =
+      status === "Awaiting"
+        ? [
+            commonViewAction,
+            {
+              label: "Message",
+              icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
+              onClick: () => console.log("Message", rowData),
+            },
+            {
+              label: "Withdraw",
+              icon: <img src={SmsSVG} alt="withdraw" className="w-4 h-4" />,
+              onClick: () => console.log("Withdraw", rowData),
+            },
+          ]
+        : status === "Accepted"
+        ? [
+            commonViewAction,
+            {
+              label: "Message",
+              icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
+              onClick: () => console.log("Message", rowData),
+            },
+            {
+              label: "Download Contract",
+              icon: (
+                <img src={DownloadSVG} alt="download" className="w-4 h-4" />
+              ),
+              onClick: () => console.log("Download", rowData),
+            },
+          ]
+        : [
+            // Rejected
+            commonViewAction,
+            {
+              label: "Send Feedback",
+              icon: <img src={SmsSVG} alt="feedback" className="w-4 h-4" />,
+              onClick: () => console.log("Send Feedback", rowData),
+            },
+          ];
+
+    return <ActionMenu actions={actions} />;
   };
-
-  const actions =
-    status === "Awaiting"
-      ? [
-          commonViewAction,
-          {
-            label: "Message",
-            icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
-            onClick: () => console.log("Message", rowData),
-          },
-          {
-            label: "Withdraw",
-            icon: <img src={SmsSVG} alt="withdraw" className="w-4 h-4" />,
-            onClick: () => console.log("Withdraw", rowData),
-          },
-        ]
-      : status === "Accepted"
-      ? [
-          commonViewAction,
-          {
-            label: "Message",
-            icon: <img src={MsgsSVG} alt="msg" className="w-4 h-4" />,
-            onClick: () => console.log("Message", rowData),
-          },
-          {
-            label: "Download Contract",
-            icon: <img src={DownloadSVG} alt="download" className="w-4 h-4" />,
-            onClick: () => console.log("Download", rowData),
-          },
-        ]
-      : [
-          // Rejected
-          commonViewAction,
-          {
-            label: "Send Feedback",
-            icon: <img src={SmsSVG} alt="feedback" className="w-4 h-4" />,
-            onClick: () => console.log("Send Feedback", rowData),
-          },
-        ];
-
-  return <ActionMenu actions={actions} />;
-};
 
   return acceptPage ? (
     acceptPage

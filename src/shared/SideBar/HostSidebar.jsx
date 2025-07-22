@@ -10,7 +10,7 @@ export const hostSideBarLinks = [
     activeIcon: DashboardactiveSVG
   },
    {
-    label: "Porposals",
+    label: "Proposals",
     to: ROUTES.HOSTPORPOSALS,
     labelIcon: IncomingSVG,
     activeIcon: IncomingactiveSVG,

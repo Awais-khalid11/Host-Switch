@@ -7,7 +7,7 @@ import { LogoSVG } from "../../../Constants/Icons";
 
 const Password = () => {
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-center p-2.5 gap-[30px]">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-center md:p-5 md:!pr-10 gap-[30px]">
       <div className="md:w-1/2 w-full">
         <img src={PasswordPNG} alt="loginImg" className="rounded-2xl w-full lg:h-[759px]"/>
       </div>

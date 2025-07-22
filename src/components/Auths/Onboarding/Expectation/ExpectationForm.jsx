@@ -254,6 +254,14 @@ const ExpectationForm = () => {
           placeholder="Enter URL here.. "
         />
         <InputField
+          label="Yelp / Google Reviews Link"
+          id="Yelp"
+          name="Yelp"
+          type="text"
+          fieldName="w-full"
+          placeholder="Enter URL here.. "
+        />
+        <InputField
           label="Team Size"
           id="num"
           name="num"

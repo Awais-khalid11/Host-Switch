@@ -45,6 +45,7 @@ const SendProposal = ({setClose}) => {
             showModalIcon={true}
             showTitle={true}
             showText={true}
+            updateClass="px-5 pt-18"
           >
             <ProposalModal />
           </Modal>

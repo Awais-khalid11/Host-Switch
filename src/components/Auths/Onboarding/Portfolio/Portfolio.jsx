@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { PortfolioPNG } from "../../../../constants/Imgs";
+import { PortfolioPNG, PortfolioSPNG } from "../../../../constants/Imgs";
 import PortfolioForm from "./PortfolioForm";
 import OnboardingStepper from "../OnboardingStepper";
 import { LogoSVG } from "../../../../Constants/Icons";
 
 const Portfolio = () => {
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-between p-2.5 gap-[30px]">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-10 gap-[30px]">
       <div className="hidden md:block w-1/2">
         <img
-          src={PortfolioPNG}
+          src={PortfolioSPNG}
           alt="loginImg"
           className="rounded-2xl w-full min-h-[759px]"
         />

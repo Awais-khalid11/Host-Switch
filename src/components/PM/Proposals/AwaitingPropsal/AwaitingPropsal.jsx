@@ -29,17 +29,16 @@ const AwaitingPropsal = ({setClose}) => {
         <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5">
           <Button
             variant="borderbtn"
-            className="border-[#4D72FF] text-[#4D72FF] max-w-[157px]"
+            className=" !text-[12px] max-w-[157px]"
             prefixImg={DocumentSVG}
-            onClick={() => setSend(<SendProposal setClose={setSend}/>)}
+           
           >
            Message Host
           </Button>
           <Button
             variant="borderBtn"
-            className="!w-[162px] !text-sm font-normal h-[48px] px-5 border border-[#555555]"
+            className="!w-[162px] !text-[12px] font-normal h-[48px] px-5 border border-[#555555]"
             prefixImg={CrossSVG}
-            onClick={() => navigate(ROUTES.MESSAGES)}
           >
            Withdraw Proposal
           </Button>

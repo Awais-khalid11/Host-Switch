@@ -8,11 +8,10 @@ import RadioField from "../../../../Auths/RadioField/RadioField";
 import Button from "../../../../Button/Button";
 import CheckBox from "../../../../CheckBox/CheckBox";
 import TextArea from "../../../../TextArea/TextArea";
+import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 
 const HostExpectationForm = () => {
   const navigate = useNavigate();
-  const [willing, setWilling] = useState("");
-  const [current, setCurrent] = useState("");
   const [ticket, setTicket] = useState("");
   const [cohosting, setCohosting] = useState("");
   const [day, setDay] = useState("");
@@ -27,7 +26,6 @@ const HostExpectationForm = () => {
   const [onboardingFees, setOnboardingFees] = useState("");
   const [restockingCharges, setRestockingCharges] = useState("");
   const [markupMaintenance, setMarkupMaintenance] = useState("");
-  const [financialProjection, setFinancialProjection] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [account, setAccount] = useState(false);
   const [require, setRequire] = useState(false);
@@ -39,55 +37,39 @@ const HostExpectationForm = () => {
   const [smart, setSmart] = useState(false);
   const [amenities, setAmenities] = useState(false);
   const [last, setLast] = useState(false);
+  const [propertyTypes, setPropertyTypes] = useState([]);
 
-  const Property = [
-    { label: "Select what you prefer ", value: "Select what you prefer" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-  const Current = [
-    { label: "Select an option", value: "Select an option" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
-
-  const TOOL = [
-    { label: "Select an option", value: "Select an option" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
 
   return (
     <div>
       {/* <form> */}
-      <div className="flex md:flex-nowrap flex-wrap gap-5">
+      <div >
         <InputField
-          label="Property AdIdeal % Split You’d Like to Paydress"
+          label="What is the name of your current PM company?"
           id="address"
           name="address"
           type="text"
-          fieldName="md:w-1/2 w-full"
-          placeholder="Enter Address"
+          fieldName="w-full"
+          placeholder="Enter name"
           asterisk="true"
-        />
-        <SelectField
-          label="What % does your current PM charge?"
-          name="role"
-          value={current}
-          onChange={(e) => setCurrent(e.target.value)}
-          options={Current}
-          selectClass="mb-7 md:w-1/2 w-full"
         />
       </div>
       <div className="flex md:flex-nowrap flex-wrap gap-5">
-        <SelectField
-          label="Top Priorities in New PM"
-          name="role"
-          value={willing}
-          onChange={(e) => setWilling(e.target.value)}
-          options={Property}
-          selectClass="mb-7 md:w-1/2 w-full"
-        />
+         <MultiCheckboxDropdown
+        label="Type of Property"
+        options={[
+          "Condo",
+          "Multi-Family/Fuplex",
+          "Luxary Home",
+          "Tiny Home",
+          "Single Family Home",
+          "Beachfront/Waterfront",
+          "Other"
+        ]}
+        selectedValues={propertyTypes}
+        setSelectedValues={setPropertyTypes}
+        className="!w-1/2"
+      />
         <InputField
           label="What is the name of your current PM company?"
           id="name"
@@ -210,7 +192,7 @@ const HostExpectationForm = () => {
             onChange={(e) => setUse(e.target.checked)}
           />
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-1">
           <CheckBox
             name="account"
             id="account"
