@@ -15,7 +15,7 @@ const ConciergeSupport = () => {
     <div>
       <div className="flex justify-between items-center mb-3">
         <h2 className="md:text-2xl text-base font-bold text-[#1f2123]">Help & Support</h2>
-        <Button variant="defaultBtn"  prefixImg={ChatSVG} onClick={()=>setChat(<HostLiveChat/>)}>
+        <Button variant="defaultBtn"  prefixImg={ChatSVG} className="!h-[48px]" onClick={()=>setChat(<HostLiveChat setClose={setChat}/>)}>
           Start Live Chat
         </Button>
       </div>

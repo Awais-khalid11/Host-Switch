@@ -16,11 +16,13 @@ import {
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import { ROUTES } from "../../../constants/Routes";
+import HostProposalView from "./HostProposalView/HostProposalView";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [tablePages, setTablePages] = useState();
 
   const allData = [
     {
@@ -125,9 +127,12 @@ const HostProposalTable = () => {
     },
   ];
 
-  const filteredData = filterStatus
-    ? allData.filter((item) => item.status === filterStatus)
-    : allData;
+  const filteredData =
+    filterStatus === "all"
+      ? allData
+      : filterStatus === "pending-type"
+      ? allData.filter((item) => ["Pending"].includes(item.status))
+      : allData.filter((item) => item.status === filterStatus);
 
   const columns = [
     { header: "Property", accessor: "property", showSort: true },
@@ -203,7 +208,8 @@ const HostProposalTable = () => {
         {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => navigate(ROUTES.HOSTPROPOSALVIEW),
+          onClick: () =>
+            setTablePages(<HostProposalView setClose={setTablePages} />),
         },
         {
           label: "Accept",
@@ -222,7 +228,7 @@ const HostProposalTable = () => {
 
     if (isAccepted) {
       actions.push(
-       {
+        {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
           onClick: () => navigate(ROUTES.HOSTPROPOSALVIEW),
@@ -253,9 +259,11 @@ const HostProposalTable = () => {
     return <ActionMenu actions={actions} />;
   };
 
-  return (
+  return tablePages ? (
+    tablePages
+  ) : (
     <div className="rounded-[12px]">
-      <div className="rounded-xl bg-white overflow-hidden">
+      <div className="rounded-xl bg-white overflow-visible relative">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
           <h2 className="md:text-xl text-lg text-[#181D27] font-bold md:mb-3.5">
             New Proposals
@@ -270,13 +278,13 @@ const HostProposalTable = () => {
             onSelect={(val) => setFilterStatus(val)}
             options={[
               {
-                label: "All", 
-                value: "Pending", 
+                label: "All",
+                value: "pending-type",
                 icon: <img src={AllSVG} alt="All" />,
               },
               {
-                label: "New", 
-                value: "New", 
+                label: "New",
+                value: "all",
                 icon: <img src={ClockSVG} alt="New" />,
               },
               {
@@ -290,9 +298,9 @@ const HostProposalTable = () => {
                 icon: <img src={ClockSVG} alt="Pending" />,
               },
               {
-                label: "Rejected",
-                value: "Rejected",
-                icon: <img src={ClockSVG} alt="Rejected" />,
+                label: "Declined",
+                value: "Declined",
+                icon: <img src={ClockSVG} alt="Declined" />,
               },
               {
                 label: "Requested",
@@ -305,7 +313,7 @@ const HostProposalTable = () => {
 
         <Table
           columns={columns}
-          data={filteredData} 
+          data={filteredData}
           showActions
           actions={rowActions}
           search={search}

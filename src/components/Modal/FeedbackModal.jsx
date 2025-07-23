@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 const FeedbackModal = () => {
     const navigate = useNavigate();
   return (
-    <div>
+    <div className='flex justify-center'>
       <Button variant="defaultBtn" className="border border-white bg-white text-black px-6 py-4 !w-[250px]" prefixImg={BackarrowSVG} onClick={()=>navigate(ROUTES.HOSTDASHBOARD)}>
           Return to Dashboard
         </Button>

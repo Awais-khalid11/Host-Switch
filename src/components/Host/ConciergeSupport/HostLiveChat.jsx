@@ -6,14 +6,14 @@ import { PdffilePNG, UserPNG } from "../../../constants/Imgs";
 import { BackarrowSVG } from "../../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 
-const HostLiveChat = () => {
+const HostLiveChat = ({setClose}) => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate()
 
   return (
     <>
      <div className="flex items-center gap-2.5 mb-5">
-            <img src={BackarrowSVG} alt="img" onClick={() => navigate(-1)} className="cursor-pointer"/>
+            <img src={BackarrowSVG} alt="img" onClick={() => setClose(false)} className="cursor-pointer"/>
             <h2 className="lg:text-2xl md:text-xl text-sm font-bold">
               Chat with Your HostSwitch Concierge
             </h2>

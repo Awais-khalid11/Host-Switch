@@ -22,7 +22,7 @@ const Sam = () => {
           <h5 className="font-normal text-sm text-[#727272]">Property Owner</h5>
         </div>
       </div>
-      <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between">
+      <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
         <div>
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={SmsSVG} alt="img" />

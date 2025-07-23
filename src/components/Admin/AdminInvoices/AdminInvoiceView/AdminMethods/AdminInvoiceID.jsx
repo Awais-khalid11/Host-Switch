@@ -16,7 +16,7 @@ const AdminInvoiceID = ({viewType}) => {
         <div className="mb-3">
           <h2 className="text-xl font-semibold">Invoice ID: INV-00345</h2>
         </div>
-        <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between">
+        <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
           <div>
             <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
               <img src={SmsSVG} alt="img" />

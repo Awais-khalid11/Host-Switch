@@ -38,11 +38,11 @@ const nameData = [
 
 const Introduction = ({ mainClass, text }) => {
   return (
-    <div className="shadow-[4px_0px_10px_0px_#0000000F] p-5 rounded-[20px]">
+    <div className="shadow-[4px_0px_10px_0px_#0000000F] pl-0 p-5 lg:p-5 rounded-[20px]">
       <div className="flex md:flex-nowrap flex-wrap items-center gap-[30px]">
         <div className="md:w-[50%] w-full">
-          <div className="flex  items-end justify-between border-b border-b-[#D8D8D8] pb-5 mb-2">
-            <div>
+          <div className="flex lg:flex-row flex-col items-start lg:items-end justify-between border-b border-b-[#D8D8D8] pb-5 mb-2">
+            <div className="lg:mb-0 mb-2.5">
               <div className="flex items-center gap-2 mb-4">
                 <img src={DellSVG} alt="" className="w-[86px] h-[86px]" />
                 <div>
@@ -68,7 +68,7 @@ const Introduction = ({ mainClass, text }) => {
                   {nameData.map((item, index) => (
                     <div
                       key={index}
-                      className={`px-3 py-1 text-[12px] font-normal text-black rounded-full border ${item.bg} ${item.border}`}
+                      className={`px-3 py-1 text-[9px] md:text-[12px] font-normal text-black rounded-full border ${item.bg} ${item.border}`}
                     >
                       {item.text}
                     </div>
@@ -112,31 +112,31 @@ const Introduction = ({ mainClass, text }) => {
             <img
               src={IntroPNG}
               alt=""
-              className="rounded-[12px] min-w-[422px] w-full object-cover min-h-[451px]"
+              className="rounded-[12px] lg:min-w-[422px] w-full object-cover lg:min-h-[451px]"
             />
           </div>
           <div>
             <h3 className="text-xl font-bold mb-3">Gallery</h3>
-            <div className="flex items-center gap-2.5">
+            <div className="flex lg:flex-nowrap flex-wrap items-center gap-2.5">
               <img
                 src={Gallery1PNG}
                 alt="img"
-                className="w-full h-[83px] object-cover rounded-[9px]"
+                className="w-full md:h-[83px] object-cover rounded-[9px]"
               />
               <img
                 src={Gallery2PNG}
                 alt="img"
-                className="w-full h-[83px] object-cover rounded-[9px]"
+                className="w-full md:h-[83px] object-cover rounded-[9px]"
               />
               <img
                 src={Gallery3PNG}
                 alt="img"
-                className="w-full h-[83px] object-cover rounded-[9px]"
+                className="w-full md:h-[83px] object-cover rounded-[9px]"
               />
               <img
                 src={Gallery4PNG}
                 alt="img"
-                className="w-full h-[83px] object-cover rounded-[9px]"
+                className="w-full md:h-[83px] object-cover rounded-[9px]"
               />
             </div>
           </div>

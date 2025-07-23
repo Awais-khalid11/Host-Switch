@@ -8,7 +8,6 @@ const AdminAccepted = () => {
      <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-full mb-5">
       <div className='flex justify-between items-center mb-6'>
         <h3 className="font-semibold text-xl">Accepted PM Info</h3>
-        <Button variant='borderBtn' className='border-none'>View Profile</Button>
       </div>
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <AcceptInfo />

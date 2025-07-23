@@ -13,6 +13,7 @@ const AdminLayout = () => {
       <DashboardHeader
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
+        property="Admin"
       />
       <div className="flex relative bg-white h-screen">
         <SideBar

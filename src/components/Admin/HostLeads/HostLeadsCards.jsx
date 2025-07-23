@@ -111,7 +111,7 @@ const HostLeadsCards = () => {
     <div>
       <div className=" flex items-center justify-between mb-5">
         <h2 className="md:text-xl text-lg text-[#181D27] font-bold ">
-          Recent Activity Logs
+          Host Leads
         </h2>
 
         <FilterDropdown

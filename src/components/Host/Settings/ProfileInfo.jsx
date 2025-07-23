@@ -25,9 +25,9 @@ const ProfileInfo = () => {
             placeholder="Sara"
           />
           <InputField
-            label="First Name"
-            id="name"
-            name="name"
+            label="Last Name"
+            id="lname"
+            name="lname"
             type="text"
             fieldName="md:w-[49%] w-full"
             placeholder="Ava"

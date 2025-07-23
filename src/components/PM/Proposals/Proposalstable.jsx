@@ -291,7 +291,7 @@ const Proposalstable = () => {
 
         <Table
           columns={columns}
-          data={filteredData} // UPDATED to use filteredData
+          data={filteredData} 
           showActions
           actions={rowActions}
           search={search}

@@ -30,6 +30,12 @@ import AnalogSPNG from "@/assets/Images/analog.png";
 import HostcompanyPNG from "@/assets/Images/hostcompany.png";
 import HostpreferPNG from "@/assets/Images/hostprefer.png";
 import PropertyPNG from "@/assets/Images/property.png";
+import RequestPNG from "@/assets/Images/request.png";
+import SndmsgPNG from "@/assets/Images/sndmsg.png";
+import HostdeclinePNG from "@/assets/Images/hostdecline.png";
+import ProposalmodalPNG from "@/assets/Images/proposalmodal.png";
+import ConfirmmodalPNG from "@/assets/Images/confirmmodal.png";
+import PasswordmodalPNG from "@/assets/Images/passwordmodal.png";
 
 export { 
     OtpPNG, 
@@ -63,5 +69,11 @@ export {
     AnalogSPNG,
     HostcompanyPNG,
     HostpreferPNG,
-    PropertyPNG
+    PropertyPNG,
+    RequestPNG,
+    SndmsgPNG,
+    HostdeclinePNG,
+    ProposalmodalPNG,
+    ConfirmmodalPNG,
+    PasswordmodalPNG
 };

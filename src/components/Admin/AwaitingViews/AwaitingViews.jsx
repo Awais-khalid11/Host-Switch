@@ -10,21 +10,19 @@ import AcceptedViewTable from "../AdminViews/AcceptedViewTable";
 import AcceptedDocuments from "../AcceptedViews/AcceptedDocument";
 import AwaitingProposal from "./AwaitingProposal";
 import AwaitingReceived from "./AwaitingReceived";
+import ManuallyAsign from "../../ManuallyAsign/ManuallyAsign";
 
 const AwaitingViews = ({ setClose }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [sendPage, setSendPage] = useState();
-    const [pmPage, setPmPage] = useState();
-  
+  const [manualPage, setManualPage] = useState();
 
-      if (pmPage) return pmPage;
 
-  return sendPage ? (
-    sendPage
+  return manualPage ? (
+    manualPage
   ) : (
-    <div className="pb-2.5 pt-5">
-      <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
+    <div className="pb-2.5 lg:pt-0 pt-5 lg:-mt-2.5">
+      <div className="lg:fixed lg:w-full bg-white z-50 lg:py-5 lg:pr-[300px] flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
         <h2 className="font-bold text-2xl flex items-center gap-2 md:mb-0 mb-2.5">
           <img
             src={BackarrowSVG}
@@ -39,7 +37,6 @@ const AwaitingViews = ({ setClose }) => {
             variant="borderbtn"
             className="border-[#CE1B1B] text-[12px] text-[#CE1B1B] max-w-[157px]"
             prefixImg={ReddelSVG}
-            onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
           >
             Remove Match
           </Button>
@@ -47,20 +44,22 @@ const AwaitingViews = ({ setClose }) => {
             variant="borderbtn"
             className="border-[#4D72FF] text-[12px] text-[#4D72FF] max-w-[157px]"
             prefixImg={BlueplusSVG}
-            onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
+            onClick={()=>setManualPage(<ManuallyAsign setClose={setManualPage}/>)}
           >
             Manually Assign PM
           </Button>
         </div>
       </div>
-      <AwaitingSam />
-      <AdminPropertyDetails />
-      <AdminExpectations />
-      <CurrentPM />
-      <AwaitingReceived setPmPage={setPmPage}/>
-      <AwaitingProposal />
-      <AcceptedViewTable />
-      <AcceptedDocuments />
+      <div className="lg:pt-24">
+        <AwaitingSam />
+        <AdminPropertyDetails />
+        <AdminExpectations />
+        <CurrentPM />
+        <AwaitingReceived />
+        <AwaitingProposal />
+        <AcceptedViewTable />
+        <AcceptedDocuments />
+      </div>
     </div>
   );
 };

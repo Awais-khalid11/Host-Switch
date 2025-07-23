@@ -20,8 +20,8 @@ const AcceptedViews = ({setClose}) => {
   const [sendPage, setSendPage] = useState();
 
   return sendPage ? (sendPage) : (
-    <div className="pb-2.5 pt-5">
-      <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
+    <div className="pb-2.5 lg:pt-0 pt-5 -mt-2.5">
+      <div className="lg:fixed lg:w-full z-50 bg-white lg:py-5 flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
         <h2 className="font-bold text-2xl flex items-center gap-2 md:mb-0 mb-2.5">
           <img
             src={BackarrowSVG}
@@ -32,7 +32,8 @@ const AcceptedViews = ({setClose}) => {
           Accepted Host Lead
         </h2>
       </div>
-      <AcceptSam />
+      <div className="lg:pt-18">
+        <AcceptSam />
       <AdminPropertyDetails />
       <AdminAccepted/>
       <AdminOverView/>
@@ -40,6 +41,7 @@ const AcceptedViews = ({setClose}) => {
       <HistoryTable/>
       <AcceptedDocuments />
       <AcceptedFeebbackHistory/>
+      </div>
     </div>
   )
 };

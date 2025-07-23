@@ -70,7 +70,7 @@ const PMCompaniesCards = () => {
     : matchData;
 
   const statusColor = {
-    Verified: "text-[#ABEFC6] border-[#ABEFC6] bg-[#ECFDF3]",
+    Verified: "text-[Verified] border-[#ABEFC6] bg-[#ABEFC6]",
     Unverified: "text-[#CE1B1B] border-[#CE1B1B] bg-[#CE1B1B1A]",
   };
 

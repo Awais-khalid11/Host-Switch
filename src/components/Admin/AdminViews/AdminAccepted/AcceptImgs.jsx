@@ -10,13 +10,13 @@ const AcceptImgs = () => {
   return (
     <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-full lg:w-1/2">
       <h2 className='text-base font-semibold mb-4'>Sample Listing Photos</h2>
-      <div className="flex  gap-1.5 ">
+      <div className="flex  gap-1.5 md:flex-row flex-col">
         {images.map((img, index) => (
           <img
             key={index}
             src={img}
             alt={`img-${index}`}
-            className="rounded-[10px] w-[24%] h-[139px] object-cover"
+            className="rounded-[10px] w-full md:w-[24%] h-[139px] object-cover"
           />
         ))}
       </div>

@@ -41,7 +41,7 @@ const PropertyImgs = () => {
 
   return (
     <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-full lg:w-1/2">
-      <div className="flex  gap-1.5 ">
+      <div className="flex  gap-1.5 md:flex-row flex-col">
         {images.map((img, index) => (
           <img
             key={index}

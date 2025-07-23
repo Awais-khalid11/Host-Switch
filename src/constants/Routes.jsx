@@ -42,4 +42,5 @@ export const ROUTES = {
     ADMINCONCIERGEMESSAGES: "/admin/adminconciergemessages",
     ADMINLIVECHATS: "/admin/adminlivechat",
     HOSTNOTIFICATION: "/host/bellnotification",
+    ADMINNOTIFICATION: "/admin/adminbellnotification",
 }

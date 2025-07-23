@@ -9,7 +9,7 @@ import Brand from '../PmVerfied/Brand'
 import { BackarrowSVG, VerifySVG } from '../../../constants/Icons'
 import Button from '../../Button/Button'
 
-const PmUnverified = () => {
+const PmUnverified = ({setClose}) => {
   return (
      <div>
        <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">

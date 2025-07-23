@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import ConfirmModal from "../Modal/ConfirmModal";
 import { Thumbsup } from "../../constants/Icons";
+import { ConfirmmodalPNG } from "../../constants/Imgs";
 
 const PayForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -89,6 +90,7 @@ const PayForm = () => {
               showTitle={true}
               showText={true}
               updateClass="pt-18"
+              ModalbgClass={ConfirmmodalPNG}
             >
               <ConfirmModal />
             </Modal>

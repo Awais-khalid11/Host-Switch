@@ -26,10 +26,10 @@ const HostServices = () => {
       {serviceRows.map((row, index) => (
         <div
           key={index}
-          className="flex justify-between mb-4 items-start gap-2.5"
+          className="flex justify-between md:flex-nowrap flex-wrap  mb-4 items-start gap-2.5"
         >
           {row.map((item, i) => (
-            <div key={i} className="flex items-center gap-3 w-[213px]">
+            <div key={i} className="flex  items-center gap-3 w-[213px]">
               <span className="border border-[#D9D9D9] rounded-full w-[35px] h-[35px] flex justify-center items-center">
                 <img src={item.icon} alt={item.title} className="w-5" />
               </span>

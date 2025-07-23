@@ -14,9 +14,10 @@ import MultiCheckboxDropdown from "../../../Auths/Onboarding/Portfolio/MultiChec
 import RadioField from "../../../Auths/RadioField/RadioField";
 import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
+import { ConfirmmodalPNG, ProposalmodalPNG } from "../../../../constants/Imgs";
 
 
-const HostFeedback = () => {
+const HostFeedback = ({setClose}) => {
   const navigate = useNavigate();
   const [entity, setEntity] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -37,12 +38,12 @@ const HostFeedback = () => {
             src={BackarrowSVG}
             alt="img"
             className="cursor-pointer"
-            onClick={() => navigate(-1)}
+            onClick={() => setClose(false)}
           />
           Feedback
         </h2>
       </div>
-      <div className="border border-[#2525251A] rounded-[20px] min-h-[246px] flex justify-center items-center mb-5">
+      <div className="border border-[#2525251A] px-2.5 rounded-[20px] min-h-[246px] flex justify-center items-center mb-5">
         <div className="max-w-[706px] text-center">
           <h2 className="md:text-[30px] text-xl mb-2.5 font-bold">
             Congratulations! 🎉You've Hired a New Property Manager.
@@ -55,7 +56,7 @@ const HostFeedback = () => {
           </div>
         </div>
       </div>
-      <div className="border border-[#2525251A] p-5 pb-10 rounded-[20px] mb-8">
+      <div className="border border-[#2525251A] md:p-5 md:pb-10 py-12 px-2.5 rounded-[20px] mb-8">
         <form>
           <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px]">
             <MultiCheckboxDropdown
@@ -82,7 +83,7 @@ const HostFeedback = () => {
             />
           </div>
           <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px] ">
-            <div className="mb-5 w-1/2">
+            <div className="mb-5 md:w-1/2 w-full">
               <h3 className="text-sm font-bold mb-2.5">
                 Are you locally based in the market(s) you serve?
               </h3>
@@ -127,7 +128,7 @@ const HostFeedback = () => {
           </div>
         </form>
       </div>
-      <div className="flex justify-end gap-5">
+      <div className="flex md:flex-nowrap flex-wrap md:justify-end gap-5">
         <Button
           variant="borderbtn"
           className="border-[#727272] text-[#727272] h-[48px] !w-[160px]"
@@ -156,8 +157,8 @@ const HostFeedback = () => {
             showModalIcon={true}
             showTitle={true}
             showText={true}
-            // updateClass="pt-10 px-8  items-start"
-            // textClass="!mx-0"
+            ModalbgClass={ConfirmmodalPNG}
+            updateClass="pt-15 px-8 "
           >
             <FeedbackModal />
           </Modal>

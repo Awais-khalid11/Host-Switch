@@ -48,6 +48,7 @@ import AdminSettingsPage from "./pages/AdminPages/AdminSettingsPage";
 import AdminConciergeMessagesPage from "./pages/AdminPages/AdminConciergeMessagesPage";
 import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
 import BellNotification from "./components/Notification/BellNotification";
+import AdminBellNotification from "./components/Admin/AdminNotification/AdminBellNotification";
 
 const MainRouter = () => {
   return (
@@ -102,6 +103,7 @@ const MainRouter = () => {
           element={<AdminConciergeMessagesPage />}
         />
         <Route path="adminlivechat" element={<AdminLiveChat />} />
+        <Route path="adminbellnotification" element={<AdminBellNotification />} />
       </Route>
 
       {/* Auth Routes (without layout) */}

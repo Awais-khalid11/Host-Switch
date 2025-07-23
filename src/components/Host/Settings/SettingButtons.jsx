@@ -31,7 +31,7 @@ const SettingButtons = () => {
       <h2 className="text-2xl font-bold mb-2">Settings</h2>
 
      
-      <div className="flex mb-3 p-1 w-[700px] lg:w-full overflow-auto">
+      <div className="flex mb-3 p-1 !w-[400px] lg:w-full overflow-auto">
         {tabs.map((tab) => (
           <Button
             key={tab}

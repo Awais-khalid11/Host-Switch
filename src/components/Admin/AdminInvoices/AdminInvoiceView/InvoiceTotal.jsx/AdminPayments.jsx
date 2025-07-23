@@ -33,7 +33,7 @@ const AdminPayments = () => {
         <h2 className="text-xl font-semibold mb-3">{section.title}</h2>
         <div className="border border-[#E4E5E8] rounded-[12px] p-5">
           {section.data.map((item, i) => (
-            <div key={i} className="text-sm font-inter flex mb-1.5">
+            <div key={i} className="text-sm md:flex-row flex-col font-inter flex mb-1.5">
               <div className="font-semibold w-[180px]">{item.label}</div>
               <div className="text-[#1B252B]">{item.value}</div>
             </div>

@@ -5,6 +5,7 @@ import SendForm from "./SendForm";
 import Button from "../Button/Button";
 import ProposalModal from "../Modal/ProposalModal";
 import Modal from "../Modal/Modal";
+import { ProposalmodalPNG, RequestPNG } from "../../constants/Imgs";
 
 const SendProposal = ({setClose}) => {
   const navigate = useNavigate();
@@ -39,13 +40,15 @@ const SendProposal = ({setClose}) => {
             modalText="Your proposal has been sent. You’ll be notified when the host views or responds. Track it in your Proposals tab."
             modalImg={Thumbsup}
             onClose={() => setShowModal(false)}
-            width="md:500px w-full"
-            height="263px"
+              // width="md:500px w-full"
+              height="263px"
+              width="582px"
             useBgImage={true}
             showModalIcon={true}
             showTitle={true}
             showText={true}
             updateClass="px-5 pt-18"
+            ModalbgClass={ProposalmodalPNG}
           >
             <ProposalModal />
           </Modal>

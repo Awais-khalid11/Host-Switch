@@ -38,21 +38,21 @@ const InvoicePaymentSettings = () => {
               <CheckBox
                 name="terms"
                 id="terms"
-                label="Guest communication"
+                label="1 Day Before Due"
                 checked={agreed}
                 onChange={(e) => setAgreed(e.target.checked)}
               />
               <CheckBox
                 name="pool"
                 id="pool"
-                label=" 24/7 Guest Support"
+                label="1 Day Before Due"
                 checked={pool}
                 onChange={(e) => setPool(e.target.checked)}
               />
               <CheckBox
                 name="yard"
                 id="yard"
-                label=" Booking Management"
+                label="3 Days After Due"
                 checked={yard}
                 onChange={(e) => setYard(e.target.checked)}
               />

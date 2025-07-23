@@ -21,6 +21,7 @@ import { ROUTES } from "../../constants/Routes";
 import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendProposal from "../SendProposal/SendProposal";
+import { HostdeclinePNG } from "../../constants/Imgs";
 
 const Views = ({ setClose }) => {
   const navigate = useNavigate();
@@ -48,8 +49,8 @@ const Views = ({ setClose }) => {
               modalTitle="Please tell us why are you declining this Host property?"
               modalText="Your feedback helps us improve future matches."
               onClose={() => setShowDeclineModal(false)}
-              width="750px"
-              height="480px"
+              width="780px"
+              height="500px"
               bgColor="#4D72FF"
               updateClass="!flex-none !justify-start !items-start px-8 pt-18"
               bgClass="!flex-none !justify-start !items-start"
@@ -59,6 +60,7 @@ const Views = ({ setClose }) => {
               showTitle={true}
               showText={true}
               modalImg={QuestionSVG}
+              ModalbgClass={HostdeclinePNG}
             >
               <HostDeclineModal setClose={() => setShowModal(false)} />
             </Modal>
@@ -66,7 +68,7 @@ const Views = ({ setClose }) => {
 
           <Button
             variant="greenbtn"
-            className=" max-w-[157px]"
+            className="w-[157px]"
             prefixImg={ViewsndSVG}
             onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
           >

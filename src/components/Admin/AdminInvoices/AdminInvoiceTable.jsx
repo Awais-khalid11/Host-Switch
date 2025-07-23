@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import ActionMenu from "../../DropDown/Dropdown";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
@@ -151,6 +149,7 @@ const AdminInvoiceTable = () => {
   const rowActions = (rowData) => {
     const isPaid = rowData.status === "Paid";
     const isUnpaid = rowData.status === "Unpaid";
+    const isOverdue = rowData.status === "Overdue";
 
     const actions = [];
 
@@ -160,11 +159,7 @@ const AdminInvoiceTable = () => {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
           onClick: () =>
-            setActivePage
-                (
-                <PaidInvoiceView setClose={setActivePage} />
-              ) 
-            
+            setActivePage(<PaidInvoiceView setClose={setActivePage} />),
         },
         {
           label: "Download",
@@ -180,12 +175,7 @@ const AdminInvoiceTable = () => {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
           onClick: () =>
-            setActivePage(
-               
-                <AdminInvoiceView setClose={setActivePage} />
-                
-               
-            ),
+            setActivePage(<AdminInvoiceView setClose={setActivePage} />),
         },
         {
           label: "Remind",
@@ -195,7 +185,8 @@ const AdminInvoiceTable = () => {
       );
     }
 
-    return <ActionMenu actions={actions} />;
+    // Always return ActionMenu — even for overdue — but pass empty actions
+    return <ActionMenu actions={actions} disabled={isOverdue} hideIfEmpty />;
   };
 
   return (

@@ -6,6 +6,7 @@ import PasswordModal from "../../Modal/PasswordModal";
 import { Thumbsup } from "../../../Constants/Icons";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
+import { PasswordmodalPNG } from "../../../constants/Imgs";
 
 const NewPasswordForm = () => {
   const navigate = useNavigate();
@@ -63,6 +64,7 @@ const NewPasswordForm = () => {
               showTitle={true}
               showText={true}
               updateClass="px-5 pt-15"
+              ModalbgClass={PasswordmodalPNG}
             >
               <PasswordModal />
             </Modal>
