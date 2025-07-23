@@ -121,11 +121,11 @@ const NotificationLists = () => {
             {group.items.map((item, idx) => (
               <div
                 key={idx}
-                className="flex justify-between items-start bg-[#F5FAFC] rounded-lg p-4"
+                className="flex justify-between items-center bg-[#F5FAFC] rounded-lg p-4"
               >
                 <div className="flex items-center gap-2.5">
                   <div
-                    className="w-[42px] h-[42px] rounded-full flex items-center justify-center"
+                    className="w-[42px] h-[42px] flex-[0_0_42px] rounded-full flex items-center justify-center"
                     style={{ backgroundColor: item.bgColor }}
                   >
                     <img src={item.img} alt="icon" className="w-6 h-6" />
@@ -138,7 +138,7 @@ const NotificationLists = () => {
                   </div>
                 </div>
                 <div className="flex flex-col-reverse items-end gap-1">
-                  <span className="text-xs text-gray-400">{item.time}</span>
+                  <span className="text-xs whitespace-nowrap text-gray-400">{item.time}</span>
                   {item.isNew && <FaCircle className="text-red-500 w-2 h-2" />}
                 </div>
               </div>

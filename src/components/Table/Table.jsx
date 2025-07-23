@@ -144,7 +144,7 @@ const Table = ({
 
                     {showActions && actions && (
                       <td
-                        className={`px-6 ${
+                        className={`px-6  ${
                           rowStyle === "full-border" ? "h-[36px]" : "py-4"
                         } text-[12px] text-[#181D27] font-normal`}
                       >

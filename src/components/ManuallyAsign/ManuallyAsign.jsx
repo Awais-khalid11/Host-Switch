@@ -89,7 +89,7 @@ const ManuallyAsign = ({ setClose }) => {
   ];
 
   const rowActions = (rowData) => (
-    <button className="flex items-center text-sm gap-1">
+    <button className="flex items-center md:text-sm text-[10px] whitespace-nowrap gap-1">
       <img src={EyeSVG} alt="view" className="w-4 h-4" />
       View Chat
     </button>
@@ -119,8 +119,8 @@ const ManuallyAsign = ({ setClose }) => {
           <span><IoIosArrowDown/></span>
         </button>
         {isDropdownOpen && (
-          <div className="rounded-[12px] border border-[#E4E5E8] p-4 bg-white max-w-full overflow-x-auto mb-5">
-            <div className="min-w-[700px]">
+          <div className="rounded-[12px] border border-[#E4E5E8] p-4 bg-white mb-5">
+            <div>
               <Table
                 columns={columns}
                 data={allData}
