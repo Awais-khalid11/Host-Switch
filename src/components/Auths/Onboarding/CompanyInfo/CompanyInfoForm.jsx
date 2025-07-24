@@ -54,7 +54,7 @@ const CompanyInfoForm = () => {
 
   return (
     <div>
-      {/* <form> */}
+      <form>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
         <InputField
           label="Legal Business Name"
@@ -321,7 +321,7 @@ const CompanyInfoForm = () => {
           Save & Continue
         </Button>
       </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };

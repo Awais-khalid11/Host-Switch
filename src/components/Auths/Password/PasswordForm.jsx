@@ -8,7 +8,8 @@ const PasswordForm = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <InputField
+      <form >
+        <InputField
         label="Email Address"
         id="email"
         name="email"
@@ -33,6 +34,7 @@ const PasswordForm = () => {
           Submit
         </Button>
       </div>
+      </form>
     </div>
   );
 };

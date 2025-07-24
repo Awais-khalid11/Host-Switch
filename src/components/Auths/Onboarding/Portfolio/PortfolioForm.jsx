@@ -30,36 +30,6 @@ const PortfolioForm = ({ onNext }) => {
   const [tool, setTool] = useState("");
   const [ticket, setTicket] = useState("");
 
-  // const Property = [
-  //   { label: "Select Property type", value: "Select Property type" },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
-  // const Distance = [
-  //   { label: "Select an option", value: "Select an option" },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
-  // const Handle = [
-  //   { label: "Select an option", value: "Select an option" },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
-  // const Choose = [
-  //   { label: "Choose", value: "Choose" },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
-  // const PMS = [
-  //   { label: "Select or type...", value: "Select or type..." },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
-  // const TOOL = [
-  //   { label: "Select or type...", value: "Select or type..." },
-  //   { label: "2 Months", value: "2 Months" },
-  //   { label: "1 Months", value: "1 Months" },
-  // ];
 
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [agreementTypes, setAgreementTypes] = useState([]);
@@ -75,7 +45,7 @@ const PortfolioForm = ({ onNext }) => {
   };
   return (
     <div>
-      {/* <form> */}
+      <form>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
         <InputField
           label="Number of Active STR Properties Managed"
@@ -421,7 +391,7 @@ const PortfolioForm = ({ onNext }) => {
           Next
         </Button>
       </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };

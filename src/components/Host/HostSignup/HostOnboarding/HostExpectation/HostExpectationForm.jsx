@@ -42,7 +42,7 @@ const HostExpectationForm = () => {
 
   return (
     <div>
-      {/* <form> */}
+      <form>
       <div >
         <InputField
           label="What is the name of your current PM company?"
@@ -625,7 +625,7 @@ const HostExpectationForm = () => {
           Submit
         </Button>
       </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };

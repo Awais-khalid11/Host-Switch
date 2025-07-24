@@ -29,7 +29,7 @@ const HostCompanyInfoForm = () => {
 
   return (
     <div>
-      {/* <form> */}
+      <form>
       <div>
         <InputField
           label="Full Name"
@@ -128,7 +128,7 @@ const HostCompanyInfoForm = () => {
           Save & Continue
         </Button>
       </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };

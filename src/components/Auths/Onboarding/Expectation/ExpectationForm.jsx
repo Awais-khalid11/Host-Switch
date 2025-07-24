@@ -37,7 +37,7 @@ const ExpectationForm = () => {
 
   return (
     <div>
-      {/* <form> */}
+      <form>
         <InputField
           label="Average Review Rating (Airbnb/Vrbo)"
           id="num"
@@ -291,7 +291,7 @@ const ExpectationForm = () => {
             Submit
           </Button>
         </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };

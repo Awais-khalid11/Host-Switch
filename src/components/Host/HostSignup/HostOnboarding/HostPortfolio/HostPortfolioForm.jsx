@@ -31,7 +31,7 @@ const HostPortfolioForm = ({ onNext }) => {
   };
   return (
     <div>
-      {/* <form> */}
+      <form>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
         <InputField
           label="Property Address*"
@@ -167,7 +167,7 @@ const HostPortfolioForm = ({ onNext }) => {
           Next
         </Button>
       </div>
-      {/* </form> */}
+      </form>
     </div>
   );
 };
