@@ -13,7 +13,7 @@ const NotificationHeader = () => {
   return (
     <>
       <div className="flex items-center justify-between mt-2.5 mb-5">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center md:gap-5 gap-2.5">
           {/* Unread Tab */}
           <div
             onClick={() => setActiveTab("unread")}
@@ -22,7 +22,7 @@ const NotificationHeader = () => {
             }`}
           >
             <h2
-              className={`md:text-base text-sm font-bold uppercase ${
+              className={`md:text-base text-[12px] font-bold uppercase ${
                 isUnreadActive ? "text-[#4D72FF]" : "text-[#77787C]"
               }`}
             >
@@ -34,7 +34,7 @@ const NotificationHeader = () => {
           {/* All Notifications Tab */}
           <h3
             onClick={() => setActiveTab("all")}
-            className={`md:text-base text-sm font-bold uppercase cursor-pointer pb-2.5 ${
+            className={`md:text-base text-[12px] font-bold uppercase cursor-pointer pb-2.5 ${
               isAllActive ? "text-[#4D72FF] border-b-2 border-b-[#4D72FF]" : "text-[#77787C]"
             }`}
           >

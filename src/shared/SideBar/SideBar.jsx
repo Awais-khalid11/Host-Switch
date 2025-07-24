@@ -31,7 +31,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
           
           {/* Top Section with Logo */}
           <div>
-            <div className="lg:hidden block mb-4 flex items-center justify-between">
+            <div className="lg:hidden mb-4 flex items-center justify-between">
               <img
                 src={HeaderlogoSVG}
                 alt="Logo"
@@ -45,7 +45,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
               </button>
             </div>
 
-            <nav>
+            <nav className="md:-ml-0 -ml-5">
               {mainLinks.map((link, index) => (
                 <NavLink
                   key={index}
