@@ -4,7 +4,7 @@ import { CalenderSVG, StatusSVG } from "../../../constants/Icons";
 const InvoiceID = () => {
   return (
     <div className="flex w-full gap-5">
-      <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-1/2">
+      <div className="border border-[#E4E5E8] rounded-[12px] p-5 md:w-1/2 w-full">
         <h3 className="text-xl font-bold">Invoice ID: INV-00345</h3>
         <h4 className="text-sm font-normal text-[#727272] mb-2.5">
           June 17, 2025
@@ -23,7 +23,7 @@ const InvoiceID = () => {
           </h3>
         </div>
       </div>
-      <div className="border border-[#E4E5E8] rounded-[12px] p-5  w-1/2">
+      <div className="border border-[#E4E5E8] rounded-[12px] p-5 md:w-1/2 w-full">
         <h3 className="text-xl font-semibold">Payment Method:</h3>
         <h4 className="w-[100px] mx-auto pt-5 text-[#36363699] text-[17px] font-bold">Not yet paid</h4>
       </div>

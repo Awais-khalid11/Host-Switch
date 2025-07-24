@@ -14,7 +14,7 @@ const AdminConciergeMessages = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (viewPage) return viewPage; // 👈 Fullscreen override
+  if (viewPage) return viewPage; 
 
   return (
     <div>
@@ -29,7 +29,7 @@ const AdminConciergeMessages = () => {
         {(!isMobile || showBoxOnly) && (
           <AdminMessageBox
             onBack={() => setShowBoxOnly(false)}
-            setViewPage={setViewPage} // 👈 pass down handler
+            setViewPage={setViewPage} 
           />
         )}
       </div>

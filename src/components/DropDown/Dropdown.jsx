@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 const Dropdown = ({
-  actions = [], // Array of { label, icon, onClick }
-  icon, // Can be image or icon
+  actions = [],
+  icon,
   className = "",
 }) => {
   const [open, setOpen] = useState(false);
@@ -29,7 +29,11 @@ const Dropdown = ({
     <>
       <button
         ref={btnRef}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          if (actions.length > 0) {
+            setOpen((prev) => !prev);
+          }
+        }}
         className={`p-1 hover:text-black text-gray-600 ${className}`}
       >
         {icon || (
@@ -46,7 +50,8 @@ const Dropdown = ({
         )}
       </button>
 
-      {open &&
+      {/* ✅ Render dropdown only if open and actions exist */}
+      {open && actions.length > 0 &&
         createPortal(
           <div
             ref={menuRef}
@@ -54,8 +59,8 @@ const Dropdown = ({
             style={{
               top:
                 btnRef.current?.getBoundingClientRect().bottom +
-                window.scrollY +
-                -25,
+                window.scrollY -
+                25,
               left:
                 btnRef.current?.getBoundingClientRect().left +
                 window.scrollX -
@@ -85,3 +90,4 @@ const Dropdown = ({
 };
 
 export default Dropdown;
+

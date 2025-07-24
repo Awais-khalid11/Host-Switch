@@ -126,8 +126,8 @@ const AdminDashboardTable = () => {
   return (
     <div>
       <div className="rounded-xl bg-white overflow-hidden">
-        <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap mb-3.5">
-          <h2 className="md:text-xl text-lg text-[#181D27] font-bold">
+        <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 mb-3.5">
+          <h2 className="md:text-xl text-base text-[#181D27] font-bold">
             Recent Activity Logs
           </h2>
 

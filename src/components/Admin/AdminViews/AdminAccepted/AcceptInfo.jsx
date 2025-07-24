@@ -21,12 +21,6 @@ const AcceptInfo = () => {
         </div>
       ))}
       </div>
-      {/* <div className="text-sm font-inter flex md:flex-nowrap flex-wrap">
-        <div className="font-semibold w-[160px]">Listing Link (Airbnb):</div>
-        <div className="text-[#005BE0] underline cursor-pointer">
-         View Listing
-        </div>
-      </div> */}
     </div>
   );
 };

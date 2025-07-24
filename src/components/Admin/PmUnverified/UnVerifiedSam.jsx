@@ -19,7 +19,7 @@ const UnVerifiedSam = () => {
         </div>
       </div>
       <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
-        <div>
+        <div className="md:mb-0 mb-2.5">
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={SmsSVG} alt="img" />
             sarah.t@email.com

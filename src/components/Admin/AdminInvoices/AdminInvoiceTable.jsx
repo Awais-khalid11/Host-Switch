@@ -185,7 +185,6 @@ const AdminInvoiceTable = () => {
       );
     }
 
-    // Always return ActionMenu — even for overdue — but pass empty actions
     return <ActionMenu actions={actions} disabled={isOverdue} hideIfEmpty />;
   };
 
@@ -199,36 +198,38 @@ const AdminInvoiceTable = () => {
             <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
               <h2 className="text-xl text-[#181D27] font-bold">Invoices</h2>
 
-              <FilterDropdown
-                button={
-                  <Button variant="filterbtn" suffixImg={FilterSVG}>
-                    Filter
-                  </Button>
-                }
-                onSelect={(val) => setFilterStatus(val)}
-                options={[
-                  {
-                    label: "All",
-                    value: "",
-                    icon: <img src={AllSVG} alt="All" />,
-                  },
-                  {
-                    label: "Unpaid",
-                    value: "Unpaid",
-                    icon: <img src={ClockSVG} alt="Awaiting" />,
-                  },
-                  {
-                    label: "Paid",
-                    value: "Paid",
-                    icon: <img src={ClockSVG} alt="Accepted" />,
-                  },
-                  {
-                    label: "Overdue",
-                    value: "Overdue",
-                    icon: <img src={ClockSVG} alt="Rejected" />,
-                  },
-                ]}
-              />
+              {filterStatus !== "Overdue" && (
+                <FilterDropdown
+                  button={
+                    <Button variant="filterbtn" suffixImg={FilterSVG}>
+                      Filter
+                    </Button>
+                  }
+                  onSelect={(val) => setFilterStatus(val)}
+                  options={[
+                    {
+                      label: "All",
+                      value: "",
+                      icon: <img src={AllSVG} alt="All" />,
+                    },
+                    {
+                      label: "Unpaid",
+                      value: "Unpaid",
+                      icon: <img src={ClockSVG} alt="Awaiting" />,
+                    },
+                    {
+                      label: "Paid",
+                      value: "Paid",
+                      icon: <img src={ClockSVG} alt="Accepted" />,
+                    },
+                    {
+                      label: "Overdue",
+                      value: "Overdue",
+                      icon: <img src={ClockSVG} alt="Rejected" />,
+                    },
+                  ]}
+                />
+              )}
             </div>
 
             <Table

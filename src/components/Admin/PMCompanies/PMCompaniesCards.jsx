@@ -79,7 +79,7 @@ const PMCompaniesCards = () => {
   ) : (
     <div>
       <div className=" flex items-center justify-between mb-5">
-        <h2 className="md:text-xl text-lg text-[#181D27] font-bold ">
+        <h2 className="md:text-xl text-base text-[#181D27] font-bold ">
           Recent Activity Logs
         </h2>
 

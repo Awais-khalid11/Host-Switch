@@ -16,7 +16,7 @@ const RejectedSam = () => {
         </div>
       </div>
       <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
-        <div>
+        <div className="md:mb-0 mb-2.5">
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={SmsSVG} alt="img" />
             sarah.t@email.com
@@ -25,7 +25,7 @@ const RejectedSam = () => {
             <img src={CallSVG} alt="img" />
             11 033 456 889
           </h3>
-          <h3 className="flex items-center gap-1 text-sm font-normal">
+          <h3 className="flex items-center  gap-1 text-sm font-normal">
             <img src={LocationSVG} alt="img" />
             123 Palm Ave, Miami (Map Radius with 1km circle )
           </h3>

@@ -88,8 +88,6 @@ const AdminTrainerMessages = ({ onSelectUser }) => {
             </div>
             <div className="flex flex-col items-end gap-2 text-xs text-gray-500">
               <span>{msg.time}</span>
-              {/* <img src={RediconSVG} alt="Unread" className="w-4 h-4" /> */}
-              {/* Red dot with number */}
               {msg.msgCount && (
                 <span className="bg-[#D92D20] text-white text-xs font-semibold w-5 h-5 flex items-center justify-center rounded-full">
                   {msg.msgCount}

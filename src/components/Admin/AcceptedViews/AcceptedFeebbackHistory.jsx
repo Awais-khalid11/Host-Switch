@@ -12,7 +12,7 @@ const AcceptedFeebbackHistory = () => {
             “Poor communication, local presence, and Slow Performance”
           </h5>
         </div>
-        <div className="flex  md:items-center items-startmd:flex-row flex-col">
+        <div className="flex  md:items-center items-start md:flex-row flex-col">
           <h3 className="text-sm font-bold w-[150px]">Rating:</h3>
           <div className="text-sm font-normal flex items-center gap-1 ml-2">4.7/5</div>
         </div>

@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-// import { BackarrowSVG, DownloadSVG } from "../../constants/Icons";
-// import Button from "../Button/Button";
-// import Pay from "../Pay/Pay";
 import {
   BackarrowSVG,
   BlackpdfSVG,

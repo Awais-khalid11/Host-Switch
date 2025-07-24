@@ -12,7 +12,7 @@ const AdminInvoiceID = ({viewType}) => {
 
   return (
     <div className="flex w-full gap-5">
-      <div className="border border-[#E4E5E8] p-5 rounded-[12px] w-1/2">
+      <div className="border border-[#E4E5E8] p-5 rounded-[12px] md:w-1/2 w-full">
         <div className="mb-3">
           <h2 className="text-xl font-semibold">Invoice ID: INV-00345</h2>
         </div>
@@ -44,8 +44,8 @@ const AdminInvoiceID = ({viewType}) => {
               <span
                 className={`rounded-2xl px-2 py-0.5 font-normal ${
                   isPaid
-                    ? "bg-[#DCFCE7] text-[#166534]" // Red-ish for Paid
-                    : "bg-[#FEF3C7] text-[#92400E]" // Yellow-ish for Unpaid
+                    ? "bg-[#DCFCE7] text-[#166534]" 
+                    : "bg-[#FEF3C7] text-[#92400E]" 
                 }`}
               >
                 {isPaid ? "Paid" : "Unpaid"}
@@ -55,7 +55,7 @@ const AdminInvoiceID = ({viewType}) => {
         </div>
       </div>
 
-      <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-1/2">
+      <div className="border border-[#E4E5E8] rounded-[12px] p-5 md:w-1/2 w-full">
         <h2 className="text-xl font-semibold mb-5">Payment Method:</h2>
         <div className="border border-[#E4E5E8] rounded-[12px] py-3 px-4 flex justify-between items-center mb-4">
           <img src={StripeSVG} alt="img" className="w-[72px] h-[48px]" />

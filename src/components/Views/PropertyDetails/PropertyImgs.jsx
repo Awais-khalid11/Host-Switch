@@ -47,7 +47,7 @@ const PropertyImgs = () => {
             key={index}
             src={img}
             alt={`img-${index}`}
-            className="rounded-[10px] w-[24%] h-[192px] object-cover"
+            className="rounded-[10px] w-full md:w-[24%] md:h-[192px] object-cover"
           />
         ))}
       </div>

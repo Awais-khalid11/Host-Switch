@@ -23,15 +23,15 @@ const PaidMethod = () => {
       <div className="border border-[#E4E5E8] rounded-[12px] p-5">
         <h2 className="text-xl font-semibold mb-5">Amount paid: $2,800 USD</h2>
         <div className="flex gap-5">
-          <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-1/2">
+          <div className="border border-[#E4E5E8] rounded-[12px] p-5 md:w-1/2 w-full">
             {infoData.map((item, index) => (
-              <div key={index} className="text-sm font-inter flex mb-1.5">
+              <div key={index} className="text-sm font-inter md:flex-row flex-col flex mb-1.5">
                 <div className="font-semibold w-[180px]">{item.title}</div>
                 <div className="text-[#1B252B]">{item.text}</div>
               </div>
             ))}
           </div>
-          <div className="border border-[#E4E5E8] rounded-[12px] p-5 w-1/2">
+          <div className="border border-[#E4E5E8] rounded-[12px] p-5 md:w-1/2 w-full">
             <h2 className="text-xl font-semibold mb-5">
               Payment Method:
             </h2>

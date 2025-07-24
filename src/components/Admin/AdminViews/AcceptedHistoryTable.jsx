@@ -1,23 +1,9 @@
 import React, { useState } from "react";
 import Table from "../../Table/Table";
-// import ActionMenu from "../../DropDown/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { UserPNG } from "../../../constants/Imgs";
 import Button from "../../Button/Button";
 import { ROUTES } from "../../../constants/Routes";
-// import {
-//   AllSVG,
-//   ClockSVG,
-//   ConsiderSVG,
-//   EyeSVG,
-//   FilterSVG,
-//   MsgsSVG,
-//   ProfildeleteSVG,
-//   ProfiletickSVG,
-// } from "../../../constants/Icons";
-// import Button from "../../Button/Button";
-// import FilterDropdown from "../../FilterDropdown/FilterDropdown";
-// import { ROUTES } from "../../../constants/Routes";
 
 const AcceptedHistoryTable = () => {
   const navigate = useNavigate();
@@ -100,8 +86,7 @@ const AcceptedHistoryTable = () => {
 
         <Table
           columns={columns}
-          data={filteredData} // UPDATED to use filteredData
-
+          data={filteredData} 
           search={search}
         />
       </div>
