@@ -120,6 +120,8 @@ import SkymsgSVG from "@/assets/Icons/skymsg.svg";
 import TextmsgSVG from "@/assets/Icons/textmsg.svg";
 import MoneySVG from "@/assets/Icons/money.svg";
 import FlagedSVG from "@/assets/Icons/flaged.svg";
+import PrevSVG from "@/assets/Icons/prev.svg";
+import NextSVG from "@/assets/Icons/next.svg";
 
 export {
   DashboardSVG,
@@ -243,5 +245,7 @@ export {
   SkymsgSVG,
   TextmsgSVG,
   MoneySVG,
-  FlagedSVG
+  FlagedSVG,
+  NextSVG,
+  PrevSVG
 };

@@ -50,7 +50,7 @@ const IncomeCards = [
   },
 ];
 
-const LeadCards = ({ setCardDetail }) => {
+const LeadCards = ({ setCardDetail,  }) => {
   return (
     <div>
       <div className="flex justify-between py-5">
@@ -68,7 +68,7 @@ const LeadCards = ({ setCardDetail }) => {
           ]}
         />
       </div>
-      <IncomingCards incomingData={IncomeCards} setCardDetail={setCardDetail} />
+      <IncomingCards incomingData={IncomeCards} setCardDetail={setCardDetail}/>
     </div>
   );
 };

@@ -1,39 +1,67 @@
-import React from 'react'
-import FilterDropdown from '../FilterDropdown/FilterDropdown'
-import Button from '../Button/Button'
-import { AllSVG, ClockSVG, FilterSVG, TwoSVG } from '../../constants/Icons'
+import React, { useState } from "react";
+import FilterDropdown from "../FilterDropdown/FilterDropdown";
+import Button from "../Button/Button";
+import { AllSVG, ClockSVG, FilterSVG, TwoSVG } from "../../constants/Icons";
+import NotificationLists from "./NotificationLists";
 
 const NotificationHeader = () => {
-  return (
-    <div className='flex items-center justify-between mt-2.5 mb-5'>
-      <div className='flex items-center gap-5'>
-        <div className='flex items-center gap-1.5 uppercase border-b border-b-[#4D72FF] pb-2.5'><h2 className='md:text-base text-sm font-bold text-[#4D72FF]'>Unread</h2><img src={TwoSVG} alt="" /></div>
-        <h3 className='md:text-base text-sm font-bold text-[#77787C] uppercase pb-2.5'>all notifications</h3>
-      </div>
-      <FilterDropdown
-            button={
-              <Button variant="filterbtn" suffixImg={FilterSVG}>
-                Filter
-              </Button>
-            }
-            options={[
-              { label: "All" },
-              {
-                label: "Unread",
-              },
-              {
-                label: "Proposals",
-              },
-              {
-                label: "Messages",
-              },
-              {
-                label: "Payments & Invoices",
-              },
-            ]}
-          />
-    </div>
-  )
-}
+  const [activeTab, setActiveTab] = useState("unread");
 
-export default NotificationHeader
+  const isUnreadActive = activeTab === "unread";
+  const isAllActive = activeTab === "all";
+
+  return (
+    <>
+      <div className="flex items-center justify-between mt-2.5 mb-5">
+        <div className="flex items-center gap-5">
+          {/* Unread Tab */}
+          <div
+            onClick={() => setActiveTab("unread")}
+            className={`flex items-center gap-1.5 cursor-pointer pb-2.5 ${
+              isUnreadActive ? "border-b-2 border-b-[#4D72FF]" : ""
+            }`}
+          >
+            <h2
+              className={`md:text-base text-sm font-bold uppercase ${
+                isUnreadActive ? "text-[#4D72FF]" : "text-[#77787C]"
+              }`}
+            >
+              Unread
+            </h2>
+            {isUnreadActive && <img src={TwoSVG} alt="" className="w-5 h-5" />}
+          </div>
+
+          {/* All Notifications Tab */}
+          <h3
+            onClick={() => setActiveTab("all")}
+            className={`md:text-base text-sm font-bold uppercase cursor-pointer pb-2.5 ${
+              isAllActive ? "text-[#4D72FF] border-b-2 border-b-[#4D72FF]" : "text-[#77787C]"
+            }`}
+          >
+            All Notifications
+          </h3>
+        </div>
+
+        <FilterDropdown
+          button={
+            <Button variant="filterbtn" suffixImg={FilterSVG}>
+              Filter
+            </Button>
+          }
+          options={[
+            { label: "All" },
+            { label: "Unread" },
+            { label: "Proposals" },
+            { label: "Messages" },
+            { label: "Payments & Invoices" },
+          ]}
+        />
+      </div>
+
+      {/* Notification list based on selected tab */}
+      <NotificationLists activeTab={activeTab} />
+    </>
+  );
+};
+
+export default NotificationHeader;

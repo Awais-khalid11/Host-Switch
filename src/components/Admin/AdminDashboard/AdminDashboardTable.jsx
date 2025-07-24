@@ -159,7 +159,7 @@ const AdminDashboardTable = () => {
           />
         </div>
 
-        <div className="rounded-[12px] border border-[#001B4429]">
+        <div className="rounded-[12px] border border-[#001B4429] pb-2.5">
           <Table
             columns={columns}
             data={filteredData} // UPDATED to use filteredData

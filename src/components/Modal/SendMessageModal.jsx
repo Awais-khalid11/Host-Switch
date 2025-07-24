@@ -7,13 +7,22 @@ import { ROUTES } from "../../constants/Routes";
 const SendMessageModal = ({ userType }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  console.log(userType, "error");
+  
 
   const isPm = location.pathname.includes("/pm");
   const targetRoute = isPm ? ROUTES.MESSAGES : ROUTES.HOSTMESSAGES;
 
   const handleSendMessage = () => {
-    if (userType === "pm") {
-      navigate(ROUTES.MESSAGES);
+    console.log("UserType:", userType);
+    console.log(
+      "Navigating to:",
+      userType === "pm" ? ROUTES.MESSAGES : ROUTES.HOSTMESSAGES
+    );
+
+    if (isPm) {
+      navigate(ROUTES.MESSAGES, { replace: true });
     } else {
       navigate(ROUTES.HOSTMESSAGES);
     }

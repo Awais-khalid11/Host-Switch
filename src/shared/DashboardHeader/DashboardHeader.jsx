@@ -32,6 +32,7 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
               <h2 className="hidden lg:block font-bold text-2xl whitespace-nowrap">
                 👋 Welcome back, Harry Doe.
               </h2>
+              
             </div>
 
             <div className="flex items-center gap-3">

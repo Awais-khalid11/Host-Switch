@@ -24,6 +24,9 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  console.log(userType, "incoming error");
+  
+
   const dropdownActions = [
     {
       label: "View",
@@ -131,7 +134,7 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
                 textClass="!mx-0 text-start"
                 ModalbgClass={SndmsgPNG}
               >
-                <SendMessageModal userType={userType} />
+                <SendMessageModal userType={"pm"} setIssOpen={setShowModal} />
               </Modal>
             )}
           </div>

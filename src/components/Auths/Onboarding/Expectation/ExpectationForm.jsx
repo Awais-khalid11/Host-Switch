@@ -99,15 +99,6 @@ const ExpectationForm = () => {
           placeholder="Enter percentage %"
         />
         <FileUpload label="Upload Sample Mgmt Contract" />
-        <SelectField
-          label="Contract Length"
-          name="tool"
-          value={tool}
-          onChange={(e) => setTool(e.target.value)}
-          options={TOOL}
-          selectClass="mb-7 w-full"
-          className="font-bold"
-        />
         <MultiCheckboxDropdown
           label="Contract Length"
           options={["Month-to-month", "6 month", "1 year"]}

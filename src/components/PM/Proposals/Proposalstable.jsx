@@ -288,6 +288,7 @@ const Proposalstable = () => {
             ]}
           />
         </div>
+        
 
         <Table
           columns={columns}

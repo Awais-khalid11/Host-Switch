@@ -92,7 +92,6 @@ const PortfolioForm = ({ onNext }) => {
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-
         <TextArea
           type="text"
           placeholder={"Enter message..."}
@@ -102,7 +101,7 @@ const PortfolioForm = ({ onNext }) => {
           label="Exclusive or Non-Exclusive Agreements?"
           placeholder="Select an option"
           options={["Exclusive", "Non-Exclusive"]}
-         selectedValues={agreementTypes}
+          selectedValues={agreementTypes}
           setSelectedValues={setAgreementTypes}
           customGrid={true}
           className="mb-5"
@@ -124,7 +123,6 @@ const PortfolioForm = ({ onNext }) => {
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-
         <ScopeBox />
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
@@ -156,12 +154,11 @@ const PortfolioForm = ({ onNext }) => {
           selectedValues={cleaningHandledBy}
           setSelectedValues={setCleaningHandledBy}
           className="mb-5"
-           dropdownKey="clean"
+          dropdownKey="clean"
           isOpen={openDropdown === "clean"}
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-
         <InputField
           label="Avg Turnover Time (hours)"
           id="num"
@@ -335,29 +332,27 @@ const PortfolioForm = ({ onNext }) => {
         <MultiCheckboxDropdown
           label="PMS / Channel Manager Used"
           options={["Guesty", "Hostaway", "Lodgify"]}
-              placeholder="Select or type..."
+          placeholder="Select or type..."
           selectedValues={pmsTools}
           setSelectedValues={setPmsTools}
           className="mb-5"
-           dropdownKey="pm"
+          dropdownKey="pm"
           isOpen={openDropdown === "pm"}
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-
         <MultiCheckboxDropdown
           label="Dynamic Pricing Tool Used"
           options={["Beyond", "PriceLabs", "Wheelhouse"]}
-              placeholder="Select or type..."
+          placeholder="Select or type..."
           selectedValues={pricingTools}
           setSelectedValues={setPricingTools}
           className="mb-5"
-           dropdownKey="tool"
+          dropdownKey="tool"
           isOpen={openDropdown === "tool"}
           setOpenDropdown={setOpenDropdown}
-           isMulti={true}
+          isMulti={true}
         />
-
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Owner Reporting Portal Provided?
@@ -389,7 +384,7 @@ const PortfolioForm = ({ onNext }) => {
           selectedValues={guest}
           setSelectedValues={setGuest}
           className="mb-5"
-           dropdownKey="guest"
+          dropdownKey="guest"
           isOpen={openDropdown === "guest"}
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
@@ -445,3 +440,5 @@ const PortfolioForm = ({ onNext }) => {
 };
 
 export default PortfolioForm;
+
+
