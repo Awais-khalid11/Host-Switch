@@ -44,8 +44,6 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
                   onClick={() => {
                     if (property === "Host") {
                       navigate(ROUTES.HOSTNOTIFICATION);
-                    } else if (property === "PM") {
-                      navigate(ROUTES.PMNOTIFICATION);
                     } else if (property === "Admin") {
                       navigate(ROUTES.ADMINNOTIFICATION);
                     }

@@ -27,7 +27,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
         ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
         lg:translate-x-0`}
       >
-        <div className="flex flex-col justify-between h-full lg:w-full overflow-y-auto p-5 bg-[#F2F7F9] rounded-[12px] mt-2.5 mb-2.5">
+        <div className="flex flex-col justify-between h-full lg:w-full overflow-y-auto p-5 bg-[#F2F7F9] rounded-[12px] ml-2.5 mt-2.5 mb-2.5">
           
           {/* Top Section with Logo */}
           <div>
