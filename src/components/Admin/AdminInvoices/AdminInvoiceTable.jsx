@@ -149,7 +149,7 @@ const AdminInvoiceTable = () => {
   const rowActions = (rowData) => {
     const isPaid = rowData.status === "Paid";
     const isUnpaid = rowData.status === "Unpaid";
-    const isOverdue = rowData.status === "Overdue";
+    // const isOverdue = rowData.status === "Overdue";
 
     const actions = [];
 
@@ -185,7 +185,7 @@ const AdminInvoiceTable = () => {
       );
     }
 
-    return <ActionMenu actions={actions} disabled={isOverdue} hideIfEmpty />;
+    return <ActionMenu actions={actions} />;
   };
 
   return (

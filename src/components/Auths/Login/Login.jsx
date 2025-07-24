@@ -33,9 +33,9 @@ const Login = () => {
         <LoginForm />
         <div className="text-sm text-center font-medium leading-6 text-[#777777]">
           <p>
-            Don't have an account?
+            Don't have an account?  
             <span
-              className="font-bold cursor-pointer text-[#252525]"
+              className="font-bold cursor-pointer ml-1.5 text-[#252525]"
               onClick={handleClick}
             >
               Create an account

@@ -22,6 +22,7 @@ const SendCheckbox = () => {
             label="Guest communication"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="yard"
@@ -29,6 +30,7 @@ const SendCheckbox = () => {
             label=" 24/7 Guest Support"
             checked={yard}
             onChange={(e) => setYard(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="pool"
@@ -36,6 +38,7 @@ const SendCheckbox = () => {
             label="  Booking Management"
             checked={pool}
             onChange={(e) => setPool(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="own"
@@ -43,6 +46,7 @@ const SendCheckbox = () => {
             label=" Cleaning Coordination"
             checked={owner}
             onChange={(e) => setOwner(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="light"
@@ -50,6 +54,7 @@ const SendCheckbox = () => {
             label=" Owner Portal / Dashboard Access"
             checked={light}
             onChange={(e) => setLight(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
         </div>
         <div className="flex  lg:flex-nowrap flex-wrap  items-center gap-3  lg:gap-10 mb-3.5">
@@ -59,6 +64,7 @@ const SendCheckbox = () => {
             label=" In-House Cleaning Team"
             checked={reno}
             onChange={(e) => setReno(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="construct"
@@ -66,6 +72,7 @@ const SendCheckbox = () => {
             label="Permit & Licensing Assistance"
             checked={construct}
             onChange={(e) => setConstruct(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
           <CheckBox
             name="utility"
@@ -73,6 +80,7 @@ const SendCheckbox = () => {
             label="Concierge Services"
             checked={utility}
             onChange={(e) => setUtility(e.target.checked)}
+            labelClass="!text-[#000000]"
           />
         </div>
       </div>

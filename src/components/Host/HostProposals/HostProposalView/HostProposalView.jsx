@@ -6,6 +6,7 @@ import {
   GreentickSVG,
   ModalmsgSVG,
   MsgSVG,
+  QuestionSVG,
   RedcrossSVG,
   Thumbsup,
 } from "../../../../constants/Icons";
@@ -76,10 +77,10 @@ const HostProposalView = ({ setClose = null }) => {
             <Modal
               modalTitle="Send Proposal Request"
               modalText="You’re about to request a proposal from this Property Manager."
-              modalImg={ModalmsgSVG}
+              modalImg={QuestionSVG}
               onClose={() => setShowModal(false)}
-              width="780px"
-              height="470px"
+              width="800px"
+              height="395px"
               useBgImage={true}
               showModalIcon={true}
               showTitle={true}
@@ -87,6 +88,7 @@ const HostProposalView = ({ setClose = null }) => {
               updateClass="pt-10 px-8  items-start"
               textClass="!mx-0 text-start"
               ModalbgClass={HostdeclinePNG}
+              // bgClass="overflow-auto"
             >
               <HostDeclineModal />
             </Modal>

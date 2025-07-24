@@ -6,6 +6,7 @@ import {
   ProfileSVG,
   RedlocationSVG,
   StarSVG,
+  Thumbsup,
 } from "../../../constants/Icons";
 import SemiCircleProgress from "../MatchScore";
 import Button from "../../Button/Button";
@@ -130,39 +131,18 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
                 <Button
                   variant="borderbtn"
                   prefixImg={BluemsgSVG}
-                  className="text-sm"
+                  className="text-[12px]"
                   onClick={(e) => {
                     e.preventDefault();
                     if (isMyMatchPage) {
-                      navigate(ROUTES.HOSTMESSAGES); // ✅ MyMatch redirect
+                      navigate(ROUTES.HOSTMESSAGES); 
                     } else {
-                      setShowSendMessageModal(index); // ✅ Dashboard opens modal
+                      setShowSendMessageModal(index); 
                     }
                   }}
                 >
                   Send Message
                 </Button>
-
-                {/* {!isMyMatchPage && (
-                  <div
-                    className={`w-full ${
-                      borderBtn && index === 2
-                        ? "border border-[#555555] w-[160px] h-[48px] pt-3.5 rounded-[8px] mt-2"
-                        : "mt-2"
-                    }`}
-                  >
-                    <Button
-                      className="!md:px-2 text-[12px] font-semibold text-[#555555]"
-                      prefixImg={CrossSVG}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowDeclineModal(index);
-                      }}
-                    >
-                      Decline Match
-                    </Button>
-                  </div>
-                )} */}
 
                 <div
                   className={`w-full ${
@@ -190,7 +170,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
             <Modal
               modalTitle="Request Sent Successfully"
               modalText="Your request has been sent to this Property Manager. They’ve been notified and will respond with a customized proposal shortly."
-              modalImg={ModalmsgSVG}
+              modalImg={Thumbsup}
               onClose={() => setShowRequestModal(null)}
               useBgImage={true}
               height="189px"
@@ -203,7 +183,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
             />
           )}
 
-          {/* ✅ MODALS */}
+          {/*MODALS */}
           {showSendMessageModal === index && (
             <Modal
               modalTitle="Send a Message to Host"

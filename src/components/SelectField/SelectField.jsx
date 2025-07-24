@@ -5,7 +5,7 @@ const SelectField = ({ label, options = [], value, onChange, name, id ,selectCla
   return (
     <div className={` relative ${selectClass}`}>
       {label && (
-        <label htmlFor={id || name} className={` ${className} block mb-2.5 font-bold text-sm text-[#323232]`}>
+        <label htmlFor={id || name} className={` ${className} block mb-2 font-bold text-sm text-[#323232]`}>
           {label}
         </label>
       )}
@@ -15,7 +15,7 @@ const SelectField = ({ label, options = [], value, onChange, name, id ,selectCla
           name={name}
           value={value}
           onChange={onChange}
-          className="block w-full px-4 py-3 h-[48px]  bg-[#FBFCFD] border border-[#2525251A] rounded-lg text-sm text-[#25252580] appearance-none"
+          className="block w-full px-4 py-3 h-[48px]  border border-[#2525251A] rounded-lg text-sm text-[#25252580] appearance-none"
         >
           {options.map((opt, idx) => (
             <option key={idx} value={opt.value}>

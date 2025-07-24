@@ -6,6 +6,7 @@ import {
   BlueeyeSVG,
   ClockSVG,
   FilterSVG,
+  FlagedSVG,
   LocationSVG,
   StarSVG,
 } from "../../../constants/Icons";
@@ -105,7 +106,8 @@ const PMCompaniesCards = () => {
             {
               label: "Flagged PM",
               value: "Flagged PM",
-              icon: <img src={ClockSVG} alt="Flagged PM" />,
+              icon: <img src={FlagedSVG} alt="Flagged PM"/>,
+              labelClass: "!text-[#FF0000]"
             },
           ]}
         />

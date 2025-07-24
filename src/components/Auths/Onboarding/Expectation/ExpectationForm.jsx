@@ -7,6 +7,7 @@ import FileUpload from "../../../UploadFile/UploadFile";
 import TextArea from "../../../TextArea/TextArea";
 import RadioField from "../../RadioField/RadioField";
 import { ROUTES } from "../../../../constants/Routes";
+import MultiCheckboxDropdown from "../Portfolio/MultiCheckboxDropdown";
 
 const ExpectationForm = () => {
   const navigate = useNavigate();
@@ -17,6 +18,9 @@ const ExpectationForm = () => {
   const [restockingCharges, setRestockingCharges] = useState("");
   const [markupMaintenance, setMarkupMaintenance] = useState("");
   const [financialProjection, setFinancialProjection] = useState("");
+  const [cleaningHandledBy, setCleaningHandledBy] = useState([]);
+    const [openDropdown, setOpenDropdown] = useState(null);
+
 
   const Property = [
     { label: "Select an option", value: "Select an option" },
@@ -54,13 +58,13 @@ const ExpectationForm = () => {
           fieldName="w-full"
           placeholder="Enter number"
         />
-        <SelectField
+        <InputField
           label="Superhost / Premier Host?"
-          name="role"
-          value={willing}
-          onChange={(e) => setWilling(e.target.value)}
-          options={Property}
-          selectClass="mb-7 w-full"
+          id="text"
+          name="text"
+          type="text"
+          fieldName="w-full"
+          placeholder="Enter Host"
         />
         <InputField
           label="% of Direct Channel Bookings"
@@ -103,6 +107,18 @@ const ExpectationForm = () => {
           options={TOOL}
           selectClass="mb-7 w-full"
           className="font-bold"
+        />
+        <MultiCheckboxDropdown
+          label="Contract Length"
+          options={["Month-to-month", "6 month", "1 year"]}
+          placeholder="Select an option Or Type"
+          selectedValues={cleaningHandledBy}
+          setSelectedValues={setCleaningHandledBy}
+          className="mb-5"
+          dropdownKey="clean"
+          isOpen={openDropdown === "clean"}
+          setOpenDropdown={setOpenDropdown}
+          isMulti={true}
         />
         <TextArea
           type="text"
@@ -279,7 +295,7 @@ const ExpectationForm = () => {
           <Button
             variant="graybtn"
             className="mb-5 w-[30%]"
-             onClick={() => navigate(ROUTES.PORTFOLIO)}
+            onClick={() => navigate(ROUTES.PORTFOLIO)}
           >
             Back
           </Button>

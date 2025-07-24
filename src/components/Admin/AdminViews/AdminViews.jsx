@@ -22,6 +22,7 @@ import AdminOverView from "./AdminOverView";
 import AcceptedViewTable from "./AcceptedViewTable";
 import AcceptedHistoryTable from "./AcceptedHistoryTable";
 import FeebbackHistory from "./FeebbackHistory";
+import ManuallyAsign from "../../ManuallyAsign/ManuallyAsign";
 
 const AdminViews = ({ setClose }) => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const AdminViews = ({ setClose }) => {
             variant="borderbtn"
             className="border-[#4D72FF] text-[12px] text-[#4D72FF] max-w-[157px]"
             prefixImg={BlueplusSVG}
-            onClick={() => setSendPage(<SendProposal setClose={setSendPage} />)}
+            onClick={() => setSendPage(<ManuallyAsign setClose={setSendPage} />)}
           >
             Manually Assign PM
           </Button>

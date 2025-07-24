@@ -14,6 +14,7 @@ const PMLayout = () => {
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
         name={"Property Manager"}
+        property="PM"
       />
       <div className="flex relative bg-white h-screen">
         <SideBar

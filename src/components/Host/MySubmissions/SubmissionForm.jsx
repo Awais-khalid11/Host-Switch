@@ -43,6 +43,7 @@ const SubmissionForm = () => {
   const [isOpen, setIsOpen] = useState("");
   const [isDécor, setIsDécor] = useState("");
 
+  const [message, setMessage] = useState("");
 
   return (
     <div>
@@ -204,7 +205,7 @@ const SubmissionForm = () => {
               "Maintenance responsivness",
               "Pricing Strategy",
               "Guest Experience",
-              "Tech & automation"
+              "Tech & automation",
             ]}
             selectedValues={topTypes}
             setSelectedValues={setTopTypes}
@@ -437,6 +438,8 @@ const SubmissionForm = () => {
           type="text"
           placeholder={"Enter message..."}
           label={"Anything else you'd like us to know?"}
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
         />
         <div className="flex justify-end">
           <Button variant="defaultBtn" className="md:w-[160px] w-full">

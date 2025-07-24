@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import AwaitingSam from "./AwaitingSam";
 import { useNavigate } from "react-router-dom";
-import { BackarrowSVG, CrossSVG, DocumentSVG, MsgSVG } from "../../../../Constants/Icons";
+import { BackarrowSVG, BluemsgSVG, CrossSVG, DocumentSVG, MsgSVG } from "../../../../Constants/Icons";
 import Button from "../../../Button/Button";
 import { ROUTES } from "../../../../constants/Routes";
 import PropertyDetails from "../../../Views/PropertyDetails/PropertyDetails";
@@ -30,7 +30,7 @@ const AwaitingPropsal = ({setClose}) => {
           <Button
             variant="borderbtn"
             className=" !text-[12px] max-w-[157px]"
-            prefixImg={DocumentSVG}
+            prefixImg={BluemsgSVG}
            
           >
            Message Host

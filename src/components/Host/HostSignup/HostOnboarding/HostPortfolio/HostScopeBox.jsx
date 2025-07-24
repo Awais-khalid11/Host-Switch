@@ -38,7 +38,7 @@ const HostScopeBox = () => {
           onChange={(e) => setYard(e.target.checked)}
         />
       </div>
-      <div className="flex md:flex-nowrap flex-wrap items-center  md:gap-12 gap-5 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center  md:gap-8 gap-5 mb-3.5">
         <CheckBox
           name="own"
           id="own"

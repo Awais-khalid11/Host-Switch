@@ -48,7 +48,7 @@ const SendForm = () => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             options={roleOptions}
-            selectClass="md:w-1/2 w-full mb-5"
+            selectClass="md:w-1/2 w-full mb-4"
           />
           <InputField
             label="Start Date Availability"
@@ -57,7 +57,7 @@ const SendForm = () => {
             type="date"
             fieldName="md:w-1/2 w-full"
             placeholder="MM/YY"
-            InputClass="h-[51px]"
+            InputClass="h-[48px]"
           />
         </div>
         <div className="flex md:flex-nowrap flex-wrap gap-2.5">
@@ -67,7 +67,7 @@ const SendForm = () => {
             value={setup}
             onChange={(e) => setSetup(e.target.value)}
             options={SETUP}
-            selectClass="md:w-1/2 w-full mb-5"
+            selectClass="md:w-1/2 w-full mb-4"
           />
           <InputField
             label="Message to Host"
@@ -76,7 +76,7 @@ const SendForm = () => {
             type="text"
             fieldName="md:w-1/2 w-full"
             placeholder="“Hi Sara, please find attached my proposal...”"
-            InputClass="h-[51px]"
+            InputClass="h-[48px]"
           />
         </div>
         <FileUpload label="Upload Introduction Video" />

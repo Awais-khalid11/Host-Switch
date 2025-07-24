@@ -146,6 +146,7 @@ const InvoicesTable = () => {
 
   const rowActions = (rowData) => {
     const isPaid = rowData.status === "Paid";
+    const isOverdue = rowData.status === "Overdue";
 
     const actions = [
       {
@@ -153,7 +154,7 @@ const InvoicesTable = () => {
         icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
         onClick: () =>
           setActivePage(
-            isPaid ? (
+            rowData?.status === "PAID" || rowData?.status === "OVERDUE" ? (
               <PaidInvoice setClose={setActivePage} />
             ) : (
               <InvoiceView setClose={setActivePage} />
@@ -171,7 +172,14 @@ const InvoicesTable = () => {
       actions.push({
         label: "Pay",
         icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
-        onClick: () => setActivePage(<Pay setClose={setActivePage}/>),
+        onClick: () => setActivePage(<Pay setClose={setActivePage} />),
+      });
+    }
+    if (isOverdue) {
+      actions.push({
+        label: "Pay",
+        icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
+        onClick: () => setActivePage(<Pay setClose={setActivePage} />),
       });
     }
 

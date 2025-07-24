@@ -15,6 +15,7 @@ const HostLayout = () => {
         setShowSidebar={setShowSidebar}
         name={"Property Manager"}
         property="Host"
+        
       />
       <div className="flex relative bg-white h-screen">
         <SideBar

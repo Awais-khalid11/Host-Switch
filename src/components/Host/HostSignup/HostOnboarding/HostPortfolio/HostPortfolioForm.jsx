@@ -18,12 +18,14 @@ const HostPortfolioForm = ({ onNext }) => {
   const [hostingTypes, setHostingTypes] = useState([]);
   const [cleanTypes, setCleanTypes] = useState([]);
   const [rentTypes, setRentTypes] = useState([]);
-
+  const [selectedValues, setSelectedValues] = useState([]);
   const [property, setProperty] = useState("");
   const [accountManager, setAccountManager] = useState("");
   const [willing, setWilling] = useState("");
   const [choose, setChoose] = useState("");
   const [condition, setCondition] = useState(false);
+    const [openDropdown, setOpenDropdown] = useState(null);
+  
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const HostPortfolioForm = ({ onNext }) => {
       <form>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <InputField
-            label="Property Address*"
+            label="Property Address"
             id="address"
             name="address"
             type="text"
@@ -55,9 +57,15 @@ const HostPortfolioForm = ({ onNext }) => {
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <MultiCheckboxDropdown
             label="How Often Is Your Property Rented Out?"
+            placeholder="How Often Is Your Property Rented Out?"
             options={["Full-time", "seasonal", "Ocassionally"]}
             selectedValues={rentTypes}
             setSelectedValues={setRentTypes}
+            dropdownKey="rent"
+            isOpen={openDropdown === "rent"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={false}
+            className="mb-8"
           />
           <InputField
             label="Airbnb/Vrbo Link"
@@ -80,8 +88,13 @@ const HostPortfolioForm = ({ onNext }) => {
               "Beachfront/Waterfront",
               "Other",
             ]}
+            placeholder="Select Property type"
             selectedValues={propertyTypes}
             setSelectedValues={setPropertyTypes}
+            dropdownKey="region"
+            isOpen={openDropdown === "region"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={false}
             className="mb-5"
           />
           <MultiCheckboxDropdown
@@ -91,8 +104,13 @@ const HostPortfolioForm = ({ onNext }) => {
               "100 properties or less",
               "Size doesn't matter",
             ]}
+            placeholder="Select PM size preference"
             selectedValues={hostingTypes}
             setSelectedValues={setHostingTypes}
+             dropdownKey="hosting"
+            isOpen={openDropdown === "hosting"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={true}
             className="mb-5"
           />
           <MultiCheckboxDropdown
@@ -102,8 +120,13 @@ const HostPortfolioForm = ({ onNext }) => {
               "3rd party cleaners",
               "Doesn't matter to me",
             ]}
+            placeholder="Select cleaning preference"
             selectedValues={cleanTypes}
             setSelectedValues={setCleanTypes}
+             dropdownKey="clean"
+            isOpen={openDropdown === "clean"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={true}
             className="mb-5"
           />
         </div>
@@ -136,6 +159,8 @@ const HostPortfolioForm = ({ onNext }) => {
           type="text"
           placeholder={"Enter message..."}
           label={"Anything else you'd like us to know?"}
+                onChange={(e) => setMessage(e.target.value)} 
+
         />
         <div className="mb-5">
           <CheckBox

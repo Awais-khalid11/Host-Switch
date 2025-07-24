@@ -16,14 +16,14 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
     <div>
       <button
         onClick={() => setShowSidebar((prev) => !prev)}
-        className="lg:hidden fixed top-8 left-6 z-[100] text-[#252525] "
+        className="lg:hidden fixed top-8 left-6 text-[#252525] "
       >
         <IoReorderThreeOutline size={30} />
       </button>
       <div className="bg-white fixed top-0 right-0 left-0 pt-2.5 z-99 ">
         <div className=" bg-[#F2F7F9] pr-4 pl-13 lg:px-4 py-2 mx-2.5 rounded-[12px]">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-30">
+            <div className="flex relative !z-50 items-center gap-30">
               <img
                 src={HeaderlogoSVG}
                 alt="logoImg"
@@ -44,8 +44,11 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
                   onClick={() => {
                     if (property === "Host") {
                       navigate(ROUTES.HOSTNOTIFICATION);
+
                     } else if (property === "Admin") {
                       navigate(ROUTES.ADMINNOTIFICATION);
+                    } else if (property === "PM"){
+                      navigate(ROUTES.PMNOTIFICATION)
                     }
                   }}
                 />

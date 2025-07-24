@@ -6,6 +6,7 @@ export const ROUTES = {
     MESSAGES: "/pm/messages",
     SETTINGS: "/pm/settings",
     SUPPORT: "/pm/conciergesupport",
+    PMNOTIFICATION: "/pm/pmnotification",
     // PAY: "/pm/pay",
     // PAIDINVOICE: "/pm/paidinvoice",
     // UNPAID: "/PM/InvoiceView",

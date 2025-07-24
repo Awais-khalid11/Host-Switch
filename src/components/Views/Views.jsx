@@ -48,15 +48,16 @@ const Views = ({ setClose }) => {
             <Modal
               modalTitle="Please tell us why are you declining this Host property?"
               modalText="Your feedback helps us improve future matches."
-              onClose={() => setShowDeclineModal(false)}
+              onClose={() => setShowModal(false)}
               width="780px"
-              height="500px"
+              height="395px"
               bgColor="#4D72FF"
               updateClass="!flex-none !justify-start !items-start px-8 pt-18"
               bgClass="!flex-none !justify-start !items-start"
               textClass="w-full !mx-0 text-start"
               useBgImage={true}
               showModalIcon={true}
+              
               showTitle={true}
               showText={true}
               modalImg={QuestionSVG}
@@ -84,7 +85,7 @@ const Views = ({ setClose }) => {
           </Button>
           <Button
             variant="borderbtn"
-            className="border-[#CE1B1B] text-[#CE1B1B] max-w-[157px]"
+            className="border-[#CE1B1B]  text-[12px] text-[#CE1B1B] max-w-[157px]"
             prefixImg={RedcrossSVG}
             onClick={(e) => {
               e.preventDefault();

@@ -49,6 +49,7 @@ import AdminConciergeMessagesPage from "./pages/AdminPages/AdminConciergeMessage
 import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
 import BellNotification from "./components/Notification/BellNotification";
 import AdminBellNotification from "./components/Admin/AdminNotification/AdminBellNotification";
+import PMNotification from "./components/PMNotification/PMNotification";
 
 const MainRouter = () => {
   return (
@@ -68,6 +69,7 @@ const MainRouter = () => {
         <Route path="paidinvoice" element={<PaidInvoice />} />
         <Route path="pay" element={<Pay />} />
         <Route path="livechat" element={<LiveChat />} />
+        <Route path="pmnotification" element={<PMNotification />} />
       </Route>
 
       <Route path="/host" element={<HostLayout />}>

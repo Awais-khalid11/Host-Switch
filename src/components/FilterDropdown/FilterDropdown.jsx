@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const FilterDropdown = ({ button, options = [], onSelect, className = "" }) => {
+const FilterDropdown = ({ button, options = [], onSelect, className = "", }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -45,10 +45,10 @@ const FilterDropdown = ({ button, options = [], onSelect, className = "" }) => {
                   onSelect?.(opt.value); 
                   setIsOpen(false); 
                 }}
-                className="w-full cursor-pointer text-left flex items-center gap-2 px-3 py-2 text-sm text-[#252525] hover:bg-gray-100"
+                className={`w-full cursor-pointer text-left flex items-center gap-2 px-3 py-2 text-sm text-[#252525] hover:bg-gray-100`}
               >
                 {opt.icon}
-                <i>{opt.label}</i>
+                <i className={`${opt.labelClass}`}>{opt.label}</i>
               </button>
             ))}
           </motion.div>

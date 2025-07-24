@@ -4,6 +4,7 @@ import {
   BackarrowSVG,
   GreentickSVG,
   ModalmsgSVG,
+  Thumbsup,
 } from "../../../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../../InputField/InputField";
@@ -85,7 +86,7 @@ const HostFeedback = ({setClose}) => {
           <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px] ">
             <div className="mb-5 md:w-1/2 w-full">
               <h3 className="text-sm font-bold mb-2.5">
-                Are you locally based in the market(s) you serve?
+               Would you recommend HostSwitch to other property owners? 
               </h3>
              <div className="flex items-center gap-5 w-full h-[48px] mb-3.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none">
                <RadioField
@@ -149,7 +150,7 @@ const HostFeedback = ({setClose}) => {
           <Modal
             modalTitle="Thank you!"
             modalText="Your feedback has been submitted. We wish you great success with your new property manager."
-            modalImg={ModalmsgSVG}
+            modalImg={Thumbsup}
             onClose={() => setShowModal(false)}
             width="586px"
             height="263px"

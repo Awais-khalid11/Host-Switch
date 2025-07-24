@@ -19,7 +19,7 @@ import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendMessageModal from "../Modal/SendMessageModal";
 import { RequestPNG, SndmsgPNG } from "../../constants/Imgs";
 
-const IncomingCards = ({ incomingData, setCardDetail }) => {
+const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   const navigate = useNavigate();
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -131,7 +131,7 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
                 textClass="!mx-0 text-start"
                 ModalbgClass={SndmsgPNG}
               >
-                <SendMessageModal />
+                <SendMessageModal userType={userType} />
               </Modal>
             )}
           </div>

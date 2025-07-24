@@ -1,4 +1,4 @@
-// import React, { useEffect, useRef } from "react";
+// import React, { useEffect, useRef, useState } from "react";
 // import { ModalbgPNG } from "../../constants/Imgs";
 
 // const Modal = ({
@@ -17,9 +17,22 @@
 //   updateClass,
 //   textClass,
 //   bgClass,
-//   ModalbgClass
+//   ModalbgClass,
 // }) => {
 //   const modalRef = useRef();
+//   const [isDesktop, setIsDesktop] = useState(true);
+
+//   // 👇 Check on mount whether it's desktop
+//   useEffect(() => {
+//     const checkScreenSize = () => {
+//       setIsDesktop(window.innerWidth >= 1024); // 1024px = lg breakpoint
+//     };
+
+//     checkScreenSize(); // Run once on mount
+//     window.addEventListener("resize", checkScreenSize);
+
+//     return () => window.removeEventListener("resize", checkScreenSize);
+//   }, []);
 
 //   useEffect(() => {
 //     const handleOutsideClick = (e) => {
@@ -32,20 +45,20 @@
 //     return () => document.removeEventListener("mousedown", handleOutsideClick);
 //   }, [onClose]);
 
+//   if (!isDesktop) return null;
+
 //   return (
 //     <div className="fixed inset-0 z-50 px-2.5 flex justify-center items-center bg-black/5">
-//       <div className="flex flex-col  justify-center items-center px-2.5 mx-2.5">
-//         {/* Optional Top Circle Icon */}
+//       <div className="flex flex-col justify-center items-center px-2.5 mx-2.5">
 //         {showModalIcon && (
-//           <div className="w-[88px] h-[88px] relative top-8 z-50 rounded-full bg-[#4D72FF] text-white flex items-center justify-center">
+//           <div className="w-[88px] h-[88px] relative top-8 !z-50 rounded-full bg-[#4D72FF] text-white flex items-center justify-center">
 //             {modalImg && <img src={modalImg} alt="img" />}
 //           </div>
 //         )}
 
-//         {/* Modal Container */}
 //         <div
 //           ref={modalRef}
-//           className={` ${bgClass}`}
+//           className={`${bgClass}`}
 //           style={{
 //             width,
 //             height,
@@ -81,9 +94,9 @@
 
 // export default Modal;
 
-
 import React, { useEffect, useRef, useState } from "react";
 import { ModalbgPNG } from "../../constants/Imgs";
+import { IoClose } from "react-icons/io5"; // You can change this icon if needed
 
 const Modal = ({
   modalTitle,
@@ -106,19 +119,16 @@ const Modal = ({
   const modalRef = useRef();
   const [isDesktop, setIsDesktop] = useState(true);
 
-  // 👇 Check on mount whether it's desktop
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1024); // 1024px = lg breakpoint
+      setIsDesktop(window.innerWidth >= 1024);
     };
 
-    checkScreenSize(); // Run once on mount
+    checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
-
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // 👇 Close on outside click
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -130,7 +140,6 @@ const Modal = ({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [onClose]);
 
-  // 🚫 Don't render anything on mobile/tablet
   if (!isDesktop) return null;
 
   return (
@@ -144,7 +153,7 @@ const Modal = ({
 
         <div
           ref={modalRef}
-          className={`${bgClass}`}
+          className={`relative ${bgClass}`}
           style={{
             width,
             height,
@@ -155,6 +164,15 @@ const Modal = ({
             borderRadius: "16px",
           }}
         >
+          <div >
+            <button
+              onClick={onClose}
+              className="absolute top-3 w-6 h-6 rounded-full border border-white flex items-center justify-center right-3 text-white text-xl z-50"
+            >
+              <IoClose />
+            </button>
+          </div>
+
           <div
             className={`${updateClass} pt-5 flex flex-col justify-center items-center`}
           >

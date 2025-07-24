@@ -11,43 +11,43 @@ import { FindSVG,
 
 
 const groupedNotifications = [
-  {
-    heading: "Host Activities",
-    items: [
-      {
-        img: FindSVG,
-        bgColor: "#E8F5FA",
-        title: 'New Host Signup',
-        description: "Host Sarah has created an account and is ready for onboarding",
-        time: "2 min ago",
-        isNew: true,
-      },
-      {
-        img: KeyboardSVG,
-        bgColor: "#1AB06F0D",
-        title: 'Host Sarah has created an account and is ready for onboarding',
-        description: "Host James requested a refresh of PM matches",
-        time: "2 min ago",
-        isNew: true,
-      },
-      {
-        img: NoticrossSVG,
-        bgColor: "#D92D200D",
-        title: 'You rejected PM Lisa\'s proposal for "Lakeview Cottage."',
-        description: "You can request new matches anytime",
-        time: "2 min ago",
-        isNew: true,
-      },
-      {
-        img: NotimsgSVG,
-        bgColor: "#F2A5160D",
-        title: "Host Declined All PMs",
-        description: "Host David declined all matched PMs for Lakeview Cottage.",
-        time: "2 min ago",
-        isNew: true,
-      },
-    ],
-  },
+  // {
+  //   heading: "Host Activities",
+  //   items: [
+  //     {
+  //       img: FindSVG,
+  //       bgColor: "#E8F5FA",
+  //       title: 'New Host Signup',
+  //       description: "Host Sarah has created an account and is ready for onboarding",
+  //       time: "2 min ago",
+  //       isNew: true,
+  //     },
+  //     {
+  //       img: KeyboardSVG,
+  //       bgColor: "#1AB06F0D",
+  //       title: 'Host Sarah has created an account and is ready for onboarding',
+  //       description: "Host James requested a refresh of PM matches",
+  //       time: "2 min ago",
+  //       isNew: true,
+  //     },
+  //     {
+  //       img: NoticrossSVG,
+  //       bgColor: "#D92D200D",
+  //       title: 'You rejected PM Lisa\'s proposal for "Lakeview Cottage."',
+  //       description: "You can request new matches anytime",
+  //       time: "2 min ago",
+  //       isNew: true,
+  //     },
+  //     {
+  //       img: NotimsgSVG,
+  //       bgColor: "#F2A5160D",
+  //       title: "Host Declined All PMs",
+  //       description: "Host David declined all matched PMs for Lakeview Cottage.",
+  //       time: "2 min ago",
+  //       isNew: true,
+  //     },
+  //   ],
+  // },
   {
     heading: "Host Activities",
     items: [
