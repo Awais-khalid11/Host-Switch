@@ -120,7 +120,7 @@ const HostCompanyInfoForm = () => {
           <Link
             variant="graybtn"
             className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
-            to={ROUTES.LOGIN}
+            to={ROUTES.ROLESELECTION}
           >
             Back
           </Link>

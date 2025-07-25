@@ -99,7 +99,7 @@ const ManuallyAsign = ({ setClose }) => {
   const rowActions = (rowData) => (
     <button className="flex items-center md:text-sm text-[10px] whitespace-nowrap gap-1" onClick={()=>navigate(ROUTES.PMVERIFIED)}>
       <img src={EyeSVG} alt="view" className="w-4 h-4" />
-      View Chat
+      View
     </button>
   );
 

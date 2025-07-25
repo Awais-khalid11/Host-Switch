@@ -4,7 +4,7 @@ import Button from "../../Button/Button";
 import Modal from "../../Modal/Modal";
 import PasswordModal from "../../Modal/PasswordModal";
 import { Thumbsup } from "../../../Constants/Icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import { PasswordmodalPNG } from "../../../constants/Imgs";
 
@@ -33,13 +33,13 @@ const NewPasswordForm = () => {
           InputClass="h-[56px]"
         />
         <div className="flex gap-4">
-          <Button
+          <Link
             variant="graybtn"
-            className="mb-5 w-[30%]"
-            onClick={() => navigate(ROUTES.OTP)}
+            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            to={ROUTES.OTP}
           >
             Back
-          </Button>
+          </Link>
           <Button
             variant="defaultBtn"
             className="mb-5 w-full md:py-[16px] rounded-[8px]"
