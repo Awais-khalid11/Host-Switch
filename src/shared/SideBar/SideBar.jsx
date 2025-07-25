@@ -27,7 +27,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
         ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
         lg:translate-x-0`}
       >
-        <div className="flex flex-col justify-between h-full lg:w-full overflow-y-auto p-5 bg-[#F2F7F9] rounded-[12px] ml-2.5 mt-2.5 mb-2.5">
+        <div className="flex flex-col justify-between h-full lg:w-full overflow-y-auto p-5 bg-[#F2F7F9] rounded-[12px] lg:ml-2.5 lg:mt-2.5 lg:mb-2.5">
           
           {/* Top Section with Logo */}
           <div>
@@ -45,7 +45,7 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
               </button>
             </div>
 
-            <nav className="md:-ml-0 -ml-5">
+            <nav className="md:-ml-0 -ml-3">
               {mainLinks.map((link, index) => (
                 <NavLink
                   key={index}

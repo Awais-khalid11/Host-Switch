@@ -210,14 +210,15 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
               modalImg={ModalmsgSVG}
               onClose={() => setShowDeclineModal(null)}
               useBgImage={true}
-              height="500px"
-              width="780px"
+              height="490px"
+              width="800px"
               showModalIcon={true}
               showTitle={true}
               showText={true}
               updateClass="px-5 pt-15 items-start"
               textClass="!mx-0 text-start"
               ModalbgClass={HostdeclinePNG}
+              iconPosition="relative -right-[4px]"
             >
               <HostDeclineModal />
             </Modal>

@@ -28,8 +28,6 @@ const PMNotificationHeader = () => {
             </h2>
             {activeTab === "unread" && <img src={TwoSVG} alt="" className="w-4 h-4" />}
           </div>
-
-          {/* All Notifications tab */}
           <h3
             className={`md:text-base text-[12px] font-bold uppercase cursor-pointer pb-2.5 ${
               activeTab === "all"

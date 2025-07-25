@@ -40,7 +40,7 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full h-[48px] mb-3.5  border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#25252580] placeholder:text-[#25252580] focus:outline-none ${InputClass}`}
+          className={`w-full h-[48px] mb-3.5  border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#000000] placeholder:text-[#25252580] focus:outline-none ${InputClass}`}
           {...rest}
         />
 

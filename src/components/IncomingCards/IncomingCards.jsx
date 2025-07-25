@@ -18,13 +18,13 @@ import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendMessageModal from "../Modal/SendMessageModal";
 import { RequestPNG, SndmsgPNG } from "../../constants/Imgs";
+import IncomingModal from "../Modal/IncomingModal";
 
 const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   const navigate = useNavigate();
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  console.log(userType, "incoming error");
   
 
   const dropdownActions = [
@@ -91,7 +91,6 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
               <DropdownActions actions={dropdownActions} />
             </div>
 
-            {/* Middle Section */}
             <div className="mb-4">
               <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
                 <img src={LocationSVG} alt="location" />3 King's Road, Chelsea,
@@ -106,24 +105,26 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
               </h5>
             </div>
 
-            {/* Bottom Button */}
             <Button
               variant="borderbtn"
               prefixImg={BluemsgSVG}
               className="text-sm"
               onClick={(e) => {
-                e.preventDefault();
+                // e.preventDefault();
                 setShowModal(true);
               }}
             >
               Send Message
             </Button>
-            {showModal && (
+           
+          </div>
+        ))}
+         {showModal  && (
               <Modal
                 modalTitle="Send a Message to Host"
                 modalText="introduce yourself and invite the host to view your services."
                 modalImg={ModalmsgSVG}
-                onClose={() => setShowModal(false)}
+                onClose={() => setShowModal(null)}
                 useBgImage={true}
                 height="346px"
                 width="582px"
@@ -134,11 +135,9 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
                 textClass="!mx-0 text-start"
                 ModalbgClass={SndmsgPNG}
               >
-                <SendMessageModal userType={"pm"} setIssOpen={setShowModal} />
+                <IncomingModal />
               </Modal>
             )}
-          </div>
-        ))}
       </div>
     </>
   );

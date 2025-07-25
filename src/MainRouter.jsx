@@ -1,5 +1,5 @@
-import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Login from "./components/Auths/Login/Login";
 import Password from "./components/Auths/Password/Password";
 import Otp from "./components/Auths/Otp/Otp";
@@ -50,9 +50,15 @@ import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
 import BellNotification from "./components/Notification/BellNotification";
 import AdminBellNotification from "./components/Admin/AdminNotification/AdminBellNotification";
 import PMNotification from "./components/PMNotification/PMNotification";
+import Unlock from "./components/Unlock/Unlock";
+import AdminViews from "./components/Admin/AdminViews/AdminViews";
+import PmVerified from "./components/Admin/PmVerfied/PmVerified";
+import RoleSelection from "./components/Auths/RoleSelection/RoleSelection";
 
 const MainRouter = () => {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       <Route path="/pm" element={<PMLayout />}>
         <Route index element={<Navigate to="/pm/dashboard" />} />
@@ -90,6 +96,7 @@ const MainRouter = () => {
         <Route path="hostfeedback" element={<HostFeedback />} />
         <Route path="mymatchproposal" element={<MyMatchProposal />} />
         <Route path="/host/bellnotification" element={<BellNotification />} />
+        <Route path="/host/unlock" element={<Unlock />} />
       </Route>
 
       {/* Admin Dashboard Pages */}
@@ -106,6 +113,7 @@ const MainRouter = () => {
         />
         <Route path="adminlivechat" element={<AdminLiveChat />} />
         <Route path="adminbellnotification" element={<AdminBellNotification />} />
+        <Route path="pmVerified" element={<PmVerified />} />
       </Route>
 
       {/* Auth Routes (without layout) */}
@@ -117,6 +125,7 @@ const MainRouter = () => {
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/expectation" element={<Expectation />} />
       <Route path="/submitting" element={<Submitting />} />
+      <Route path="/roleselection" element={<RoleSelection />} />
 
       {/* Host Routes */}
       <Route path="/hostcompanyinfo" element={<HostCompanyInfo />} />
@@ -124,7 +133,19 @@ const MainRouter = () => {
       <Route path="/hostportfolio" element={<HostPortfolio />} />
 
     </Routes>
+    </>
   );
 };
 
 export default MainRouter;
+
+
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};

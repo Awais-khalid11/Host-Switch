@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../../constants/Routes";
 import CheckBox from "../../../../CheckBox/CheckBox";
 import RadioField from "../../../../Auths/RadioField/RadioField";
@@ -17,14 +17,10 @@ const HostCompanyInfoForm = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [cleaningHandledBy, setCleaningHandledBy] = useState([]);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    navigate(ROUTES.HOSTPORTFOLIO);
-  };
 
   return (
     <div>
-      <form>
+      <form className="md:px-0 px-2.5">
         <div>
           <InputField
             label="Full Name"
@@ -120,21 +116,20 @@ const HostCompanyInfoForm = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4">
-          <Button
+        <div className="flex md:gap-4 gap-2">
+          <Link
             variant="graybtn"
-            className="mb-5 w-[30%]"
-            onClick={() => navigate(ROUTES.LOGIN)}
+            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            to={ROUTES.LOGIN}
           >
             Back
-          </Button>
-          <Button
-            variant="defaultBtn"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#4D72FF]"
-            onClick={handleClick}
+          </Link>
+          <Link
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
+            to={ROUTES.HOSTPORTFOLIO}
           >
             Save & Continue
-          </Button>
+          </Link>
         </div>
       </form>
     </div>

@@ -36,6 +36,8 @@ import HostdeclinePNG from "@/assets/Images/hostdecline.png";
 import ProposalmodalPNG from "@/assets/Images/proposalmodal.png";
 import ConfirmmodalPNG from "@/assets/Images/confirmmodal.png";
 import PasswordmodalPNG from "@/assets/Images/passwordmodal.png";
+import ViewmodalPNG from "@/assets/Images/viewmodal.png";
+import RolePNG from "@/assets/Images/role.png";
 
 export { 
     OtpPNG, 
@@ -75,5 +77,7 @@ export {
     HostdeclinePNG,
     ProposalmodalPNG,
     ConfirmmodalPNG,
-    PasswordmodalPNG
+    PasswordmodalPNG,
+    ViewmodalPNG,
+    RolePNG
 };

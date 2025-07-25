@@ -18,7 +18,7 @@ const groupedNotifications = [
       {
         img: FindSVG,
         bgColor: "#E8F5FA",
-        title: 'Proposals – Host Actions"',
+        title: "Proposals – Host Actions",
         description: "Host Sarah requested a proposal for Villa Beach House. Create and send your proposal now.",
         time: "2 min ago",
         isNew: true,
@@ -26,7 +26,7 @@ const groupedNotifications = [
       {
         img: KeyboardSVG,
         bgColor: "#1AB06F0D",
-        title: 'Proposal Accepted',
+        title: "Proposal Accepted",
         description: "Good news! Host James accepted your proposal for Oceanfront Villa.",
         time: "2 min ago",
         isNew: true,
@@ -34,7 +34,7 @@ const groupedNotifications = [
       {
         img: NoticrossSVG,
         bgColor: "#D92D200D",
-        title: 'Proposal Rejected',
+        title: "Proposal Rejected",
         description: "Host Emma decided not to proceed with your proposal for Pine Cabin.",
         time: "2 min ago",
         isNew: true,
@@ -109,14 +109,24 @@ const groupedNotifications = [
   },
 ];
 
-const PMNotificationLists = () => {
+const PMNotificationLists = ({ activeTab }) => {
+  const filteredNotifications =
+    activeTab === "unread"
+      ? groupedNotifications
+          .map((group) => ({
+            ...group,
+            items: group.items.filter((item) => item.isNew),
+          }))
+          .filter((group) => group.items.length > 0)
+      : groupedNotifications;
+
+      console.log("Filtered:", filteredNotifications);
+
   return (
-    <div className="w-full mx-auto  space-y-6">
-      {groupedNotifications.map((group, i) => (
+    <div className="w-full mx-auto space-y-6">
+      {filteredNotifications.map((group, i) => (
         <div key={i}>
-          <h3 className="text-[#2F355466] text-sm font-bold mb-2">
-            {group.heading}
-          </h3>
+          <h3 className="text-[#2F355466] text-sm font-bold mb-2">{group.heading}</h3>
           <div className="space-y-2">
             {group.items.map((item, idx) => (
               <div
@@ -138,7 +148,9 @@ const PMNotificationLists = () => {
                   </div>
                 </div>
                 <div className="flex flex-col-reverse items-end gap-1">
-                  <span className="text-xs whitespace-nowrap text-gray-400">{item.time}</span>
+                  <span className="text-xs whitespace-nowrap text-gray-400">
+                    {item.time}
+                  </span>
                   {item.isNew && <FaCircle className="text-red-500 w-2 h-2" />}
                 </div>
               </div>

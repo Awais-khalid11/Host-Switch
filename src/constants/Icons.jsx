@@ -122,6 +122,7 @@ import MoneySVG from "@/assets/Icons/money.svg";
 import FlagedSVG from "@/assets/Icons/flaged.svg";
 import PrevSVG from "@/assets/Icons/prev.svg";
 import NextSVG from "@/assets/Icons/next.svg";
+import LockSVG from "@/assets/Icons/lock.svg";
 
 export {
   DashboardSVG,
@@ -247,5 +248,6 @@ export {
   MoneySVG,
   FlagedSVG,
   NextSVG,
-  PrevSVG
+  PrevSVG,
+  LockSVG
 };

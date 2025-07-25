@@ -195,7 +195,7 @@ const MultiCheckboxDropdown = ({
       >
         <span
           className={`truncate ${
-            selectedValues.length === 0 ? "text-[#25252580]" : "text-[#25252580]"
+            selectedValues.length === 0 ? "text-[#25252580]" : "text-[#000000]"
           }`}
         >
           {selectedValues.length > 0

@@ -1,53 +1,17 @@
 import React from "react";
 import { FaCircle } from "react-icons/fa";
-import { FindSVG, 
+import {
+  FindSVG,
   GreenmsgSVG,
   KeyboardSVG,
   MoneySVG,
   NoticrossSVG,
   NotimsgSVG,
   SkymsgSVG,
-  TextmsgSVG,} from "../../../Constants/Icons";
-
+  TextmsgSVG,
+} from "../../../Constants/Icons";
 
 const groupedNotifications = [
-  // {
-  //   heading: "Host Activities",
-  //   items: [
-  //     {
-  //       img: FindSVG,
-  //       bgColor: "#E8F5FA",
-  //       title: 'New Host Signup',
-  //       description: "Host Sarah has created an account and is ready for onboarding",
-  //       time: "2 min ago",
-  //       isNew: true,
-  //     },
-  //     {
-  //       img: KeyboardSVG,
-  //       bgColor: "#1AB06F0D",
-  //       title: 'Host Sarah has created an account and is ready for onboarding',
-  //       description: "Host James requested a refresh of PM matches",
-  //       time: "2 min ago",
-  //       isNew: true,
-  //     },
-  //     {
-  //       img: NoticrossSVG,
-  //       bgColor: "#D92D200D",
-  //       title: 'You rejected PM Lisa\'s proposal for "Lakeview Cottage."',
-  //       description: "You can request new matches anytime",
-  //       time: "2 min ago",
-  //       isNew: true,
-  //     },
-  //     {
-  //       img: NotimsgSVG,
-  //       bgColor: "#F2A5160D",
-  //       title: "Host Declined All PMs",
-  //       description: "Host David declined all matched PMs for Lakeview Cottage.",
-  //       time: "2 min ago",
-  //       isNew: true,
-  //     },
-  //   ],
-  // },
   {
     heading: "Host Activities",
     items: [
@@ -55,9 +19,10 @@ const groupedNotifications = [
         img: FindSVG,
         bgColor: "#E8F5FA",
         title: "New Host Signup",
-        description: "Host Sarah has created an account and is ready for onboarding",
+        description:
+          "Host Sarah has created an account and is ready for onboarding",
         time: "2 min ago",
-        isNew: false,
+        isNew: true,
       },
       {
         img: SkymsgSVG,
@@ -65,23 +30,25 @@ const groupedNotifications = [
         title: "Host Requested New Matches",
         description: "Host James requested a refresh of PM matches",
         time: "2 min ago",
-        isNew: false,
+        isNew: true,
       },
       {
         img: NoticrossSVG,
         bgColor: "#04A9600D",
         title: "Host Declined All PMs",
-        description: "Host David declined all matched PMs for Lakeview Cottage.",
+        description:
+          "Host David declined all matched PMs for Lakeview Cottage.",
         time: "2 min ago",
-        isNew: false,
+        isNew: true,
       },
       {
         img: NoticrossSVG,
         bgColor: "#04A9600D",
         title: "Host Hired a PM",
-        description: "Host Emma hired PM Alex for Oceanfront Villa. An invoice was generated.",
+        description:
+          "Host Emma hired PM Alex for Oceanfront Villa. An invoice was generated.",
         time: "2 min ago",
-        isNew: false,
+        isNew: true,
       },
     ],
   },
@@ -89,12 +56,11 @@ const groupedNotifications = [
     heading: "PM Activities",
     items: [
       {
-        // img: MoneySVG,
-        // bgColor: "#04A9600D",
-         img: FindSVG,
+        img: FindSVG,
         bgColor: "#E8F5FA",
         title: "New PM Signup",
-        description: "PM Company 'Elite Rentals' has joined and is ready for verification",
+        description:
+          "PM Company 'Elite Rentals' has joined and is ready for verification",
         time: "2 min ago",
         isNew: false,
       },
@@ -110,7 +76,8 @@ const groupedNotifications = [
         img: NoticrossSVG,
         bgColor: "#F2A5160D",
         title: "PM Declined a Host Lead",
-        description: "PM Sarah declined Host Emma’s property lead. Reason: Property location outside service area",
+        description:
+          "PM Sarah declined Host Emma’s property lead. Reason: Property location outside service area",
         time: "2 min ago",
         isNew: false,
       },
@@ -123,7 +90,8 @@ const groupedNotifications = [
         img: MoneySVG,
         bgColor: "#04A9600D",
         title: "Invoice Generated",
-        description: "Invoice #1234 was generated for PM Elite Rentals – $350 due.",
+        description:
+          "Invoice #1234 was generated for PM Elite Rentals – $350 due.",
         time: "2 min ago",
         isNew: false,
       },
@@ -131,7 +99,8 @@ const groupedNotifications = [
         img: SkymsgSVG,
         bgColor: "#04A9600D",
         title: "Payment Received",
-        description: "Payment of $500 received from PM John for Host Emma’s hire.",
+        description:
+          "Payment of $500 received from PM John for Host Emma’s hire.",
         time: "2 min ago",
         isNew: false,
       },
@@ -163,15 +132,25 @@ const groupedNotifications = [
         description: "PM Alex submitted post-hire feedback for Host Sarah.",
         time: "2 min ago",
         isNew: false,
-      }
+      },
     ],
   },
 ];
+const AdminNotificationLists = ({ activeTab, notifications }) => {
+  const filteredNotifications =
+    notifications
+      ?.map((group) => ({
+        ...group,
+        items:
+          activeTab === "unread"
+            ? group.items.filter((item) => item.isNew)
+            : group.items,
+      }))
+      .filter((group) => group.items.length > 0) || [];
 
-const AdminNotificationLists = () => {
   return (
-    <div className="w-full mx-auto  space-y-6">
-      {groupedNotifications.map((group, i) => (
+    <div className="w-full mx-auto space-y-6">
+      {filteredNotifications.map((group, i) => (
         <div key={i}>
           <h3 className="text-[#2F355466] text-sm font-bold mb-2">
             {group.heading}
@@ -197,7 +176,9 @@ const AdminNotificationLists = () => {
                   </div>
                 </div>
                 <div className="flex flex-col-reverse items-end gap-1">
-                  <span className="text-xs whitespace-nowrap text-gray-400">{item.time}</span>
+                  <span className="text-xs whitespace-nowrap text-gray-400">
+                    {item.time}
+                  </span>
                   {item.isNew && <FaCircle className="text-red-500 w-2 h-2" />}
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import InputField from "../../InputField/InputField";
 import Button from "../../Button/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 
 const PasswordForm = () => {
@@ -26,13 +26,13 @@ const PasswordForm = () => {
         >
          Back
         </Button>
-        <Button
+        <Link 
           variant="defaultBtn"
           className="mb-5 w-full md:py-[16px] rounded-[8px] hover:none"
-          onClick={()=>navigate(ROUTES.OTP)}
+          to={ROUTES.OTP}
         >
           Submit
-        </Button>
+        </Link>
       </div>
       </form>
     </div>

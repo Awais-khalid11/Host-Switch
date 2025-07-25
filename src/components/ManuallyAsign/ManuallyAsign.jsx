@@ -4,13 +4,17 @@ import { UserPNG } from "../../constants/Imgs";
 import Table from "../Table/Table";
 import { IoIosArrowDown } from "react-icons/io";
 import Button from "../Button/Button";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/Routes";
 
 const ManuallyAsign = ({ setClose }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
 
   const allData = [
-    {
+    { 
+      id: 1,
       UserImg: UserPNG,
       reviews: "4.8 (125 reviews)",
       first_name: "StayWell Homes",
@@ -19,6 +23,7 @@ const ManuallyAsign = ({ setClose }) => {
       active: "24"
     },
     {
+      id: 2,
       UserImg: UserPNG,
       reviews: "4.8 (125 reviews)",
       first_name: "StayWell Homes",
@@ -27,6 +32,7 @@ const ManuallyAsign = ({ setClose }) => {
       active: "24"
     },
      {
+        id: 3,
       UserImg: UserPNG,
       reviews: "4.8 (125 reviews)",
       first_name: "StayWell Homes",
@@ -35,6 +41,7 @@ const ManuallyAsign = ({ setClose }) => {
       active: "24"
     },
      {
+        id: 4,
       UserImg: UserPNG,
       reviews: "4.8 (125 reviews)",
       first_name: "StayWell Homes",
@@ -43,6 +50,7 @@ const ManuallyAsign = ({ setClose }) => {
       active: "24"
     },
      {
+        id: 5,
       UserImg: UserPNG,
       reviews: "4.8 (125 reviews)",
       first_name: "StayWell Homes",
@@ -89,7 +97,7 @@ const ManuallyAsign = ({ setClose }) => {
   ];
 
   const rowActions = (rowData) => (
-    <button className="flex items-center md:text-sm text-[10px] whitespace-nowrap gap-1">
+    <button className="flex items-center md:text-sm text-[10px] whitespace-nowrap gap-1" onClick={()=>navigate(ROUTES.PMVERIFIED)}>
       <img src={EyeSVG} alt="view" className="w-4 h-4" />
       View Chat
     </button>
@@ -127,6 +135,7 @@ const ManuallyAsign = ({ setClose }) => {
                 showActions
                 actions={rowActions}
                 search={search}
+                showCheckbox={true}
               />
             </div>
           </div>

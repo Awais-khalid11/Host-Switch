@@ -4,29 +4,8 @@ import { WhiteeditSVG } from "../../constants/Icons";
 import Button from "../Button/Button";
 import { ROUTES } from "../../constants/Routes";
 
-const SendMessageModal = ({ userType }) => {
+const SendMessageModal = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  console.log(userType, "error");
-  
-
-  const isPm = location.pathname.includes("/pm");
-  const targetRoute = isPm ? ROUTES.MESSAGES : ROUTES.HOSTMESSAGES;
-
-  const handleSendMessage = () => {
-    console.log("UserType:", userType);
-    console.log(
-      "Navigating to:",
-      userType === "pm" ? ROUTES.MESSAGES : ROUTES.HOSTMESSAGES
-    );
-
-    if (isPm) {
-      navigate(ROUTES.MESSAGES, { replace: true });
-    } else {
-      navigate(ROUTES.HOSTMESSAGES);
-    }
-  };
 
   return (
     <div>
@@ -41,7 +20,7 @@ const SendMessageModal = ({ userType }) => {
         <img src={WhiteeditSVG} alt="" />
         <h4
           className="text-sm font-bold text-white cursor-pointer"
-          onClick={() => navigate(targetRoute)}
+          onClick={()=>navigate(ROUTES.HOSTMESSAGES)}
         >
           Custom Messages
         </h4>
@@ -57,7 +36,7 @@ const SendMessageModal = ({ userType }) => {
         <Button
           variant="borderBtn"
           className="w-[250px] h-[54px] bg-white text-black border-white border"
-          onClick={handleSendMessage}
+          onClick={()=>navigate(ROUTES.HOSTMESSAGES)}
         >
           Send Message
         </Button>

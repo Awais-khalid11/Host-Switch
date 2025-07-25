@@ -37,7 +37,6 @@ const HostDashboard = () => {
       <HostDashboardHeader onAddClick={() => setRenderPage(<HostSubmission setClose={() => setRenderPage(null)} />)} />
 
       <TopMatches
-        matchClass="lg:pt-[200px]"
         setRenderPage={setRenderPage} // 🔁 So Match can open full pages
       />
 

@@ -4,7 +4,7 @@ import InputField from "../../../InputField/InputField";
 import SelectField from "../../../SelectField/SelectField";
 import RadioField from "../../RadioField/RadioField";
 import CheckBox from "../../../CheckBox/CheckBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../constants/Routes";
 import { MarkSVG } from "../../../../Constants/Icons";
 
@@ -47,14 +47,9 @@ const CompanyInfoForm = () => {
     { label: "1 Months", value: "1 Months" },
   ];
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    navigate(ROUTES.PORTFOLIO);
-  };
-
   return (
     <div>
-      <form>
+      <form className="md:px-0 px-2.5">
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <InputField
             label="Legal Business Name"
@@ -307,21 +302,19 @@ const CompanyInfoForm = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4">
-          <Button
-            variant="graybtn"
-            className="mb-5 w-[30%]"
-            onClick={() => navigate(ROUTES.LOGIN)}
+        <div className="flex md:gap-4 gap-2">
+          <Link
+            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            to={ROUTES.LOGIN}
           >
             Back
-          </Button>
-          <Button
-            variant="defaultBtn"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#0050B3]"
-            onClick={handleClick}
+          </Link>
+          <Link
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
+            to={ROUTES.PORTFOLIO}
           >
             Save & Continue
-          </Button>
+          </Link>
         </div>
       </form>
     </div>

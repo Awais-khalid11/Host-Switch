@@ -115,6 +115,7 @@ const Modal = ({
   textClass,
   bgClass,
   ModalbgClass,
+  iconPosition
 }) => {
   const modalRef = useRef();
   const [isDesktop, setIsDesktop] = useState(true);
@@ -146,7 +147,7 @@ const Modal = ({
     <div className="fixed inset-0 z-50 px-2.5 flex justify-center items-center bg-black/5">
       <div className="flex flex-col justify-center items-center px-2.5 mx-2.5">
         {showModalIcon && (
-          <div className="w-[88px] h-[88px] relative top-8 z-50 rounded-full bg-[#4D72FF] text-white flex items-center justify-center">
+          <div className={`${iconPosition} w-[88px] h-[88px] relative top-8 z-50 rounded-full bg-[#4D72FF] text-white flex items-center justify-center`}>
             {modalImg && <img src={modalImg} alt="img" />}
           </div>
         )}

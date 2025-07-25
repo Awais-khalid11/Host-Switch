@@ -43,7 +43,7 @@ const AdminSettings = () => {
           <Button
             key={tab}
             onClick={() => setSelectedTab(tab)}
-            className={`text-base font-medium !px-2.5 py-3 rounded-[10px] min-w-max transition-all duration-300
+            className={`text-base font-normal !px-2.5 py-3 rounded-[10px] min-w-max transition-all duration-300
          ${
            selectedTab === tab
              ? "bg-[#EDEDED] font-semibold"

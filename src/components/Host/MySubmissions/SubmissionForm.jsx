@@ -34,6 +34,7 @@ const SubmissionForm = () => {
   const [anyOthers, setAnyOthers] = useState(false);
   const [fixtures, setFixtures] = useState(false);
   const [paint, setPaint] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   //   Radio Fields
   const [isManager, setIsManager] = useState("");
@@ -78,10 +79,14 @@ const SubmissionForm = () => {
         <div className="flex md:flex-nowrap flex-wrap items-center gap-4 mb-5">
           <MultiCheckboxDropdown
             label="How Often Is Your Property Rented Out?"
+            placeholder="How Often Is Your Property Rented Out?"
             options={["Full-time", "seasonal", "Ocassionally"]}
             selectedValues={rentTypes}
             setSelectedValues={setRentTypes}
-            className="!md:w-1/2 w-full"
+            dropdownKey="rent"
+            isOpen={openDropdown === "rent"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={false}
           />
           <MultiCheckboxDropdown
             label="Type of Property"
@@ -94,12 +99,16 @@ const SubmissionForm = () => {
               "Beachfront/Waterfront",
               "Other",
             ]}
+            placeholder="Select Property type"
             selectedValues={propertyTypes}
             setSelectedValues={setPropertyTypes}
-            className="!md:w-1/2 w-full"
+            dropdownKey="region"
+            isOpen={openDropdown === "region"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={false}
           />
         </div>
-        <div className="border border-[#2525251A] p-4 rounded-[8px] mb-4">
+        <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">Reason for Switching</h4>
           <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-3">
             <CheckBox
@@ -162,7 +171,7 @@ const SubmissionForm = () => {
             />
           </div>
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-5">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-6">
           <h3 className="text-sm font-bold">
             Do You Currently Have a Property Manager?
           </h3>
@@ -207,12 +216,17 @@ const SubmissionForm = () => {
               "Guest Experience",
               "Tech & automation",
             ]}
+            placeholder="Select Property type"
             selectedValues={topTypes}
             setSelectedValues={setTopTypes}
-            className="!md:w-1/2 w-full !-mt-8"
+            dropdownKey="type"
+            isOpen={openDropdown === "type"}
+            setOpenDropdown={setOpenDropdown}
+            isMulti={false}
+            className="mb-8"
           />
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-4 mb-4">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-4 mb-6">
           <div className="md:w-1/2 w-full">
             <h3 className="text-sm font-bold mb-4">
               Would You Consider Co-hosting?
@@ -276,7 +290,7 @@ const SubmissionForm = () => {
             </div>
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-6">
           <h3 className="text-sm font-bold mb-2.5">
             Renovations in Last 3 Years
           </h3>
@@ -339,7 +353,7 @@ const SubmissionForm = () => {
             />
           </div>
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-center justify-between mb-4">
+        <div className="flex flex-wrap md:flex-nowrap items-center justify-between mb-6">
           <div className="md:w-[40%] w-full">
             <h3 className="text-sm font-bold mb-4">
               Are You Open to Upgrade Suggestions?

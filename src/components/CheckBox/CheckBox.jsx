@@ -25,7 +25,7 @@ const CheckBox = ({
         className="w-4 h-4 rounded-[50px]  cursor-pointer"
       />
       {label && (
-        <label htmlFor={id || name} className={`text-[13px] whitespace-nowrap text-[#252525] ${labelClass}`}>
+        <label htmlFor={id || name} className={`text-[13px] whitespace-nowrap text-[#323232] ${labelClass}`}>
           {label}
         </label>
       )}

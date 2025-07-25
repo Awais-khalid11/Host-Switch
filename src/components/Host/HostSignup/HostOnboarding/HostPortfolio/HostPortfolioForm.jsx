@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HostScopeBox from "./HostScopeBox";
 import HostSmartHome from "./HostSmartHome";
 import { ROUTES } from "../../../../../constants/Routes";
@@ -31,9 +31,14 @@ const HostPortfolioForm = ({ onNext }) => {
     e.preventDefault();
     navigate(ROUTES.HOSTEXPECTATIONS);
   };
+
+  const submitHandle=(e)=>{
+  e.preventDefault()
+}
+
   return (
     <div>
-      <form>
+      <form onSubmit={submitHandle}>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <InputField
             label="Property Address"
@@ -177,20 +182,18 @@ const HostPortfolioForm = ({ onNext }) => {
           />
         </div>
         <div className="flex gap-4">
-          <Button
-            variant="graybtn"
-            className="mb-5 w-[30%]"
-            onClick={() => navigate(ROUTES.HOSTCOMPANYINFO)}
+          <Link
+            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            to={ROUTES.HOSTCOMPANYINFO}
           >
             Back
-          </Button>
-          <Button
-            variant="defaultBtn"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#4D72FF]"
-            onClick={handleClick}
+          </Link>
+          <Link
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
+            to={ROUTES.HOSTEXPECTATIONS}
           >
             Next
-          </Button>
+          </Link>
         </div>
       </form>
     </div>

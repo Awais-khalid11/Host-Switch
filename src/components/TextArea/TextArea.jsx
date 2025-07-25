@@ -24,7 +24,7 @@ const TextArea = ({
         spellCheck={false}
         rows={rows}
         placeholder={placeholder}
-        className={`${placeClass} w-full p-3 border rounded-xl border-gray-300 text-sm font-normal text-[#25252580]`}
+        className={`${placeClass} w-full p-3 border rounded-xl border-gray-300 text-sm font-normal text-[#000000]`}
       />
     </div>
   );

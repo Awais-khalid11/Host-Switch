@@ -58,7 +58,7 @@ const SelectField = ({
         // ✅ Checkbox Dropdown
         <div className="border border-[#2525251A] rounded-lg p-3 flex flex-col gap-2 max-h-60 overflow-y-auto">
           {options.map((opt, idx) => (
-            <label key={idx} className="flex items-center text-sm text-[#252525]">
+            <label key={idx} className="flex items-center text-sm text-[#323232]">
               <input
                 type="checkbox"
                 checked={selectedValues.includes(opt.value)}

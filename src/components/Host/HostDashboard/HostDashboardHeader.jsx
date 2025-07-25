@@ -17,7 +17,7 @@ const hostcards = [
 const HostDashboardHeader = ({ onAddClick }) => {
   return (
     <div>
-      <div className="lg:fixed w-full bg-white -mt-5 lg:pr-[300px] pt-5">
+      <div className=" bg-white -mt-5 pt-5">
         <div className="flex justify-between md:flex-row flex-col md:items-center mb-5">
           <h2 className="text-2xl font-bold md:mb-0 mb-2.5">Overview</h2>
           <Button

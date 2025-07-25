@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../../Button/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../../InputField/InputField";
 import SelectField from "../../../SelectField/SelectField";
 import FileUpload from "../../../UploadFile/UploadFile";
@@ -19,8 +19,7 @@ const ExpectationForm = () => {
   const [markupMaintenance, setMarkupMaintenance] = useState("");
   const [financialProjection, setFinancialProjection] = useState("");
   const [cleaningHandledBy, setCleaningHandledBy] = useState([]);
-    const [openDropdown, setOpenDropdown] = useState(null);
-
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   const Property = [
     { label: "Select an option", value: "Select an option" },
@@ -34,14 +33,9 @@ const ExpectationForm = () => {
     { label: "1 Months", value: "1 Months" },
   ];
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    navigate(ROUTES.SUBMITTING);
-  };
-
   return (
     <div>
-      <form>
+      <form className="md:px-0 px-2.5">
         <InputField
           label="Average Review Rating (Airbnb/Vrbo)"
           id="num"
@@ -282,21 +276,19 @@ const ExpectationForm = () => {
           label={"Any Service Level Guarantees?"}
         />
         <FileUpload label="Upload Sample Owner Statement / Reviews" />
-        <div className="flex gap-4">
-          <Button
-            variant="graybtn"
-            className="mb-5 w-[30%]"
-            onClick={() => navigate(ROUTES.PORTFOLIO)}
+        <div className="flex md:gap-4 gap-2">
+          <Link
+            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            to={(ROUTES.PORTFOLIO)}
           >
             Back
-          </Button>
-          <Button
-            variant="defaultBtn"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] rounded-[8px] bg-[#0050B3]"
-            onClick={handleClick}
+          </Link>
+          <Link
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
+            to={ROUTES.SUBMITTING}
           >
             Submit
-          </Button>
+          </Link>
         </div>
       </form>
     </div>

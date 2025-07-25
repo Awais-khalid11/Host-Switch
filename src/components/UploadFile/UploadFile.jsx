@@ -40,7 +40,7 @@ const FileUpload = ({
   return (
     <div className="w-full mb-5">
       {/* Shared Label */}
-      <label htmlFor={id} className="block mb-2.5 text-sm font-bold text-gray-700">
+      <label htmlFor={id} className="block mb-2.5 text-sm font-bold text-[#323232]">
         {label}
       </label>
 
