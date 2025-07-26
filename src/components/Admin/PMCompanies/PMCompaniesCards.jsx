@@ -133,7 +133,7 @@ const PMCompaniesCards = () => {
                   </h2>
                   <div className="text-[11px] whitespace-nowrap mb-1 text-[#1B252B99] flex items-center gap-1">
                     <img src={StarSVG} alt="img" />
-                    {user.review}
+                    {user.review}s
                   </div>
                   <div className="text-[11px] whitespace-nowrap mb-1 text-[#1B252B99] flex items-center gap-1">
                     <img src={LocationSVG} alt="img" />

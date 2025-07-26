@@ -10,7 +10,7 @@ import {
   Thumbsup,
   ViewsndSVG,
 } from "../../constants/Icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import Sam from "./Sam";
 import PropertyDetails from "./PropertyDetails/PropertyDetails";
@@ -57,7 +57,6 @@ const Views = ({ setClose }) => {
               textClass="w-full !mx-0 text-start"
               useBgImage={true}
               showModalIcon={true}
-              
               showTitle={true}
               showText={true}
               modalImg={QuestionSVG}
@@ -75,14 +74,14 @@ const Views = ({ setClose }) => {
           >
             Send Proposal
           </Button>
-          <Button
-            variant="borderBtn"
-            className="!w-[157px] h-[48px] text-[#4D72FF] text-[12px] font-normal border border-[#4D72FF] px-5"
+          
+          <Link
+            className="!w-[157px] rounded-[8px] flex items-center justify-center h-[48px] text-[#4D72FF] text-[12px] font-medium border border-[#4D72FF] px-5"
             prefixImg={BluemsgSVG}
-            onClick={() => navigate(ROUTES.MESSAGES)}
+            to={ROUTES.MESSAGES}
           >
             Message Host
-          </Button>
+          </Link>
           <Button
             variant="borderbtn"
             className="border-[#CE1B1B]  text-[12px] text-[#CE1B1B] max-w-[157px]"

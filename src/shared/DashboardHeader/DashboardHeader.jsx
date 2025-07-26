@@ -67,11 +67,11 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
                     className="cursor-pointer"
                     onClick={() => {
                       if (property === "Host") {
-                        navigate(ROUTES.HOSTNOTIFICATION);
+                        navigate(ROUTES.HOSTICONNOTIFICATION);
                       } else if (property === "Admin") {
-                        navigate(ROUTES.ADMINNOTIFICATION);
+                        navigate(ROUTES.ICONNOTIFICATION);
                       } else if (property === "PM") {
-                        navigate(ROUTES.PMNOTIFICATION);
+                        navigate(ROUTES.PMICONNOTIFICATION);
                       }
                     }}
                   />

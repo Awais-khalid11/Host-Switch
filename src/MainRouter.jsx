@@ -47,13 +47,12 @@ import AdminInvoicesPage from "./pages/AdminPages/AdminInvoicesPage";
 import AdminSettingsPage from "./pages/AdminPages/AdminSettingsPage";
 import AdminConciergeMessagesPage from "./pages/AdminPages/AdminConciergeMessagesPage";
 import AdminLiveChat from "./components/Admin/AdminLiveChat/AdminLiveChat";
-import BellNotification from "./components/Notification/BellNotification";
-import AdminBellNotification from "./components/Admin/AdminNotification/AdminBellNotification";
-import PMNotification from "./components/PMNotification/PMNotification";
 import Unlock from "./components/Unlock/Unlock";
-import AdminViews from "./components/Admin/AdminViews/AdminViews";
 import PmVerified from "./components/Admin/PmVerfied/PmVerified";
 import RoleSelection from "./components/Auths/RoleSelection/RoleSelection";
+import AdminIconNotification from "./components/AdminIconNotification/AdminIconNotification";
+import PMIconNotification from "./components/PMIconNotification/PMIconNotification";
+import HostIconNotification from "./components/HostIconNotification/HostIconNotification";
 
 const MainRouter = () => {
   return (
@@ -75,7 +74,7 @@ const MainRouter = () => {
         <Route path="paidinvoice" element={<PaidInvoice />} />
         <Route path="pay" element={<Pay />} />
         <Route path="livechat" element={<LiveChat />} />
-        <Route path="pmnotification" element={<PMNotification />} />
+        <Route path="pmiconnotification" element={<PMIconNotification />} />
       </Route>
 
       <Route path="/host" element={<HostLayout />}>
@@ -95,8 +94,8 @@ const MainRouter = () => {
         <Route path="hostproposalview" element={<HostProposalView />} />
         <Route path="hostfeedback" element={<HostFeedback />} />
         <Route path="mymatchproposal" element={<MyMatchProposal />} />
-        <Route path="/host/bellnotification" element={<BellNotification />} />
         <Route path="/host/unlock" element={<Unlock />} />
+        <Route path="hosticonnotification" element={<HostIconNotification />} />
       </Route>
 
       {/* Admin Dashboard Pages */}
@@ -112,7 +111,7 @@ const MainRouter = () => {
           element={<AdminConciergeMessagesPage />}
         />
         <Route path="adminlivechat" element={<AdminLiveChat />} />
-        <Route path="adminbellnotification" element={<AdminBellNotification />} />
+        <Route path="adminiconnotification" element={<AdminIconNotification />} />
         <Route path="pmVerified" element={<PmVerified />} />
       </Route>
 

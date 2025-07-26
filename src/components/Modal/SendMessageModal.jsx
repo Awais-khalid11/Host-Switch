@@ -1,11 +1,16 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { WhiteeditSVG } from "../../constants/Icons";
 import Button from "../Button/Button";
 import { ROUTES } from "../../constants/Routes";
 
 const SendMessageModal = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Determine if it's host or PM based on the current path
+  const isHost = location.pathname.includes("/host");
+  const messageRoute = isHost ? ROUTES.HOSTMESSAGES : ROUTES.MESSAGES;
 
   return (
     <div>
@@ -18,12 +23,12 @@ const SendMessageModal = () => {
 
       <div className="flex items-center gap-2.5 mb-2.5">
         <img src={WhiteeditSVG} alt="" />
-        <h4
+        <Link
           className="text-sm font-bold text-white cursor-pointer"
-          onClick={()=>navigate(ROUTES.HOSTMESSAGES)}
+          to={messageRoute}
         >
           Custom Messages
-        </h4>
+        </Link>
       </div>
 
       <div className="flex items-center gap-2.5">
@@ -33,13 +38,13 @@ const SendMessageModal = () => {
         >
           Cancel
         </Button>
-        <Button
+        <Link
           variant="borderBtn"
-          className="w-[250px] h-[54px] bg-white text-black border-white border"
-          onClick={()=>navigate(ROUTES.HOSTMESSAGES)}
+          className="w-[250px] rounded-[8px] flex items-center justify-center font-bold h-[54px] bg-white text-black border-white border"
+          to={messageRoute}
         >
           Send Message
-        </Button>
+        </Link>
       </div>
     </div>
   );

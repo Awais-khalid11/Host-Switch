@@ -90,7 +90,7 @@ const TrustedContactsTable = () => {
 
   return (
     <div className="rounded-[12px]">
-      <div className="rounded-xl bg-white border border-[#E9EAEB] overflow-hidden">
+      <div className="rounded-xl bg-white border border-[#E9EAEB] ">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
           <h2 className="text-xl text-[#181D27] font-bold">
             Invoices List View

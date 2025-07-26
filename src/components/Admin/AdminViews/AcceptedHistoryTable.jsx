@@ -76,7 +76,7 @@ const AcceptedHistoryTable = () => {
 
   return (
     <div className="rounded-[12px] border border-[#E4E5E8] p-5 mb-5">
-      <div className="rounded-xl bg-white overflow-hidden">
+      <div className="rounded-xl bg-white ">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
           <h2 className="md:text-xl text-lg text-[#181D27] font-bold md:mb-3.5">
             Communication History

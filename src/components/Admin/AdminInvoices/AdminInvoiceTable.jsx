@@ -186,7 +186,7 @@ const AdminInvoiceTable = () => {
         activePage
       ) : (
         <div className="rounded-[12px]">
-          <div className="rounded-xl bg-white overflow-hidden">
+          <div className="rounded-xl bg-white ">
             <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
               <h2 className="text-xl text-[#181D27] font-bold">Invoices</h2>
 

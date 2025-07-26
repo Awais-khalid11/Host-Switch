@@ -6,7 +6,6 @@ export const ROUTES = {
     MESSAGES: "/pm/messages",
     SETTINGS: "/pm/settings",
     SUPPORT: "/pm/conciergesupport",
-    PMNOTIFICATION: "/pm/pmnotification",
     SENDPROPOSAL: "/pm/sendproposal",
     OTP: "/otp",
     NEWPASSWORD: "/newpassword",
@@ -32,6 +31,7 @@ export const ROUTES = {
     HOSTPROPOSALVIEW: "/host/hostproposalview",
     HOSTFEEDBACK: "/host/HostFeedback",
     HOSTMYMATCHPROPOSAL: "/host/mymatchproposal",
+    HOSTICONNOTIFICATION: "/host/hosticonnotification",
     HOSTUNLOCK: "/host/unlock",
     ADMINDASHBOARD: "/admin/admindashboard",
     ADMINHOSTLEADS: "/admin/adminhostsleads",
@@ -43,4 +43,6 @@ export const ROUTES = {
     HOSTNOTIFICATION: "/host/bellnotification",
     ADMINNOTIFICATION: "/admin/adminbellnotification",
     PMVERIFIED: "/admin/pmVerified",
+    ICONNOTIFICATION: "/admin/adminiconnotification",
+    PMICONNOTIFICATION: "/pm/pmiconnotification",
 }

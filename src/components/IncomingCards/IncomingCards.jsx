@@ -18,7 +18,6 @@ import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendMessageModal from "../Modal/SendMessageModal";
 import { RequestPNG, SndmsgPNG } from "../../constants/Imgs";
-import IncomingModal from "../Modal/IncomingModal";
 
 const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   const navigate = useNavigate();
@@ -135,7 +134,7 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
                 textClass="!mx-0 text-start"
                 ModalbgClass={SndmsgPNG}
               >
-                <IncomingModal />
+                <SendMessageModal />
               </Modal>
             )}
       </div>
