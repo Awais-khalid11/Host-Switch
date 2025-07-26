@@ -30,9 +30,9 @@ const RoleSelection = () => {
   }, []);
 
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-center md:p-5 md:!pr-10 gap-[30px]">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-center md:p-5 md:!pr-10 gap-[30px] p-2.5">
       {/* Left image */}
-      <div className="md:w-1/2 w-full">
+      <div className="md:w-1/2 w-full hidden md:block">
         <img src={RolePNG} alt="loginImg" className="rounded-2xl w-full" />
       </div>
 
@@ -52,7 +52,7 @@ const RoleSelection = () => {
           {/* PM Option */}
           <div
             onClick={() => setSelectedRole("pm")}
-            className={`cursor-pointer border p-5 rounded-[12px] transition ${
+            className={`cursor-pointer border md:p-5 p-3 rounded-[12px] transition ${
               selectedRole === "pm"
                 ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
                 : "border-[#E4E5E8] hover:shadow-md"
@@ -66,7 +66,7 @@ const RoleSelection = () => {
           {/* Host Option */}
           <div
             onClick={() => setSelectedRole("host")}
-            className={`cursor-pointer border p-5 rounded-[12px] transition ${
+            className={`cursor-pointer border  md:p-5 p-3 rounded-[12px] transition ${
               selectedRole === "host"
                 ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
                 : "border-[#E4E5E8] hover:shadow-md"

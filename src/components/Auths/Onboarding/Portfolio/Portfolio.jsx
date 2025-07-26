@@ -6,7 +6,7 @@ import { LogoSVG } from "../../../../Constants/Icons";
 
 const Portfolio = () => {
   return (
-    <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-8 gap-[30px]">
+    <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-8 gap-[30px] p-2.5">
       <div className="hidden md:block w-1/2">
         <img
           src={PortfolioSPNG}
