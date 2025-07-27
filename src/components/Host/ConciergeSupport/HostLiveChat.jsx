@@ -5,6 +5,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { PdffilePNG, UserPNG } from "../../../constants/Imgs";
 import { BackarrowSVG } from "../../../constants/Icons";
 import { useNavigate } from "react-router-dom";
+import MessageBox from "../Messages/MessageBox";
 
 const HostLiveChat = ({setClose}) => {
   const [message, setMessage] = useState("");
@@ -18,7 +19,7 @@ const HostLiveChat = ({setClose}) => {
               Chat with Your HostSwitch Concierge
             </h2>
           </div>
-    <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
+    {/* <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
          <div className="flex items-start gap-3">
           <div className="relative flex-[0_0_52px]">
@@ -127,7 +128,8 @@ const HostLiveChat = ({setClose}) => {
           <IoIosSend size={26} />
         </button>
       </div>
-    </div>
+    </div> */}
+    <MessageBox/>
     </>
   );
 };

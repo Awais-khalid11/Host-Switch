@@ -17,7 +17,7 @@ const ConciergeSupport = () => {
           variant="defaultBtn"
           className="!h-[48px]"
           prefixImg={ChatSVG}
-          onClick={() => setLiveChat(true)} // toggle liveChat state
+          onClick={() => setLiveChat(true)}
         >
           Start Live Chat
         </Button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TrainerMessages from "./TrainerMessages";
 import MessageBox from "./MessageBox";
+import { MsgcrossSVG, MsgtickSVG } from "../../constants/Icons";
 // import MessageBox from "./MessageBox";
 // import TrainerMessages from "./TrainerMessages";
 
@@ -35,7 +36,16 @@ const Messages = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-3">Messages</h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-2xl font-bold">Messages</h2>
+        <div className="bg-[#F2F7F9] rounded-[12px] flex items-center gap-1.5 max-w-[411px] py-2 px-2">
+          ✅
+          <h4 className="text-sm font-normal text-[#000000]">
+            You can send 2 intro messages without response
+          </h4>
+          <img src={MsgcrossSVG} alt="" />
+        </div>
+      </div>
       <div className="relative grid grid-cols-1 md:grid-cols-[359px_1fr] gap-1">
         {!isMobile || !showBoxOnly ? (
           <TrainerMessages
