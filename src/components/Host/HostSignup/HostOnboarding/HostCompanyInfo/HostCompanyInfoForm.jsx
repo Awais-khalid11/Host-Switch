@@ -12,6 +12,7 @@ import useTantanstackClient from "../../../../../hook/useTantanstackClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
+import useRoleStore from "../../../../../store/useRoleIdStore";
 
 const schema = z
   .object({
@@ -24,7 +25,6 @@ const schema = z
     password: z.string().min(6, "Password too short"),
     confirmPassword: z.string().min(6, "Confirm Password is required"),
     designation: z.string().min(1, "Designation is required"),
-    // role_id: z.string().min(1, "Role ID is required"),
     cleaningHandledBy: z
       .array(z.string())
       .min(1, "Please select at least one option"),
@@ -40,6 +40,8 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const { roleId } = useRoleStore();
+  console.log("the role id is", roleId)
 
   const {
     control,
@@ -54,7 +56,7 @@ const HostCompanyInfoForm = () => {
       password: "",
       confirmPassword: "",
       designation: "",
-      role_id: 3,
+      role_id: roleId,
       cleaningHandledBy: [],
       terms: false,
     },
@@ -67,8 +69,8 @@ const HostCompanyInfoForm = () => {
     {
       onSuccess: (data) => {
         console.log("signup response:", data);
-        // toast.success("Signed up successfully!");
         navigate(ROUTES.HOSTPORTFOLIO);
+        removeRoleId();
       },
       onError: (error) => {
         toast.error(error.message || "Signup failed");
@@ -77,14 +79,14 @@ const HostCompanyInfoForm = () => {
   );
 
   const onSubmit = (formData) => {
+    formData.role_id = roleId
     console.log("Submitting data:", formData);
     mutate(formData);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      {/* Role ID */}
-      
+
 
       {/* Full Name */}
       <Controller

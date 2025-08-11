@@ -7,9 +7,12 @@ import CheckBox from "../../../CheckBox/CheckBox";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../constants/Routes";
 import { MarkSVG } from "../../../../Constants/Icons";
+import useRoleStore from "../../../../store/useRoleIdStore";
 
 const CompanyInfoForm = () => {
   const navigate = useNavigate();
+  const { roleId } = useRoleStore();
+  console.log("the role id is", roleId)
 
   const [date, setDate] = useState("");
   const [entity, setEntity] = useState("");
@@ -17,7 +20,6 @@ const CompanyInfoForm = () => {
   const [willing, setWilling] = useState("");
   const [agreed, setAgreed] = useState(false);
 
-  // Separate states for each radio group
   const [isLocal, setIsLocal] = useState("");
   const [isFullTime, setIsFullTime] = useState("");
   const [isLicensed, setIsLicensed] = useState("");
