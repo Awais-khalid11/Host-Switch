@@ -7,8 +7,8 @@ import { LogoSVG } from "../../../../constants/Icons";
 const CompanyInfo = () => {
   return (
     <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-10 gap-[30px]">
-      <div className="hidden md:block md:w-1/2 w-full">
-        <img src={CompPNG} alt="loginImg" className="rounded-2xl w-full lg:h-[759px]" />
+      <div className="hidden md:block w-1/2">
+        <img src={CompPNG} alt="loginImg" className="rounded-2xl w-full min-h-[759px]" />
       </div>
       <div className="md:w-1/2 w-full hide-scrollbar md:h-[759px] md:overflow-y-auto">
         <img src={LogoSVG} alt="logoImg" className="md:max-w-[285px] max-w-[180px] mx-auto min-h-[29px] mb-5 md:mb-10" />

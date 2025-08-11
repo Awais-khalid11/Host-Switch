@@ -79,12 +79,6 @@ const MyMatchModal = () => {
           onChange={(e) => setOther(e.target.checked)}
           labelClass="text-white"
         />
-        {/* <TextArea
-        type="text"
-        placeholder={"Enter message..."}
-        label={"Any reason for decline lead?"}
-        labelClass="text-3xl !text-white"
-      /> */}
       </form>
     </div>
     </div>

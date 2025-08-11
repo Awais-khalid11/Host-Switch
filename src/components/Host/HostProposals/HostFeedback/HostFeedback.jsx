@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import Button from "../../../Button/Button";
 import {
   BackarrowSVG,
-  GreentickSVG,
-  ModalmsgSVG,
   Thumbsup,
 } from "../../../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../../InputField/InputField";
-import SelectField from "../../../SelectField/SelectField";
 import Modal from "../../../Modal/Modal";
 import FeedbackModal from "../../../Modal/FeedbackModal";
 import MultiCheckboxDropdown from "../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
@@ -17,19 +14,13 @@ import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
 import { ConfirmmodalPNG, ProposalmodalPNG } from "../../../../constants/Imgs";
 
-
-const HostFeedback = ({setClose}) => {
+const HostFeedback = ({ setClose }) => {
   const navigate = useNavigate();
-  const [entity, setEntity] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [rentTypes, setRentTypes] = useState([]);
   const [isLocal, setIsLocal] = useState("");
+  const [openDropdown, setOpenDropdown] = useState(null);
 
-  const Entity = [
-    { label: "Select what you prefer ", value: "Select what you prefer" },
-    { label: "2 Months", value: "2 Months" },
-    { label: "1 Months", value: "1 Months" },
-  ];
 
   return (
     <div>
@@ -70,9 +61,13 @@ const HostFeedback = ({setClose}) => {
                 "Local knowledge and market expertise",
                 " Other",
               ]}
+              placeholder="Select what you prefer"
               selectedValues={rentTypes}
               setSelectedValues={setRentTypes}
               className="md:w-1/2 -mt-8"
+              dropdownKey="clean"
+              isOpen={openDropdown === "clean"}
+              setOpenDropdown={setOpenDropdown}
             />
             <InputField
               label="What stood out most about this company?"
@@ -86,30 +81,30 @@ const HostFeedback = ({setClose}) => {
           <div className="flex md:flex-nowrap flex-wrap items-center md:gap-[35px] ">
             <div className="mb-5 md:w-1/2 w-full">
               <h3 className="text-sm font-bold mb-2.5">
-               Would you recommend HostSwitch to other property owners? 
+                Would you recommend HostSwitch to other property owners?
               </h3>
-             <div className="flex items-center gap-5 w-full h-[48px] mb-3.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none">
-               <RadioField
-                id="localYes"
-                name="isLocal"
-                value="yes"
-                label="Yes"
-                checked={isLocal === "yes"}
-                onChange={(e) => setIsLocal(e.target.value)}
-              />
-              <RadioField
-                id="localNo"
-                name="isLocal"
-                value="no"
-                label="No"
-                checked={isLocal === "no"}
-                onChange={(e) => setIsLocal(e.target.value)}
-              />
-             </div>
+              <div className="flex items-center gap-5 w-full h-[48px] mb-3.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 text-sm font-normal text-[#1A1A1A] placeholder:text-gray-500 focus:outline-none">
+                <RadioField
+                  id="localYes"
+                  name="isLocal"
+                  value="yes"
+                  label="Yes"
+                  checked={isLocal === "yes"}
+                  onChange={(e) => setIsLocal(e.target.value)}
+                />
+                <RadioField
+                  id="localNo"
+                  name="isLocal"
+                  value="no"
+                  label="No"
+                  checked={isLocal === "no"}
+                  onChange={(e) => setIsLocal(e.target.value)}
+                />
+              </div>
             </div>
             <InputField
               label="Any additional notes about your decision?"
-              id="text"
+              id="notes"
               name="text"
               type="text"
               fieldName="md:w-1/2 w-full"
@@ -117,13 +112,15 @@ const HostFeedback = ({setClose}) => {
             />
           </div>
           <div className="w-full h-[48px] mb-3.5">
-            <h3 className="text-sm font-bold mb-2.5">How satisfied were you with the proposals you received overall?</h3>
+            <h3 className="text-sm font-bold mb-2.5">
+              How satisfied were you with the proposals you received overall?
+            </h3>
             <div className="flex items-center gap-2.5 bg-[#FBFCFD] border border-[#2525251A] rounded-[8px] px-4 py-2.5 placeholder:text-gray-500 focus:outline-none">
-              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
-              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
-              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]"/>
-              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]"/>
-              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]"/>
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]" />
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]" />
+              <FaStar className="text-[#FFE70F] w-[22px] h-[22px]" />
+              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]" />
+              <CiStar className="text-[#DEDEDE] w-[22px] h-[22px]" />
               <h4 className="text-lg font-normal text-[#DBDBDB]">3/5</h4>
             </div>
           </div>

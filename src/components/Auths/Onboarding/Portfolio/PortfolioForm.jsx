@@ -13,7 +13,6 @@ import MultiCheckboxDropdown from "./MultiCheckboxDropdown";
 
 const PortfolioForm = ({ onNext }) => {
   const navigate = useNavigate();
-  const [property, setProperty] = useState("");
   const [accountManager, setAccountManager] = useState("");
   const [linens, setLinens] = useState("");
   const [smartLock, setSmartLock] = useState("");
@@ -21,13 +20,7 @@ const PortfolioForm = ({ onNext }) => {
   const [restockingCharges, setRestockingCharges] = useState("");
   const [markupMaintenance, setMarkupMaintenance] = useState("");
   const [financialProjection, setFinancialProjection] = useState("");
-  const [ownerPortal, setOwnerPortal] = useState("");
   const [selected, setSelected] = useState("");
-  const [willing, setWilling] = useState("");
-  const [choose, setChoose] = useState("");
-  const [handle, setHandle] = useState("");
-  const [pms, setPms] = useState("");
-  const [tool, setTool] = useState("");
   const [ticket, setTicket] = useState("");
 
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -38,10 +31,10 @@ const PortfolioForm = ({ onNext }) => {
   const [pricingTools, setPricingTools] = useState([]);
   const [guest, setGuest] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
-  
-  const submitHandle=(e)=>{
-  e.preventDefault()
-}
+
+  const submitHandle = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div>
@@ -419,7 +412,7 @@ const PortfolioForm = ({ onNext }) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <div className="flex md:gap-4 gap-2">
-          <Link 
+          <Link
             className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
             to={ROUTES.COMPANYINFO}
           >
@@ -438,5 +431,3 @@ const PortfolioForm = ({ onNext }) => {
 };
 
 export default PortfolioForm;
-
-

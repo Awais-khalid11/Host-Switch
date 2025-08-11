@@ -44,27 +44,6 @@ const Views = ({ setClose }) => {
           Incoming Leads
         </h2>
         <div className="flex flex-col sm:flex-row items-center gap-2.5">
-          {showModal && (
-            <Modal
-              modalTitle="Please tell us why are you declining this Host property?"
-              modalText="Your feedback helps us improve future matches."
-              onClose={() => setShowModal(false)}
-              width="780px"
-              height="395px"
-              bgColor="#4D72FF"
-              updateClass="!flex-none !justify-start !items-start px-8 pt-18"
-              bgClass="!flex-none !justify-start !items-start"
-              textClass="w-full !mx-0 text-start"
-              useBgImage={true}
-              showModalIcon={true}
-              showTitle={true}
-              showText={true}
-              modalImg={QuestionSVG}
-              ModalbgClass={HostdeclinePNG}
-            >
-              <HostDeclineModal setClose={() => setShowModal(false)} />
-            </Modal>
-          )}
 
           <Button
             variant="greenbtn"
@@ -93,6 +72,28 @@ const Views = ({ setClose }) => {
           >
             Decline Lead
           </Button>
+             {showModal && (
+            <Modal
+              modalTitle="Please tell us why are you declining this Host property?"
+              modalText="Your feedback helps us improve future matches."
+              onClose={() => setShowModal(false)}
+              width="780px"
+              height="395px"
+              bgColor="#4D72FF"
+              updateClass="!flex-none !justify-start !items-start px-8 pt-18"
+              bgClass="!flex-none !justify-start !items-start"
+              textClass="w-full !mx-0 text-start"
+              useBgImage={true}
+              showModalIcon={true}
+              showTitle={true}
+              showText={true}
+              modalImg={QuestionSVG}
+              ModalbgClass={HostdeclinePNG}
+              iconPosition="relative -right-[4px]"
+            >
+              <HostDeclineModal setClose={() => setShowModal(false)} />
+            </Modal>
+          )}
         </div>
       </div>
       <Sam />

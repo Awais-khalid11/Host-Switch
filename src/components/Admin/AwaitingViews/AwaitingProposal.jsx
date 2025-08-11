@@ -99,6 +99,8 @@ const AwaitingProposal = () => {
           showActions
           actions={rowActions}
           search={search}
+         showPagination={false}
+
         />
       </div>
     </div>

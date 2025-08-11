@@ -3,6 +3,8 @@ import HostOnboardingStepper from "../HostOnboardingStepper";
 import HostCompanyInfoForm from "./HostCompanyInfoForm";
 import { LogoSVG } from "../../../../../constants/Icons";
 import { HostcompanyPNG } from "../../../../../constants/Imgs";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../../../constants/Routes";
 
 const HostCompanyInfo = () => {
   return (
@@ -17,7 +19,7 @@ const HostCompanyInfo = () => {
           Let’s Get Started
         </h2>
         <HostCompanyInfoForm />
-        <h4 className="text-sm font-normal text-[#777777] text-center">If you are already a member, please <span className="text-sm text-black font-bold cursor-pointer"> Login</span></h4>
+        <h4 className="text-sm font-normal text-[#777777] text-center">If you are already a member, please <Link to={ROUTES.LOGIN} className="text-sm text-black font-bold cursor-pointer"> Login</Link></h4>
       </div>
     </div>
   );

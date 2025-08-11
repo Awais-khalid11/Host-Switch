@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendMessageModal from "../Modal/SendMessageModal";
-import { RequestPNG, SndmsgPNG } from "../../constants/Imgs";
+import { HostdeclinePNG, RequestPNG, SndmsgPNG } from "../../constants/Imgs";
 
 const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   const navigate = useNavigate();
@@ -42,26 +42,26 @@ const IncomingCards = ({ incomingData, setCardDetail, userType }) => {
   return (
     <>
       {/* MODAL */}
-      {showDeclineModal && (
-        <Modal
-          modalTitle="Please tell us why are you declining this Host property?"
-          modalText="Your feedback helps us improve future matches."
-          onClose={() => setShowDeclineModal(false)}
-          width="750px"
-          height="480px"
-          bgColor="#4D72FF"
-          updateClass="!flex-none !justify-start !items-start px-8 pt-18"
-          bgClass="!flex-none !justify-start !items-start"
-          textClass="w-full !mx-0 text-start"
-          useBgImage={true}
-          showModalIcon={true}
-          showTitle={true}
-          showText={true}
-          modalImg={QuestionSVG}
-        >
-          <HostDeclineModal setClose={() => setShowDeclineModal(false)} />
-        </Modal>
-      )}
+       {showDeclineModal && (
+            <Modal
+              modalTitle="Send a Message to Host"
+              modalText="Introduce yourself and invite the host to view your services."
+              modalImg={ModalmsgSVG}
+              onClose={() => setShowDeclineModal(null)}
+              useBgImage={true}
+              height="395px"
+              width="800px"
+              showModalIcon={true}
+              showTitle={true}
+              showText={true}
+              updateClass="px-5 pt-15 items-start"
+              textClass="!mx-0 text-start"
+              ModalbgClass={HostdeclinePNG}
+              iconPosition="relative -right-[4px]"
+            >
+              <HostDeclineModal />
+            </Modal>
+          )}
 
       {/* CARDS */}
       <div className="flex items-center justify-between flex-wrap lg:gap-4">

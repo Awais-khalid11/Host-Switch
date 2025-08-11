@@ -131,7 +131,7 @@ const PMIconNotification = () => {
           { label: "Payments & Invoices" },
         ]}
       />
-      ;
+      
     </div>
   );
 };

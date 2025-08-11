@@ -3,20 +3,85 @@ import InputField from "../../InputField/InputField";
 import Button from "../../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import useTantanstackClient from "../../../hook/useTantanstackClient";
+const id = location.state?.id;
+
+const schema = z.object({
+  email: z.string().email("Invalid email").min(1, "Email is required"),
+});
 
 const PasswordForm = () => {
   const navigate = useNavigate();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const loginMutation = useTantanstackClient.usePostMutation(
+    ["forgot"],
+    "/auth/forgot",
+    null,
+    {
+      onSuccess: (data) => {
+        console.log("email response:", data);
+        console.log("email response:", data);
+        localStorage.getItem("token");
+        console.log("forget response id:", data.id);
+        localStorage.setItem("userID", data?.id);
+
+        navigate("/otp", {
+          state: {
+            id: data?.user?.id || data?.id,
+            from: "login",
+          },
+        });
+      },
+
+      onError: (error) => {
+        toast.error(error.message || "Login failed");
+      },
+    }
+  );
+
+  const onSubmit = (formData) => {
+    loginMutation.mutate(formData);
+  };
+
   return (
     <div>
-      <form>
-        <InputField
-          label="Email Address"
-          id="email"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          control={control}
           name="email"
-          type="email"
-          fieldName="w-full"
-          placeholder="Enter your email address"
-          InputClass="h-[56px]"
+          render={({ field }) => (
+            <div>
+              <InputField
+                label="Email Address"
+                id="email"
+                name="email"
+                type="email"
+                fieldName="w-full"
+                placeholder="Enter your email address"
+                InputClass="h-[56px]"
+                {...field}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm -mt-4 mb-4">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          )}
         />
         <div className="flex justify-center gap-4">
           <Link
@@ -25,12 +90,12 @@ const PasswordForm = () => {
           >
             Back
           </Link>
-          <Link
+          <Button
             className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
-            to={ROUTES.OTP}
+            type="submit"
           >
             Submit
-          </Link>
+          </Button>
         </div>
       </form>
     </div>

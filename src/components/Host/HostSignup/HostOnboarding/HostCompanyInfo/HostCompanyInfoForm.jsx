@@ -1,138 +1,306 @@
 import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../../constants/Routes";
 import CheckBox from "../../../../CheckBox/CheckBox";
-import RadioField from "../../../../Auths/RadioField/RadioField";
 import InputField from "../../../../InputField/InputField";
-import SelectField from "../../../../SelectField/SelectField";
 import Button from "../../../../Button/Button";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
+import useTantanstackClient from "../../../../../hook/useTantanstackClient";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
+
+const schema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email").min(1, "Email is required"),
+    number: z
+      .string()
+      .min(7, "Phone number too short")
+      .regex(/^[0-9]+$/, "Phone number must be numeric"),
+    password: z.string().min(6, "Password too short"),
+    confirmPassword: z.string().min(6, "Confirm Password is required"),
+    designation: z.string().min(1, "Designation is required"),
+    // role_id: z.string().min(1, "Role ID is required"),
+    cleaningHandledBy: z
+      .array(z.string())
+      .min(1, "Please select at least one option"),
+    terms: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the Terms & Conditions" }),
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
-
-  const [entity, setEntity] = useState("");
-  const [agreed, setAgreed] = useState(false);
-
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [cleaningHandledBy, setCleaningHandledBy] = useState([]);
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+      password: "",
+      confirmPassword: "",
+      designation: "",
+      role_id: 3,
+      cleaningHandledBy: [],
+      terms: false,
+    },
+  });
+
+  const { mutate, isPending } = useTantanstackClient.usePostMutation(
+    ["register"],
+    "/auth/register",
+    null,
+    {
+      onSuccess: (data) => {
+        console.log("signup response:", data);
+        // toast.success("Signed up successfully!");
+        navigate(ROUTES.HOSTPORTFOLIO);
+      },
+      onError: (error) => {
+        toast.error(error.message || "Signup failed");
+      },
+    }
+  );
+
+  const onSubmit = (formData) => {
+    console.log("Submitting data:", formData);
+    mutate(formData);
+  };
 
   return (
-    <div>
-      <form className="md:px-0 px-2.5">
-        <div>
-          <InputField
-            label="Full Name"
-            id="Name"
-            name="Name"
-            type="text"
-            fieldName="w-full"
-            placeholder="Enter your full name"
-            asterisk="true"
-          />
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
+      {/* Role ID */}
+      
 
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-          <InputField
-            label="Email Address"
-            id="address"
-            name="address"
-            type="text"
-            fieldName="md:w-1/2 w-full"
-            placeholder="Enter your email address"
-            asterisk="true"
-          />
-          <InputField
-            label="Phone Number"
-            id="contactPhone"
-            name="contactPhone"
-            type="tel"
-            fieldName="md:w-1/2 w-full"
-            placeholder="XX-XXX-XXXX"
-            asterisk="true"
-          />
-        </div>
+      {/* Full Name */}
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-5">
+            <InputField
+              {...field}
+              label="Full Name"
+              id="name"
+              type="text"
+              fieldName="w-full"
+              placeholder="Enter your full name"
+              asterisk={true}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm -mt-6">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
 
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-          <InputField
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            fieldName="w-full"
-            InputClass="h-[56px]"
-            placeholder="*************"
-            asterisk={true}
-          />
-          <InputField
-            label="Confirm Password"
-            id="password"
-            name="password"
-            type="password"
-            fieldName="w-full"
-            InputClass="h-[56px]"
-            placeholder="*************"
-            asterisk={true}
-          />
-        </div>
-
-        {/* <SelectField
-        label="Number of Properties Seeking Management"
-        name="entityType"
-        value={entity}
-        onChange={(e) => setEntity(e.target.value)}
-        options={Entity}
-        selectClass="mb-7 w-full"
-      /> */}
-
-        <MultiCheckboxDropdown
-          label="Number of Properties Seeking Management"
-          options={["Single Property", "Multiple Properties/ Portfolio"]}
-          placeholder="Select"
-          selectedValues={cleaningHandledBy}
-          setSelectedValues={setCleaningHandledBy}
-          className="mb-5"
-          dropdownKey="clean"
-          isOpen={openDropdown === "clean"}
-          setOpenDropdown={setOpenDropdown}
-          isMulti={true}
+      {/* Email & Phone */}
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Email Address"
+                id="email"
+                type="email"
+                fieldName="w-full"
+                placeholder="Enter your email address"
+                asterisk={true}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          )}
         />
+        <Controller
+          name="number"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <PhoneNumber
+                name="number"
+                label="Phone"
+                control={control}
+                required={true}
+                defaultCountry="se"
+                onChange={(value) => field.onChange(value)}
+              />
+              {errors.number && (
+                <p className="text-red-500 text-sm -mt-5">
+                  {errors.number.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+      </div>
 
-        {/* Checkbox */}
-        <div className="mb-5">
-          <CheckBox
-            name="terms"
-            id="terms"
-            checked={agreed}
-            onChange={(e) => setAgreed(e.target.checked)}
-            label={
-              <>
-                I agree to the
-                <span className="text-[#0050B3] ml-1">Terms & Conditions</span>
-              </>
-            }
-          />
-        </div>
+      {/* Password & Confirm */}
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Password"
+                id="password"
+                type="password"
+                fieldName="w-full"
+                InputClass="h-[56px]"
+                placeholder="*************"
+                asterisk={true}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="confirmPassword"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Confirm Password"
+                id="confirmPassword"
+                type="password"
+                fieldName="w-full"
+                InputClass="h-[56px]"
+                placeholder="*************"
+                asterisk={true}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+      </div>
 
-        {/* Buttons */}
-        <div className="flex md:gap-4 gap-2">
-          <Link
-            variant="graybtn"
-            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
-            to={ROUTES.ROLESELECTION}
-          >
-            Back
-          </Link>
-          <Link
-            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
-            to={ROUTES.HOSTPORTFOLIO}
-          >
-            Save & Continue
-          </Link>
-        </div>
-      </form>
-    </div>
+      <Controller
+        name="designation"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-5">
+            <InputField
+              {...field}
+              label="Designation"
+              id="designation"
+              type="text"
+              fieldName="w-full"
+              placeholder="Designation"
+              asterisk={true}
+            />
+            {errors.designation && (
+              <p className="text-red-500 text-sm -mt-6">
+                {errors.designation.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
+
+      <Controller
+        name="cleaningHandledBy"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-5">
+            <MultiCheckboxDropdown
+              label="Number of Properties Seeking Management"
+              options={["Single Property", "Multiple Properties/ Portfolio"]}
+              placeholder="Select"
+              selectedValues={field.value}
+              setSelectedValues={field.onChange}
+              className="mb-5"
+              dropdownKey="clean"
+              isOpen={openDropdown === "clean"}
+              setOpenDropdown={setOpenDropdown}
+              isMulti={true}
+              error={errors.cleaningHandledBy?.message}
+            />
+            {errors.cleaningHandledBy && (
+              <p className="text-red-500 text-sm -mt-4">
+                {errors.cleaningHandledBy.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
+
+      <Controller
+        name="terms"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-8">
+            <CheckBox
+              {...field}
+              checked={field.value}
+              onChange={(e) => field.onChange(e.target.checked)}
+              label={
+                <>
+                  I agree to the
+                  <span className="text-[#0050B3] ml-1">
+                    Terms & Conditions
+                  </span>
+                </>
+              }
+              error={errors.terms?.message}
+            />
+            {errors.terms && (
+              <p className="text-red-500 text-sm mt-1.5">
+                {errors.terms.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
+
+      <div className="flex md:gap-4 gap-2">
+        <Link
+          className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+          to={ROUTES.ROLESELECTION}
+        >
+          Back
+        </Link>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
+        >
+          {isPending ? "Submitting..." : "Save & Continue"}
+        </Button>
+      </div>
+    </form>
   );
 };
 

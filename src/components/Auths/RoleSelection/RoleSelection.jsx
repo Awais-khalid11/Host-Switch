@@ -14,7 +14,6 @@ const RoleSelection = () => {
     else if (selectedRole === "host") navigate(ROUTES.HOSTCOMPANYINFO);
   };
 
-  // Clear selection when clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -31,12 +30,10 @@ const RoleSelection = () => {
 
   return (
     <div className="flex md:flex-row flex-col items-center bg-white justify-center md:p-5 md:!pr-10 gap-[30px] p-2.5">
-      {/* Left image */}
       <div className="md:w-1/2 w-full hidden md:block">
         <img src={RolePNG} alt="loginImg" className="rounded-2xl w-full" />
       </div>
 
-      {/* Right content */}
       <div className="md:w-1/2 w-full">
         <img
           src={LogoSVG}
@@ -49,7 +46,6 @@ const RoleSelection = () => {
         </h2>
 
         <div ref={roleContainerRef} className="flex flex-col gap-5">
-          {/* PM Option */}
           <div
             onClick={() => setSelectedRole("pm")}
             className={`cursor-pointer border md:p-5 p-3 rounded-[12px] transition ${
@@ -63,7 +59,6 @@ const RoleSelection = () => {
             </p>
           </div>
 
-          {/* Host Option */}
           <div
             onClick={() => setSelectedRole("host")}
             className={`cursor-pointer border  md:p-5 p-3 rounded-[12px] transition ${
@@ -77,18 +72,16 @@ const RoleSelection = () => {
             </p>
           </div>
 
-          {/* Continue Button */}
           {selectedRole && (
             <button
               onClick={handleContinue}
-              className="mt-6 w-full px-5 py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
+              className="mt-6 w-full px-5 py-2.5 text-center cursor-pointer text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
             >
               Continue
             </button>
           )}
         </div>
 
-        {/* Login text */}
         <div className="text-sm text-center font-medium leading-6 text-[#777777] mt-5">
           <p>
             Already have an account?

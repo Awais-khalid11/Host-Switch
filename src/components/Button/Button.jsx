@@ -7,6 +7,7 @@ const Button = ({
   variant = "gradient",
   className = "",
   onClick,
+  type,
   ...rest
 }) => {
   const baseStyles =
@@ -24,6 +25,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
+      type={type}
       className={`${baseStyles} ${variants[variant]} ${className}`}
       {...rest}
     >

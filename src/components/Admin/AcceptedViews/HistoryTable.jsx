@@ -86,6 +86,7 @@ const HistoryTable = () => {
           columns={columns}
           data={filteredData}
           search={search}
+           showPagination={false}
         />
       </div>
     

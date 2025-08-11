@@ -32,7 +32,7 @@ const HostDeclineModal = ({ setClose }) => {
   };
 
   return (
-    <div className="w-full text-black p-2.5 h-[350px] overflow-auto">
+    <div className="w-full text-black p-2.5 h-[230px] overflow-auto">
       {/* Dropdown label simulation */}
       <div className="text-sm font-medium mb-2 text-[#252525b3] rounded-[8px] px-2 py-2 bg-white">
         What was your main reasons for declining?

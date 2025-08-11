@@ -88,6 +88,7 @@ const AcceptedHistoryTable = () => {
           columns={columns}
           data={filteredData} 
           search={search}
+           showPagination={false}
         />
       </div>
     </div>

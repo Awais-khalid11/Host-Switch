@@ -210,7 +210,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
               modalImg={ModalmsgSVG}
               onClose={() => setShowDeclineModal(null)}
               useBgImage={true}
-              height="490px"
+              height="395px"
               width="800px"
               showModalIcon={true}
               showTitle={true}

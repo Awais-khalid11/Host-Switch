@@ -88,7 +88,7 @@ const HostProposalView = ({ setClose = null }) => {
               updateClass="pt-10 px-8  items-start"
               textClass="!mx-0 text-start"
               ModalbgClass={HostdeclinePNG}
-              // bgClass="overflow-auto"
+              iconPosition="relative -right-[4px]"
             >
               <HostDeclineModal />
             </Modal>
