@@ -67,7 +67,6 @@ const HostCompanyInfoForm = () => {
     {
       onSuccess: (data) => {
         console.log("signup response:", data);
-        // toast.success("Signed up successfully!");
         navigate(ROUTES.HOSTPORTFOLIO);
       },
       onError: (error) => {
@@ -83,7 +82,6 @@ const HostCompanyInfoForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      {/* Role ID */}
       
 
       {/* Full Name */}
