@@ -247,8 +247,7 @@ const HostCompanyInfoForm = () => {
               dropdownKey="clean"
               isOpen={openDropdown === "clean"}
               setOpenDropdown={setOpenDropdown}
-              isMulti={true}
-              error={errors.cleaningHandledBy?.message}
+              isMulti={false}
             />
             {errors.cleaningHandledBy && (
               <p className="text-red-500 text-sm -mt-4">
@@ -271,7 +270,7 @@ const HostCompanyInfoForm = () => {
               label={
                 <>
                   I agree to the
-                  <span className="text-[#0050B3] ml-1">
+                  <span className="text-[#0050B3] ml-1 cursor-pointer">
                     Terms & Conditions
                   </span>
                 </>

@@ -19,7 +19,7 @@ const HostCompanyInfo = () => {
           Let’s Get Started
         </h2>
         <HostCompanyInfoForm />
-        <h4 className="text-sm font-normal text-[#777777] text-center">If you are already a member, please <Link to={ROUTES.LOGIN} className="text-sm text-black font-bold cursor-pointer"> Login</Link></h4>
+        <h4 className="text-sm font-normal text-[#777777] text-center md:mb-0 mb-3">If you are already a member, please <Link to={ROUTES.LOGIN} className="text-sm text-black font-bold cursor-pointer"> Login</Link></h4>
       </div>
     </div>
   );

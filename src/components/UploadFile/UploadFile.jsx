@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+
+import React, { useRef, useState, useEffect } from "react";
 import { UploadPNG } from "../../constants/Imgs";
 
 const FileUpload = ({
@@ -6,26 +7,40 @@ const FileUpload = ({
   id,
   nodetail,
   defaultFileName = "",
-  btn = false, 
+  btn = false,
+  value = [],        
+  onChange = () => {} 
 }) => {
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState(defaultFileName);
   const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    if (value && value.length > 0) {
+      setFileName(value[0]?.name || "");
+    }
+  }, [value]);
 
   const handleClick = () => {
     fileInputRef.current?.click();
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) setFileName(file.name);
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      setFileName(files[0].name);
+      onChange(files);
+    }
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     setIsDragging(false);
-    const file = event.dataTransfer.files[0];
-    if (file) setFileName(file.name);
+    const files = Array.from(event.dataTransfer.files);
+    if (files.length > 0) {
+      setFileName(files[0].name);
+      onChange(files); 
+    }
   };
 
   const handleDragOver = (event) => {
@@ -39,12 +54,10 @@ const FileUpload = ({
 
   return (
     <div className="w-full mb-5">
-      {/* Shared Label */}
       <label htmlFor={id} className="block mb-2.5 text-sm font-bold text-[#323232]">
         {label}
       </label>
 
-      {/* Hidden file input */}
       <input
         type="file"
         id={id}
@@ -53,7 +66,6 @@ const FileUpload = ({
         className="hidden"
       />
 
-      {/* Upload Style */}
       {btn ? (
         <>
           <p

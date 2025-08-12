@@ -1,33 +1,35 @@
 import toast from "react-hot-toast";
 import axiosInstance from "./axiosInstance";
- 
-const handleError = (error) => {   // handleError handles  errors globally for all API calls.
+
+const handleError = (error) => { // handleError handles  errors globally for all API calls.
   if (!error?.response) {
-    console.log("Network error:", error);  // agr internet ka issue h to wo show karwa do
-    toast.error("Network error occurred")
+    console.log("Network error:", error); // agr internet ka issue h to wo show karwa do
+    toast.error("Network error occurred");
     throw new Error("Network error occurred");
   }
- 
+
   console.log(error.response.data);
+
   const status = error.response.status;  // status code show karwa da like 401 500
   const responseData = error.response.data;
- 
+
   const errorMessage =
-    responseData?.errors?.[0]?.message ||   // message show karwata h that is common in API
+    responseData?.errors?.[0]?.message ||  // message show karwata h that is common in API
     responseData?.message ||
-    "Something went wrong"; // default message
-    toast.error("Something went wrong")
- 
+    "Something went wrong";
+
+  // Show actual error in toast
+  toast.error(errorMessage);
+
   console.log("API Error:", errorMessage);
- 
-  if (status === 401) { 
+
+  if (status === 401) {
     localStorage.removeItem("token"); // a 401 Unauthorized, it removes the token (maybe expired session).
   }
- 
-  throw new Error(errorMessage);  // throws the readable error message.
 
+  throw new Error(errorMessage);
 };
- 
+
 export const apiClient = {
   get: async (url, config) => {
     try {
@@ -38,18 +40,18 @@ export const apiClient = {
       handleError(error);
     }
   },
- 
+
   post: async (url, data = {}, config) => {
     try {
       const response = await axiosInstance.post(url, data, config);
       const payload = response.data?.payload ?? response.data;
-      toast.success("data added succesfully")
+      toast.success("Data added successfully");
       return payload;
     } catch (error) {
       handleError(error);
     }
   },
- 
+
   put: async (url, data = {}, config) => {
     try {
       const response = await axiosInstance.put(url, data, config);
@@ -59,7 +61,7 @@ export const apiClient = {
       handleError(error);
     }
   },
- 
+
   patch: async (url, data = {}, config) => {
     try {
       const response = await axiosInstance.patch(url, data, config);
@@ -69,7 +71,7 @@ export const apiClient = {
       handleError(error);
     }
   },
- 
+
   delete: async (url, config) => {
     try {
       const response = await axiosInstance.delete(url, config);
@@ -79,4 +81,4 @@ export const apiClient = {
       handleError(error);
     }
   },
-}
+};
