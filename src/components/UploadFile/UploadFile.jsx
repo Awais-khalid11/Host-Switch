@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from "react";
 import { UploadPNG } from "../../constants/Imgs";
 
@@ -12,12 +11,12 @@ const FileUpload = ({
   onChange = () => {} 
 }) => {
   const fileInputRef = useRef(null);
-  const [fileName, setFileName] = useState(defaultFileName);
+  const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     if (value && value.length > 0) {
-      setFileName(value[0]?.name || "");
+      setFile(value[0] || null);
     }
   }, [value]);
 
@@ -28,7 +27,7 @@ const FileUpload = ({
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
-      setFileName(files[0].name);
+      setFile(files[0]);
       onChange(files);
     }
   };
@@ -38,7 +37,7 @@ const FileUpload = ({
     setIsDragging(false);
     const files = Array.from(event.dataTransfer.files);
     if (files.length > 0) {
-      setFileName(files[0].name);
+      setFile(files[0]);
       onChange(files); 
     }
   };
@@ -88,19 +87,34 @@ const FileUpload = ({
             isDragging ? "border-blue-500 bg-blue-50" : "border-[#D5D7DA]"
           }`}
         >
-          <img src={UploadPNG} alt="uploadImg" className="mb-2" />
-          <p className="text-sm text-center leading-5">
-            <strong className="text-[#5B5B5B]">Select Files To Upload</strong>
-          </p>
-          {fileName && (
-            <p className="text-sm text-center mt-1 text-gray-600">
-              Selected: {fileName}
-            </p>
-          )}
-          {!nodetail && (
-            <p className="text-[11px] text-[#2F3542] ml-1">
-              Drag and drop a file or Click to Upload
-            </p>
+          {file ? (
+            file.type.startsWith("image/") ? (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="preview"
+                className="w-16 h-16 object-cover rounded"
+              />
+            ) : file.type === "application/pdf" ? (
+              <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded">
+                📄
+              </div>
+            ) : (
+              <div className="w-32 h-28 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
+                {file.name}
+              </div>
+            )
+          ) : (
+            <>
+              <img src={UploadPNG} alt="uploadImg" className="mb-2" />
+              <p className="text-sm text-center leading-5">
+                <strong className="text-[#5B5B5B]">Select Files To Upload</strong>
+              </p>
+              {!nodetail && (
+                <p className="text-[11px] text-[#2F3542] ml-1">
+                  Drag and drop a file or Click to Upload
+                </p>
+              )}
+            </>
           )}
         </div>
       )}

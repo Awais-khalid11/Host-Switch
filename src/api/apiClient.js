@@ -1,7 +1,9 @@
 import toast from "react-hot-toast";
 import axiosInstance from "./axiosInstance";
+import { config } from "zod";
 
-const handleError = (error) => { // handleError handles  errors globally for all API calls.
+const handleError = (error) => {
+  // handleError handles  errors globally for all API calls.
   if (!error?.response) {
     console.log("Network error:", error); // agr internet ka issue h to wo show karwa do
     toast.error("Network error occurred");
@@ -10,11 +12,11 @@ const handleError = (error) => { // handleError handles  errors globally for all
 
   console.log(error.response.data);
 
-  const status = error.response.status;  // status code show karwa da like 401 500
+  const status = error.response.status; // status code show karwa da like 401 500
   const responseData = error.response.data;
 
   const errorMessage =
-    responseData?.errors?.[0]?.message ||  // message show karwata h that is common in API
+    responseData?.errors?.[0]?.message || // message show karwata h that is common in API
     responseData?.message ||
     "Something went wrong";
 
@@ -40,17 +42,26 @@ export const apiClient = {
       handleError(error);
     }
   },
-
+  
   post: async (url, data = {}, config) => {
     try {
       const response = await axiosInstance.post(url, data, config);
       const payload = response.data?.payload ?? response.data;
-      toast.success("Data added successfully");
-      return payload;
+      return payload
     } catch (error) {
-      handleError(error);
+      handleError(error)
     }
-  },
+  },  
+
+  // post: async (url, data = {}, config) => {
+  //   try {
+  //     const response = await axiosInstance.post(url, data, config);
+  //     const payload = response.data?.payload ?? response.data;
+  //     return payload;
+  //   } catch (error) {
+  //     handleError(error);
+  //   }
+  // },
 
   put: async (url, data = {}, config) => {
     try {
@@ -81,4 +92,18 @@ export const apiClient = {
       handleError(error);
     }
   },
+};
+
+export const SubmitFormDataMutation = async (formData) => {
+  try {
+    const res = await axiosInstance.post("/property", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error submitting form data:", error);
+    throw error;
+  }
 };

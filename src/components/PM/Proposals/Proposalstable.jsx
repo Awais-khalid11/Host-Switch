@@ -18,6 +18,7 @@ import AcceptedProposal from "./AcceptedProposal/AcceptedProposal";
 import AwaitingPropsal from "./AwaitingPropsal/AwaitingPropsal";
 import RejectedPropsal from "./RejectedProposal/RejectedPropsal";
 
+
 const Proposalstable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -117,7 +118,6 @@ const Proposalstable = () => {
     },
   ];
 
-  // NEW: Filter the data based on selected status
   const filteredData = filterStatus
     ? allData.filter((item) => item.status === filterStatus)
     : allData;
@@ -251,6 +251,7 @@ const Proposalstable = () => {
     return <ActionMenu actions={actions} />;
   };
 
+
   return acceptPage ? (
     acceptPage
   ) : (
@@ -288,11 +289,10 @@ const Proposalstable = () => {
             ]}
           />
         </div>
-        
 
         <Table
           columns={columns}
-          data={filteredData} 
+          data={filteredData}
           showActions
           actions={rowActions}
           search={search}

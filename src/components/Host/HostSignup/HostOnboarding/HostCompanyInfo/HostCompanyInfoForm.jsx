@@ -86,7 +86,6 @@ const HostCompanyInfoForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      
 
       {/* Full Name */}
       <Controller

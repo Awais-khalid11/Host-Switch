@@ -17,6 +17,7 @@ import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import { ROUTES } from "../../../constants/Routes";
 import HostProposalView from "./HostProposalView/HostProposalView";
+import useTantanstackClient from "../../../hook/useTantanstackClient";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
@@ -24,129 +25,51 @@ const HostProposalTable = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [tablePages, setTablePages] = useState();
 
-  const allData = [
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Accepted",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Pending",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Received",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Pending",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Pending",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Accepted",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Declined",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Accepted",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Declined",
-    },
-    {
-      property: "123 Palm Ave, Miami",
-      UserImg: UserPNG,
-      reviews: "4.8 (125 reviews)",
-      first_name: "StayWell Homes",
-      fee: "18%",
-      revenue: "$42,000",
-      date: "Apr 30, 2025",
-      status: "Requested",
-    },
-  ];
+  // Fetch proposals from API
+  const { data: getProposalData } = useTantanstackClient.useGetQuery(
+    ["proposal"],
+    "/proposal"
+  );
 
+  // If API returns { data: [...] }
+  // const proposalsArray = Array.isArray(getProposalData)
+  //   ? getProposalData
+  //   : Array.isArray(getProposalData?.data)
+  //   ? getProposalData.data
+  //   : [];
+
+  const formattedData = getProposalData?.records?.map((doc) => ({
+    id: doc?.id,
+    property: doc?.user_id || "N/A",
+    first_name: doc?.property_id || "N/A",
+    reviews: doc?.property_owner_id || "N/A",
+    UserImg: doc?.limit || UserPNG,
+    status: doc?.status || "N/A",
+    fee: doc?.page || "N/A",
+    revenue: doc?.asc || "N/A",
+    date: doc?.date_received || "N/A",
+    original: doc,
+  }));
+  console.log(getProposalData, "formattedData");
+
+  // Filtered data based on status
   const filteredData =
     filterStatus === "all"
-      ? allData
-      : filterStatus === "pending-type"
-      ? allData.filter((item) => ["Pending"].includes(item.status))
-      : allData.filter((item) => item.status === filterStatus);
+      ? formattedData
+      : formattedData.filter((item) => item.status === filterStatus);
 
   const columns = [
     { header: "Property", accessor: "property", showSort: true },
     {
-      accessor: "property",
+      accessor: "first_name",
       header: "PM Company",
       showSort: true,
       cell: ({ row }) => {
         const {
           first_name = "Unknown",
-          reviews = "No Email",
+          reviews = "No Reviews",
           UserImg = UserPNG,
         } = row;
-
         return (
           <div className="flex items-center gap-3">
             <img
@@ -172,7 +95,6 @@ const HostProposalTable = () => {
       showSort: true,
       cell: ({ getValue }) => {
         const status = getValue();
-
         const statusClass =
           status === "Accepted"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
@@ -181,7 +103,6 @@ const HostProposalTable = () => {
             : status === "Received"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
             : "bg-[#FFAF3F1A] border border-[#FFAF3F] text-[#FFAF3F]";
-
         return (
           <div
             className={`px-3 py-1 text-xs font-medium rounded-full inline-block ${statusClass}`}
@@ -197,13 +118,9 @@ const HostProposalTable = () => {
   ];
 
   const rowActions = (rowData) => {
-    const isPending = rowData.status === "Pending";
-    const isAccepted = rowData.status === "Accepted";
-    const isDeclined = rowData.status === "Declined";
-
     const actions = [];
 
-    if (isPending) {
+    if (rowData.status === "pending") {
       actions.push(
         {
           label: "View",
@@ -213,20 +130,16 @@ const HostProposalTable = () => {
         },
         {
           label: "Accept",
-          icon: <img src={ProfiletickSVG} alt="download" className="w-4 h-4" />,
+          icon: <img src={ProfiletickSVG} alt="accept" className="w-4 h-4" />,
           onClick: () => console.log("Accept", rowData),
         },
         {
           label: "Decline",
-          icon: (
-            <img src={ProfildeleteSVG} alt="download" className="w-4 h-4" />
-          ),
+          icon: <img src={ProfildeleteSVG} alt="decline" className="w-4 h-4" />,
           onClick: () => console.log("Decline", rowData),
         }
       );
-    }
-
-    if (isAccepted) {
+    } else if (rowData.status === "Accepted") {
       actions.push(
         {
           label: "View",
@@ -235,13 +148,11 @@ const HostProposalTable = () => {
         },
         {
           label: "Message PM",
-          icon: <img src={MsgsSVG} alt="Pay" className="w-4 h-4" />,
+          icon: <img src={MsgsSVG} alt="message" className="w-4 h-4" />,
           onClick: () => navigate(ROUTES.PAY),
         }
       );
-    }
-
-    if (isDeclined) {
+    } else if (rowData.status === "Declined") {
       actions.push(
         {
           label: "View",
@@ -250,8 +161,8 @@ const HostProposalTable = () => {
         },
         {
           label: "Reconsider",
-          icon: <img src={ConsiderSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => navigate(isPaid ? ROUTES.PAIDINVOICE : ROUTES.UNPAID),
+          icon: <img src={ConsiderSVG} alt="reconsider" className="w-4 h-4" />,
+          onClick: () => console.log("Reconsider", rowData),
         }
       );
     }
@@ -268,7 +179,6 @@ const HostProposalTable = () => {
           <h2 className="md:text-xl text-lg text-[#181D27] font-bold md:mb-3.5">
             New Proposals
           </h2>
-
           <FilterDropdown
             button={
               <Button variant="filterbtn" suffixImg={FilterSVG}>
@@ -279,13 +189,8 @@ const HostProposalTable = () => {
             options={[
               {
                 label: "All",
-                value: "pending-type",
-                icon: <img src={AllSVG} alt="All" />,
-              },
-              {
-                label: "New",
                 value: "all",
-                icon: <img src={ClockSVG} alt="New" />,
+                icon: <img src={AllSVG} alt="All" />,
               },
               {
                 label: "Accepted",
@@ -310,11 +215,10 @@ const HostProposalTable = () => {
             ]}
           />
         </div>
-
         <Table
           columns={columns}
-          data={filteredData}
-          showActions
+          data={filteredData || []} 
+          showActions={true}
           actions={rowActions}
           search={search}
         />

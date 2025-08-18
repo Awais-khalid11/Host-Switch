@@ -12,9 +12,8 @@ const Table = ({
   className,
   rowStyle = "bottom-border",
   showCheckbox = false,
-  showPagination = true, 
+  showPagination = true,
 }) => {
-
   const [selectedRows, setSelectedRows] = useState([]);
   const [sortingKey, setSortingKey] = useState(null);
   const [sortingOrder, setSortingOrder] = useState("asc");
@@ -32,7 +31,7 @@ const Table = ({
     if (selectedRows.length === paginatedData.length) {
       setSelectedRows([]);
     } else {
-      const allIds = paginatedData.map((row) => row.id); 
+      const allIds = paginatedData.map((row) => row.id);
       setSelectedRows(allIds);
     }
   };
@@ -59,13 +58,22 @@ const Table = ({
       const aVal = a[sortingKey];
       const bVal = b[sortingKey];
       if (aVal === bVal) return 0;
-      return sortingOrder === "asc" ? (aVal > bVal ? 1 : -1) : aVal < bVal ? 1 : -1;
+      return sortingOrder === "asc"
+        ? aVal > bVal
+          ? 1
+          : -1
+        : aVal < bVal
+        ? 1
+        : -1;
     });
 
   const paginatedData =
     rowStyle === "full-border"
       ? filteredData
-      : filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+      : filteredData.slice(
+          (currentPage - 1) * rowsPerPage,
+          currentPage * rowsPerPage
+        );
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
@@ -79,13 +87,18 @@ const Table = ({
 
   return (
     <div className={`${className}`}>
-      <div className="w-full p-2.5" style={{ scrollbarColor: "#a0aec0 transparent" }}>
+      <div
+        className="w-full p-2.5"
+        style={{ scrollbarColor: "#a0aec0 transparent" }}
+      >
         <div className="relative md:w-full md:max-w-[800px] min-w-full sm:w-143 w-[100px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 hover:scrollbar-thumb-gray-500">
           <table className="w-full text-sm text-left">
             <thead className="bg-[#F5F5F5]">
               <tr
                 className={`${
-                  rowStyle === "full-border" ? "h-[34px] mb-2 border-b border-[#E9EAEB]" : ""
+                  rowStyle === "full-border"
+                    ? "h-[34px] mb-2 border-b border-[#E9EAEB]"
+                    : ""
                 }`}
               >
                 {showCheckbox && (
@@ -136,7 +149,9 @@ const Table = ({
             <tbody>
               {paginatedData.map((row, rowIndex) => (
                 <React.Fragment key={row.id || rowIndex}>
-                  {rowIndex !== 0 && rowStyle === "full-border" && <tr className="h-2" />}
+                  {rowIndex !== 0 && rowStyle === "full-border" && (
+                    <tr className="h-2" />
+                  )}
                   <tr
                     className={`bg-white ${
                       rowStyle === "full-border"
@@ -199,34 +214,33 @@ const Table = ({
         </div>
       </div>
 
-     {showPagination && rowStyle !== "full-border" && (
-  <div className="flex justify-between items-center mt-2 px-2 border-t border-t-[#E9EAEB] pt-4">
-    <h4 className="text-sm font-normal text-[#414651]">
-      Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-      {Math.min(currentPage * rowsPerPage, filteredData.length)} of{" "}
-      {filteredData.length} Proposals
-    </h4>
-    <div className="flex items-center gap-2.5">
-      <Button
-        onClick={handlePrevious}
-        disabled={currentPage === 1}
-        prefixImg={PrevSVG}
-        className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
-      >
-        Previous
-      </Button>
-      <Button
-        onClick={handleNext}
-        disabled={currentPage === totalPages}
-        suffixImg={NextSVG}
-        className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
-      >
-        Next
-      </Button>
-    </div>
-  </div>
-)}
-
+      {showPagination && rowStyle !== "full-border" && (
+        <div className="flex justify-between items-center mt-2 px-2 border-t border-t-[#E9EAEB] pt-4">
+          <h4 className="text-sm font-normal text-[#414651]">
+            Showing {(currentPage - 1) * rowsPerPage + 1} to
+            {Math.min(currentPage * rowsPerPage, filteredData.length)} of
+            {filteredData.length} Proposals
+          </h4>
+          <div className="flex items-center gap-2.5">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentPage === 1}
+              prefixImg={PrevSVG}
+              className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              suffixImg={NextSVG}
+              className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

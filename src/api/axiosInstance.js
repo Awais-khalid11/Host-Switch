@@ -16,7 +16,6 @@ axiosInstance.interceptors.request.use(   // interceptor hr request sa phlay che
 export default axiosInstance;
 
 
-
 // import.meta.env is how you access env variables in Vite.
 
 // What is an Interceptor?
