@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RolePNG } from "../../../constants/Imgs";
-import { LogoSVG } from "../../../Constants/Icons";
+import { LogoSVG } from "../../../constants/Icons";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import useRoleStore from "../../../store/useRoleIdStore";
@@ -8,19 +8,18 @@ import useRoleStore from "../../../store/useRoleIdStore";
 const RoleSelection = () => {
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useState(null);
-  const { setRoleId } = useRoleStore()
+  const { setRoleId } = useRoleStore();
   const roleContainerRef = useRef(null);
 
   const handleContinue = () => {
-    if (selectedRole === 'pm') {
-      setRoleId(2) 
-      navigate(ROUTES.COMPANYINFO)
-    } else if (selectedRole === 'host') {
-      setRoleId(3) 
-      navigate(ROUTES.HOSTCOMPANYINFO)
+    if (selectedRole === "pm") {
+      setRoleId(3);
+      navigate(ROUTES.COMPANYINFO);
+    } else if (selectedRole === "host") {
+      setRoleId(2);
+      navigate(ROUTES.HOSTCOMPANYINFO);
     }
-  }
-
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,25 +55,29 @@ const RoleSelection = () => {
         <div ref={roleContainerRef} className="flex flex-col gap-5">
           <div
             onClick={() => setSelectedRole("pm")}
-            className={`cursor-pointer border md:p-5 p-3 rounded-[12px] transition ${selectedRole === "pm"
-              ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
-              : "border-[#E4E5E8] hover:shadow-md"
-              }`}
+            className={`cursor-pointer border md:p-5 p-3 rounded-[12px] transition ${
+              selectedRole === "pm"
+                ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
+                : "border-[#E4E5E8] hover:shadow-md"
+            }`}
           >
             <p className="text-[16px] font-medium">
-              I want to access the <span className="font-bold">PM Dashboard</span>
+              I want to access the{" "}
+              <span className="font-bold">PM Dashboard</span>
             </p>
           </div>
 
           <div
             onClick={() => setSelectedRole("host")}
-            className={`cursor-pointer border  md:p-5 p-3 rounded-[12px] transition ${selectedRole === "host"
-              ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
-              : "border-[#E4E5E8] hover:shadow-md"
-              }`}
+            className={`cursor-pointer border  md:p-5 p-3 rounded-[12px] transition ${
+              selectedRole === "host"
+                ? "border-[#4D72FF] shadow-md bg-[#F0F4FF]"
+                : "border-[#E4E5E8] hover:shadow-md"
+            }`}
           >
             <p className="text-[16px] font-medium">
-              I want to access the <span className="font-bold">Host Dashboard</span>
+              I want to access the{" "}
+              <span className="font-bold">Host Dashboard</span>
             </p>
           </div>
 

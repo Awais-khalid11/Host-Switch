@@ -40,9 +40,8 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [isPending, setIsPending] = useState(false); // ✅ local loading state
-  const { roleId } = useRoleStore();
-  console.log("the role id is", roleId);
+  const { roleId, removeRoleId } = useRoleStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
@@ -63,24 +62,32 @@ const HostCompanyInfoForm = () => {
     },
   });
 
-  // ✅ handle form submission
   const onSubmit = async (formData) => {
     try {
-      setIsPending(true);
+      setIsLoading(true);
 
-      // call your API
-      await postData("/companies", { ...formData, role_id: roleId });
+      const payload = {
+        name: formData.name,
+        number: formData.number,
+        email: formData.email,
+        password: formData.password,
+        role_id: roleId, // ✅ taken from store
+        designation: formData.designation,
+        number_of_properties: formData.cleaningHandledBy[0], // ✅ match your backend field
+      };
 
-      toast.success("Form submitted successfully!");
-      navigate(ROUTES.NEXT_ROUTE); // 👈 change NEXT_ROUTE to your desired route
-    } catch (err) {
-      console.error(err);
+      const response = await postData("/auth/register", payload);
 
-      // if backend sends a message, show it
-      const errorMsg = err?.response?.data?.message || "Something went wrong!";
-      toast.error(errorMsg);
+      toast.success("Signup successful!");
+      console.log("signup response:", response);
+
+      removeRoleId();
+      navigate(ROUTES.HOSTPORTFOLIO);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup failed");
+      console.error("Signup error:", error);
     } finally {
-      setIsPending(false);
+      setIsLoading(false);
     }
   };
 
@@ -231,7 +238,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* CleaningHandledBy */}
+      {/* Number of Properties */}
       <Controller
         name="cleaningHandledBy"
         control={control}
@@ -258,7 +265,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Terms */}
+      {/* Terms & Conditions */}
       <Controller
         name="terms"
         control={control}
