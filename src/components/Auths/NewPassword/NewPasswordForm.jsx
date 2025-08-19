@@ -8,17 +8,15 @@ import InputField from "../../InputField/InputField";
 import Button from "../../Button/Button";
 import Modal from "../../Modal/Modal";
 import PasswordModal from "../../Modal/PasswordModal";
-import { Thumbsup } from "../../../Constants/Icons";
+import { Thumbsup } from "../../../constants/Icons";
 import { ROUTES } from "../../../constants/Routes";
 import { PasswordmodalPNG } from "../../../constants/Imgs";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
 
 // Schema Validation
-const schema = z
-  .object({
-    old_password: z.string().min(1, "Old password is required"),
-    new_password: z.string().min(8, "New password must be at least 8 characters"),
-  })
+const schema = z.object({
+  old_password: z.string().min(1, "Old password is required"),
+  new_password: z.string().min(8, "New password must be at least 8 characters"),
+});
 
 const NewPasswordForm = () => {
   const navigate = useNavigate();
@@ -26,10 +24,9 @@ const NewPasswordForm = () => {
 
   const resetToken = localStorage.getItem("resetToken");
   // console.log("resetToken", 432575);
-  
+
   const id = localStorage.getItem("userID");
   console.log("id", id);
-  
 
   const {
     control,
@@ -43,35 +40,7 @@ const NewPasswordForm = () => {
     },
   });
 
-  const resetPasswordMutation = useTantanstackClient.usePostMutation(
-    ["reset"],
-    `auth/reset/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${resetToken}`,
-      },
-    },
-    {
-      onSuccess: () => {
-        toast.success("Password reset successful");
-        console.log("Modal", showModal);
-        setShowModal(true);
-        console.log("Modal", setShowModal);
-      },
-      onError: (error) => {
-        toast.error(error?.response?.data?.message || "Reset failed");
-        console.error("ERROR:", error);
-      },
-    }
-  );
-
-  const onSubmit = (formData) => {
-    const payload = {
-      password: formData.old_password,
-      new_password: formData.new_password,
-    };
-    resetPasswordMutation.mutate(payload);
-  };
+  const onSubmit = (formData) => {};
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -90,7 +59,9 @@ const NewPasswordForm = () => {
               {...field}
             />
             {errors.old_password && (
-              <p className="text-red-500 text-sm -mt-6">{errors.old_password.message}</p>
+              <p className="text-red-500 text-sm -mt-6">
+                {errors.old_password.message}
+              </p>
             )}
           </div>
         )}
@@ -111,7 +82,9 @@ const NewPasswordForm = () => {
               {...field}
             />
             {errors.new_password && (
-              <p className="text-red-500 text-sm -mt-6">{errors.new_password.message}</p>
+              <p className="text-red-500 text-sm -mt-6">
+                {errors.new_password.message}
+              </p>
             )}
           </div>
         )}
@@ -155,7 +128,7 @@ const NewPasswordForm = () => {
         >
           <PasswordModal />
         </Modal>
-       )}
+      )}
     </form>
   );
 };

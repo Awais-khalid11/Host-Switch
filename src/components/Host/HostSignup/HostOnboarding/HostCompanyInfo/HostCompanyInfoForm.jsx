@@ -8,7 +8,6 @@ import CheckBox from "../../../../CheckBox/CheckBox";
 import InputField from "../../../../InputField/InputField";
 import Button from "../../../../Button/Button";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
-import useTantanstackClient from "../../../../../hook/useTantanstackClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
@@ -40,8 +39,9 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isPending, setIsPending] = useState(false); // ✅ local loading state
   const { roleId } = useRoleStore();
-  console.log("the role id is", roleId)
+  console.log("the role id is", roleId);
 
   const {
     control,
@@ -62,32 +62,29 @@ const HostCompanyInfoForm = () => {
     },
   });
 
-  const { mutate, isPending } = useTantanstackClient.usePostMutation(
-    ["register"],
-    "/auth/register",
-    null,
-    {
-      onSuccess: (data) => {
-        console.log("signup response:", data);
-        navigate(ROUTES.HOSTPORTFOLIO);
-        removeRoleId();
-      },
-      onError: (error) => {
-        toast.error(error.message || "Signup failed");
-      },
-    }
-  );
+  // ✅ handle form submission
+  const onSubmit = async (formData) => {
+    try {
+      setIsPending(true);
 
-  const onSubmit = (formData) => {
-    formData.role_id = roleId
-    console.log("Submitting data:", formData);
-    mutate(formData);
+      // call your API
+      await postData("/companies", { ...formData, role_id: roleId });
+
+      toast.success("Form submitted successfully!");
+      navigate(ROUTES.NEXT_ROUTE); // 👈 change NEXT_ROUTE to your desired route
+    } catch (err) {
+      console.error(err);
+
+      // if backend sends a message, show it
+      const errorMsg = err?.response?.data?.message || "Something went wrong!";
+      toast.error(errorMsg);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      
-
       {/* Full Name */}
       <Controller
         name="name"
@@ -209,6 +206,7 @@ const HostCompanyInfoForm = () => {
         />
       </div>
 
+      {/* Designation */}
       <Controller
         name="designation"
         control={control}
@@ -232,6 +230,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* CleaningHandledBy */}
       <Controller
         name="cleaningHandledBy"
         control={control}
@@ -258,6 +257,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* Terms */}
       <Controller
         name="terms"
         control={control}
@@ -286,6 +286,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* Buttons */}
       <div className="flex md:gap-4 gap-2">
         <Link
           className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"

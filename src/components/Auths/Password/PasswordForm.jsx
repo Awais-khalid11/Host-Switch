@@ -6,7 +6,6 @@ import { ROUTES } from "../../../constants/Routes";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
 const id = location.state?.id;
 
 const schema = z.object({
@@ -27,35 +26,7 @@ const PasswordForm = () => {
     },
   });
 
-  const loginMutation = useTantanstackClient.usePostMutation(
-    ["forgot"],
-    "/auth/forgot",
-    null,
-    {
-      onSuccess: (data) => {
-        console.log("email response:", data);
-        console.log("email response:", data);
-        localStorage.getItem("token");
-        console.log("forget response id:", data.id);
-        localStorage.setItem("userID", data?.id);
-
-        navigate("/otp", {
-          state: {
-            id: data?.user?.id || data?.id,
-            from: "login",
-          },
-        });
-      },
-
-      onError: (error) => {
-        toast.error(error.message || "Login failed");
-      },
-    }
-  );
-
-  const onSubmit = (formData) => {
-    loginMutation.mutate(formData);
-  };
+  const onSubmit = (formData) => {};
 
   return (
     <div>
