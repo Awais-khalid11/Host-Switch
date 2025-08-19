@@ -8,11 +8,11 @@ import CheckBox from "../../../../CheckBox/CheckBox";
 import InputField from "../../../../InputField/InputField";
 import Button from "../../../../Button/Button";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
-import useTantanstackClient from "../../../../../hook/useTantanstackClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
 import useRoleStore from "../../../../../store/useRoleIdStore";
+import { postData } from "../../../../../api/apiClient";
 
 const schema = z
   .object({
@@ -40,8 +40,8 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
-  const { roleId } = useRoleStore();
-  console.log("the role id is", roleId)
+  const { roleId, removeRoleId } = useRoleStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
@@ -62,32 +62,37 @@ const HostCompanyInfoForm = () => {
     },
   });
 
-  const { mutate, isPending } = useTantanstackClient.usePostMutation(
-    ["register"],
-    "/auth/register",
-    null,
-    {
-      onSuccess: (data) => {
-        console.log("signup response:", data);
-        navigate(ROUTES.HOSTPORTFOLIO);
-        removeRoleId();
-      },
-      onError: (error) => {
-        toast.error(error.message || "Signup failed");
-      },
-    }
-  );
+  const onSubmit = async (formData) => {
+    try {
+      setIsLoading(true);
 
-  const onSubmit = (formData) => {
-    formData.role_id = roleId
-    console.log("Submitting data:", formData);
-    mutate(formData);
+      const payload = {
+        name: formData.name,
+        number: formData.number,
+        email: formData.email,
+        password: formData.password,
+        role_id: roleId, // ✅ taken from store
+        designation: formData.designation,
+        number_of_properties: formData.cleaningHandledBy[0], // ✅ match your backend field
+      };
+
+      const response = await postData("/auth/register", payload);
+
+      toast.success("Signup successful!");
+      console.log("signup response:", response);
+
+      removeRoleId();
+      navigate(ROUTES.HOSTPORTFOLIO);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup failed");
+      console.error("Signup error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      
-
       {/* Full Name */}
       <Controller
         name="name"
@@ -209,6 +214,7 @@ const HostCompanyInfoForm = () => {
         />
       </div>
 
+      {/* Designation */}
       <Controller
         name="designation"
         control={control}
@@ -232,6 +238,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* Number of Properties */}
       <Controller
         name="cleaningHandledBy"
         control={control}
@@ -258,6 +265,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* Terms & Conditions */}
       <Controller
         name="terms"
         control={control}
@@ -286,6 +294,7 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
+      {/* Buttons */}
       <div className="flex md:gap-4 gap-2">
         <Link
           className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
@@ -295,10 +304,10 @@ const HostCompanyInfoForm = () => {
         </Link>
         <Button
           type="submit"
-          disabled={isPending}
+          disabled={isLoading}
           className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
         >
-          {isPending ? "Submitting..." : "Save & Continue"}
+          {isLoading ? "Submitting..." : "Save & Continue"}
         </Button>
       </div>
     </form>
