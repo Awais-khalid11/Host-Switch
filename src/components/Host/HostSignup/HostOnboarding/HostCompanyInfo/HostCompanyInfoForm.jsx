@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
 import useRoleStore from "../../../../../store/useRoleIdStore";
+import { postData } from "../../../../../api/apiClient";
 
 const schema = z
   .object({
@@ -296,10 +297,10 @@ const HostCompanyInfoForm = () => {
         </Link>
         <Button
           type="submit"
-          disabled={isPending}
+          disabled={isLoading}
           className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
         >
-          {isPending ? "Submitting..." : "Save & Continue"}
+          {isLoading ? "Submitting..." : "Save & Continue"}
         </Button>
       </div>
     </form>
