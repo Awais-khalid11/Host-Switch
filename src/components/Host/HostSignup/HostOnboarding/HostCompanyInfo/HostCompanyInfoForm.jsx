@@ -83,13 +83,10 @@ const HostCompanyInfoForm = () => {
       }
 
       toast.success("Signup successful!");
-      console.log("signup response:", response);
 
       removeRoleId();
       navigate(ROUTES.HOSTPORTFOLIO);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed");
-      console.error("Signup error:", error);
     } finally {
       setIsLoading(false);
     }

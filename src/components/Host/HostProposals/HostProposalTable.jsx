@@ -16,7 +16,6 @@ import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import HostProposalView from "./HostProposalView/HostProposalView";
 import { getData } from "../../../api/apiClient";
-import { format } from "date-fns";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
@@ -42,26 +41,6 @@ const HostProposalTable = () => {
 
     fetchProposals();
   }, []);
-
-  const formattedData = getProposalData?.payload?.records?.map((doc) => ({
-    id: doc?.id,
-    property: doc?.property?.address || "N/A",
-    first_name: doc?.user?.name || "N/A",
-    reviews: doc?.user?.email || "N/A",
-    UserImg:
-      doc?.user?.image &&
-      doc.user.image.trim() !== "" &&
-      doc.user.image.toLowerCase() !== "null"
-        ? doc.user.image
-        : null, // show React icon if no image
-    status: doc?.status || "N/A",
-    fee: doc?.onboarding_fee ? `$${doc?.onboarding_fee}` : "N/A",
-    revenue: doc?.revenue_expectation ? `$${doc?.revenue_expectation}` : "N/A",
-    date: doc?.created_at
-      ? format(new Date(doc?.created_at), "MMM dd, yyyy")
-      : "N/A",
-    original: doc,
-  }));
 
   // If API returns { data: [...] }
   // const proposalsArray = Array.isArray(getProposalData)
@@ -254,13 +233,9 @@ const HostProposalTable = () => {
           />
         </div>
         <Table
-          key={filterStatus + search} 
+          key={filterStatus + search}
           columns={columns}
-<<<<<<< Updated upstream
-          data={filteredData || []} 
-=======
           data={filteredData || []}
->>>>>>> Stashed changes
           showActions={true}
           actions={rowActions}
           search={search}
