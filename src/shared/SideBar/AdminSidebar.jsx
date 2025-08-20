@@ -1,15 +1,34 @@
-import { DashboardSVG, DashboardactiveSVG, IncomingactiveSVG, IncomingSVG, LogoutSVG, MesaagesactiveSVG, MesaagesSVG, NoteactiveSVG, NoteSVG, RankingactiveSVG, RankingSVG, SettingactiveSVG, SettingSVG, SupportSVG, SupportactiveSVG, HleadsSVG, PmcompanySVG, HleadactiveSVG, PmcompanyactiveSVG } from "../../Constants/Icons";
+import {
+  DashboardSVG,
+  DashboardactiveSVG,
+  IncomingactiveSVG,
+  IncomingSVG,
+  LogoutSVG,
+  MesaagesactiveSVG,
+  MesaagesSVG,
+  NoteactiveSVG,
+  NoteSVG,
+  RankingactiveSVG,
+  RankingSVG,
+  SettingactiveSVG,
+  SettingSVG,
+  SupportSVG,
+  SupportactiveSVG,
+  HleadsSVG,
+  PmcompanySVG,
+  HleadactiveSVG,
+  PmcompanyactiveSVG,
+} from "../../constants/Icons";
 import { ROUTES } from "../../constants/Routes";
-
 
 export const AdminSidbar = [
   {
     label: "Dashboard",
     to: ROUTES.ADMINDASHBOARD,
     labelIcon: DashboardSVG,
-    activeIcon: DashboardactiveSVG
+    activeIcon: DashboardactiveSVG,
   },
-     {
+  {
     label: "Hosts Leads",
     to: ROUTES.ADMINHOSTLEADS,
     labelIcon: HleadsSVG,
@@ -27,7 +46,7 @@ export const AdminSidbar = [
     labelIcon: NoteSVG,
     activeIcon: NoteactiveSVG,
   },
-   {
+  {
     label: "Settings",
     to: ROUTES.ADMINSETTINGS,
     labelIcon: SettingSVG,
@@ -40,9 +59,9 @@ export const AdminSidbar = [
     activeIcon: SupportactiveSVG,
   },
   {
-      label: "Log Out",
-      to: "/login",
-      labelIcon: LogoutSVG,
-      activeIcon: LogoutSVG,
-    },
+    label: "Log Out",
+    to: "/login",
+    labelIcon: LogoutSVG,
+    activeIcon: LogoutSVG,
+  },
 ];

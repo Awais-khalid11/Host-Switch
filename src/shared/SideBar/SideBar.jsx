@@ -1,42 +1,50 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { HeaderlogoSVG } from "../../constants/Icons";
+import useRoleStore from "../../store/useRoleIdStore";
 
 const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
   const mainLinks = links.filter((link) => link.label !== "Log Out");
   const logoutLink = links.find((link) => link.label === "Log Out");
   const navigate = useNavigate();
 
+  const removeRoleId = useRoleStore((state) => state.removeRoleId);
+
   const handleLinkClick = () => {
     if (window.innerWidth < 1024) setShowSidebar(false);
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    removeRoleId();
+    navigate("/login");
   };
 
   return (
     <>
       {showSidebar && (
         <div
-          className="z-40 lg:hidden fixed  "
+          className="z-40 lg:hidden fixed"
           onClick={() => setShowSidebar(false)}
         />
       )}
 
       <div
         className={`fixed z-40 bg-white lg:w-[261px] w-full 
-        ${showSidebar && window.innerWidth < 1024 ? "top-0 h-full" : "top-[80px] lg:h-[calc(100vh-80px)]"} 
+        ${
+          showSidebar && window.innerWidth < 1024
+            ? "top-0 h-full"
+            : "top-[80px] lg:h-[calc(100vh-80px)]"
+        } 
         flex flex-col transition-transform duration-300 ease-in-out
         ${showSidebar ? "translate-x-0" : "-translate-x-full"} 
         lg:translate-x-0`}
       >
         <div className="flex flex-col justify-between h-full lg:w-full overflow-y-auto p-5 bg-[#F2F7F9] rounded-[12px] lg:ml-2.5 lg:mt-2.5 lg:mb-2.5">
-          
-          {/* Top Section with Logo */}
           <div>
             <div className="lg:hidden mb-4 flex items-center justify-between">
-              <img
-                src={HeaderlogoSVG}
-                alt="Logo"
-                className="h-10 w-auto"
-              />
+              <img src={HeaderlogoSVG} alt="Logo" className="h-10 w-auto" />
               <button
                 onClick={() => setShowSidebar(false)}
                 className="text-[#252525] text-4xl font-bold lg:hidden leading-[0.5]"
@@ -75,31 +83,14 @@ const SideBar = ({ links = [], showSidebar, setShowSidebar }) => {
             </nav>
           </div>
 
-          {/* Bottom Section - Logout */}
           {logoutLink && (
-            <NavLink
-              to={logoutLink.to}
-              onClick={handleLinkClick}
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-5 py-3.5 rounded-[16px] text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-[linear-gradient(90deg,_#CE1B1B_0%,_rgba(206,27,27,0)_100%)] text-white"
-                    : "text-[#252525] bg-[linear-gradient(90deg,_#DBE4E8_0%,_rgba(219,228,232,0)_100%)] hover:bg-[linear-gradient(90deg,_#CE1B1B_0%,_rgba(206,27,27,0)_100%)]"
-                }`
-              }
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-5 py-3.5 rounded-[16px] text-sm font-medium transition-all text-[#252525] bg-[linear-gradient(90deg,_#DBE4E8_0%,_rgba(219,228,232,0)_100%)] hover:bg-[linear-gradient(90deg,_#CE1B1B_0%,_rgba(206,27,27,0)_100%)]"
             >
-              {({ isActive }) => (
-                <>
-                  <img
-                    src={
-                      isActive ? logoutLink.activeIcon : logoutLink.labelIcon
-                    }
-                    alt="Logout Icon"
-                  />
-                  <span>{logoutLink.label}</span>
-                </>
-              )}
-            </NavLink>
+              <img src={logoutLink.labelIcon} alt="Logout Icon" />
+              <span>{logoutLink.label}</span>
+            </button>
           )}
         </div>
       </div>
