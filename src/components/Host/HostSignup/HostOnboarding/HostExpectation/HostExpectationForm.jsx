@@ -182,9 +182,8 @@ const HostExpectationForm = () => {
           placeholder="e.g., $10k–$25k, $25k–$50k, "
           value={revenueExpectation}
           onChange={(e) => setRevenueExpectation(e.target.value)}
-
         />
-        {/* <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
+        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">
             Are you seeking Full PM or Co-Host?
           </h3>
@@ -206,8 +205,8 @@ const HostExpectationForm = () => {
               onChange={(e) => setTicket(e.target.value)}
             />
           </div>
-        </div> */}
-        {/* <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
+        </div>
+        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">Would You Consider Co-hosting?</h3>
           <div className="flex items-center gap-5">
             <RadioField
@@ -235,7 +234,7 @@ const HostExpectationForm = () => {
               onChange={(e) => setCohosting(e.target.value)}
             />
           </div>
-        </div> */}
+        </div>
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-4">
             Mark if any of these that are ABSOLUTE MUST HAVES
@@ -278,45 +277,30 @@ const HostExpectationForm = () => {
             <h3 className="text-sm font-bold mb-5">
               Involvement in Day-to-Day Decisions?
             </h3>
-            <div>
-              <Controller
-                name="involvement_level"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="dayHighly"
-                        name={field.name} // use controller name here
-                        value="Highly Involved"
-                        label="Highly Involved"
-                        checked={field.value === "Highly Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="daySomewhat"
-                        name={field.name}
-                        value="Somewhat Involved"
-                        label="Somewhat Involved"
-                        checked={field.value === "Somewhat Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="dayMinimally"
-                        name={field.name}
-                        value="Minimally Involved"
-                        label="Minimally Involved"
-                        checked={field.value === "Minimally Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.involvement_level && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.involvement_level.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="dayHighly"
+                name="day"
+                value="Highly Involved"
+                label="Highly Involved"
+                checked={day === "Highly Involved"}
+                onChange={(e) => setDay(e.target.value)}
+              />
+              <RadioField
+                id="daySomewhat"
+                name="day"
+                value="Somewhat Involved"
+                label="Somewhat Involved"
+                checked={day === "Somewhat Involved"}
+                onChange={(e) => setDay(e.target.value)}
+              />
+              <RadioField
+                id="dayMinimally"
+                name="day"
+                value="Minimally Involved"
+                label="Minimally Involved"
+                checked={day === "Minimally Involved"}
+                onChange={(e) => setDay(e.target.value)}
               />
             </div>
           </div>
@@ -387,361 +371,309 @@ const HostExpectationForm = () => {
               onChange={(e) => setLast(e.target.checked)}
             />
           </div>
-
         </div>
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-3">Condition of Property</h2>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Flooring</h2>
-            <Controller
-              name="flooringcondition"
-              id="flooring"
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <div className="flex items-center gap-5">
-                    <RadioField
-                      id="floorExcellent"
-                      value="Excellent condition"
-                      label="Excellent condition"
-                      checked={field.value === "Excellent condition"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="floorAverage"
-                      value="Average condition"
-                      label="Average condition"
-                      checked={field.value === "Average condition"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="floorNeeds"
-                      value="Needs attention"
-                      label="Needs attention"
-                      checked={field.value === "Needs attention"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </div>
-                  {errors.flooringcondition && (
-                    <p className="text-red-500 text-sm">
-                      {errors.flooringcondition.message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="floorExcellent"
+                name="floor"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={floor === " Excellent condition"}
+                onChange={(e) => setFloor(e.target.value)}
+              />
+              <RadioField
+                id="floorAverage"
+                name="floor"
+                value="Average condition"
+                label="Average condition"
+                checked={floor === "Average condition"}
+                onChange={(e) => setFloor(e.target.value)}
+              />
+              <RadioField
+                id="floorNeeds"
+                name="floor"
+                value="Needs attention"
+                label="Needs attention"
+                checked={floor === "Needs attention"}
+                onChange={(e) => setFloor(e.target.value)}
+              />
+            </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Kitchen Appliances</h2>
-            <Controller
-              name="kitechencondition"
-              id="kitchen"
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <div className="flex items-center gap-5">
-                    <RadioField
-                      id="appliancesExcellent"
-                      value=" Excellent condition"
-                      label=" Excellent condition"
-                      checked={field.value === " Excellent condition"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="appliancesAverage"
-                      value="Average condition"
-                      label="Average condition"
-                      checked={field.value === "Average condition"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="appliancesNeeds"
-                      value="Needs attention"
-                      label="Needs attention"
-                      checked={field.value === "Needs attention"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </div>
-                  {errors.kitechencondition && (
-                    <p className="text-red-500 text-sm ">
-                      {errors.kitechencondition.message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="appliancesExcellent"
+                name="appliances"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={appliances === " Excellent condition"}
+                onChange={(e) => setAppliances(e.target.value)}
+              />
+              <RadioField
+                id="appliancesAverage"
+                name="appliances"
+                value="Average condition"
+                label="Average condition"
+                checked={appliances === "Average condition"}
+                onChange={(e) => setAppliances(e.target.value)}
+              />
+              <RadioField
+                id="appliancesNeeds"
+                name="appliances"
+                value="Needs attention"
+                label="Needs attention"
+                checked={appliances === "Needs attention"}
+                onChange={(e) => setAppliances(e.target.value)}
+              />
+            </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Bathroom Fixtures</h2>
-            <div>
-              <Controller
-                name="bathroomcondition"
-                id="BathroomFixtures"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="fixturesExcellent"
-                        name="fixtures"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="fixturesAverage"
-                        name="fixtures"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="fixturesNeeds"
-                        name="fixtures"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.bathroomcondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.bathroomcondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="fixturesExcellent"
+                name="fixtures"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={fixtures === " Excellent condition"}
+                onChange={(e) => setFixtures(e.target.value)}
+              />
+              <RadioField
+                id="fixturesAverage"
+                name="fixtures"
+                value="Average condition"
+                label="Average condition"
+                checked={fixtures === "Average condition"}
+                onChange={(e) => setFixtures(e.target.value)}
+              />
+              <RadioField
+                id="fixturesNeeds"
+                name="fixtures"
+                value="Needs attention"
+                label="Needs attention"
+                checked={fixtures === "Needs attention"}
+                onChange={(e) => setFixtures(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Furniture</h2>
-            <div>
-              <Controller
-                name="furniturecondition"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="furnitureExcellent"
-                        name="furniture"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="furnitureAverage"
-                        name="furniture"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="furnitureNeeds"
-                        name="furniture"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.furniturecondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.furniturecondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="furnitureExcellent"
+                name="furniture"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={furniture === " Excellent condition"}
+                onChange={(e) => setFurniture(e.target.value)}
+              />
+              <RadioField
+                id="furnitureAverage"
+                name="furniture"
+                value="Average condition"
+                label="Average condition"
+                checked={furniture === "Average condition"}
+                onChange={(e) => setFurniture(e.target.value)}
+              />
+              <RadioField
+                id="furnitureNeeds"
+                name="furniture"
+                value="Needs attention"
+                label="Needs attention"
+                checked={furniture === "Needs attention"}
+                onChange={(e) => setFurniture(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Paint/Interior</h2>
-            <div>
-              <Controller
-                name="paintcondition"
-                id="PaintInterior"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="paintExcellent"
-                        name="paint"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="paintAverage"
-                        name="paint"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="paintNeeds"
-                        name="paint"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.paintcondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.paintcondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="paintExcellent"
+                name="paint"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={paint === " Excellent condition"}
+                onChange={(e) => setPaint(e.target.value)}
+              />
+              <RadioField
+                id="paintAverage"
+                name="paint"
+                value="Average condition"
+                label="Average condition"
+                checked={paint === "Average condition"}
+                onChange={(e) => setPaint(e.target.value)}
+              />
+              <RadioField
+                id="paintNeeds"
+                name="paint"
+                value="Needs attention"
+                label="Needs attention"
+                checked={paint === "Needs attention"}
+                onChange={(e) => setPaint(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Smart Devices</h2>
-            <div>
-              <Controller
-                name="devicescondition"
-                id="SmartDevices"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="devicesExcellent"
-                        name="devices"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="devicesAverage"
-                        name="devices"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="devicesNeeds"
-                        name="devices"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.devicescondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.devicescondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="devicesExcellent"
+                name="devices"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={devices === " Excellent condition"}
+                onChange={(e) => setDevices(e.target.value)}
+              />
+              <RadioField
+                id="devicesAverage"
+                name="devices"
+                value="Average condition"
+                label="Average condition"
+                checked={devices === "Average condition"}
+                onChange={(e) => setDevices(e.target.value)}
+              />
+              <RadioField
+                id="devicesNeeds"
+                name="devices"
+                value="Needs attention"
+                label="Needs attention"
+                checked={devices === "Needs attention"}
+                onChange={(e) => setDevices(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Outdoor Amenities</h2>
-            <div>
-              <Controller
-                name="outdoorcondition"
-                id="OutdoorAmenities"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="outdoorExcellent"
-                        name="outdoor"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="outdoorAverage"
-                        name="outdoor"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="outdoorNeeds"
-                        name="outdoor"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.outdoorcondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.outdoorcondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="outdoorExcellent"
+                name="outdoor"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={outdoor === " Excellent condition"}
+                onChange={(e) => setOutdoor(e.target.value)}
+              />
+              <RadioField
+                id="outdoorAverage"
+                name="outdoor"
+                value="Average condition"
+                label="Average condition"
+                checked={outdoor === "Average condition"}
+                onChange={(e) => setOutdoor(e.target.value)}
+              />
+              <RadioField
+                id="outdoorNeeds"
+                name="outdoor"
+                value="Needs attention"
+                label="Needs attention"
+                checked={outdoor === "Needs attention"}
+                onChange={(e) => setOutdoor(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[130px]">Others</h2>
-            <div>
-              <Controller
-                name="othercondition"
-                id="Others"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="othersExcellent"
-                        name="others"
-                        value=" Excellent condition"
-                        label=" Excellent condition"
-                        checked={field.value === " Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="othersAverage"
-                        name="others"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="othersNeeds"
-                        name="others"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.othercondition && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.othercondition.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="othersExcellent"
+                name="others"
+                value=" Excellent condition"
+                label=" Excellent condition"
+                checked={others === " Excellent condition"}
+                onChange={(e) => setOthers(e.target.value)}
+              />
+              <RadioField
+                id="othersAverage"
+                name="others"
+                value="Average condition"
+                label="Average condition"
+                checked={others === "Average condition"}
+                onChange={(e) => setOthers(e.target.value)}
+              />
+              <RadioField
+                id="othersNeeds"
+                name="others"
+                value="Needs attention"
+                label="Needs attention"
+                checked={others === "Needs attention"}
+                onChange={(e) => setOthers(e.target.value)}
               />
             </div>
           </div>
         </div>
-
+        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
+          <h2 className="text-sm font-bold mb-3">
+            Renovations in Last 3 Years
+          </h2>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="flooring"
+              id="flooring"
+              label="Flooring"
+              checked={flooring}
+              onChange={(e) => setFlooring(e.target.checked)}
+            />
+            <CheckBox
+              name="kappliances"
+              id="kappliances"
+              label="Kitchen appliances"
+              checked={kappliances}
+              onChange={(e) => setKappliances(e.target.checked)}
+            />
+            <CheckBox
+              name="bfixtures"
+              id="bfixtures"
+              label="Bathroom fixtures"
+              checked={bfixtures}
+              onChange={(e) => setBfixtures(e.target.checked)}
+            />
+          </div>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="furniture"
+              id="furniture"
+              label="Furniture"
+              checked={furniture}
+              onChange={(e) => setFurniture(e.target.checked)}
+            />
+            <CheckBox
+              name="Interior"
+              id="interior"
+              label="Paint / Interior"
+              checked={interior}
+              onChange={(e) => setInterior(e.target.checked)}
+            />
+            <CheckBox
+              name="smart"
+              id="smart"
+              label="Smart devices"
+              checked={smart}
+              onChange={(e) => setSmart(e.target.checked)}
+            />
+          </div>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="amenities"
+              id="amenities"
+              label="Outdoor amenities"
+              checked={amenities}
+              onChange={(e) => setAmenities(e.target.checked)}
+            />
+            <CheckBox
+              name="last"
+              id="last"
+              label="Others"
+              checked={last}
+              onChange={(e) => setLast(e.target.checked)}
+            />
+          </div>
+        </div>
 
         <div>
           <div className="mb-5">
@@ -853,7 +785,6 @@ const HostExpectationForm = () => {
           <Link
             className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
             to={ROUTES.HOSTCOMPANYINFO}
-
           >
             Back
           </Link>

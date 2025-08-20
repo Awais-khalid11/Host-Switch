@@ -4,9 +4,10 @@ import Button from "../../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import { Controller, useForm } from "react-hook-form";
-import z, { email } from "zod";
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { postData } from "../../../api/apiClient";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   email: z.string().email("Invalid email").min(1, "Email is required"),
@@ -30,7 +31,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (formData) => {
-
     setIsLoading(true);
     try {
       const payload = {
@@ -38,10 +38,18 @@ const LoginForm = () => {
         password: formData.password,
       };
 
-      const data = await postData("/auth/login", payload);
-      console.log(data, "sss");
+      const response = await postData("/auth/login", payload);
+
+      if (response?.payload?.accessToken) {
+        localStorage.setItem("token", response.payload.accessToken);
+        toast.success("Login successful!");
+        navigate(ROUTES.DASHBOARD);
+      } else {
+        toast.error("Login failed. No token received.");
+      }
     } catch (error) {
-      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
