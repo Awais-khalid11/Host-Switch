@@ -8,11 +8,11 @@ import CheckBox from "../../../../CheckBox/CheckBox";
 import InputField from "../../../../InputField/InputField";
 import Button from "../../../../Button/Button";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
-import useTantanstackClient from "../../../../../hook/useTantanstackClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneNumber from "../../../../PhoneNumber/PhoneNumber";
 import useRoleStore from "../../../../../store/useRoleIdStore";
+import { postData } from "../../../../../api/apiClient";
 
 const schema = z
   .object({
@@ -40,8 +40,8 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
-  const { roleId } = useRoleStore();
-  console.log("the role id is", roleId)
+  const { roleId, removeRoleId } = useRoleStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
@@ -62,32 +62,41 @@ const HostCompanyInfoForm = () => {
     },
   });
 
-  const { mutate, isPending } = useTantanstackClient.usePostMutation(
-    ["register"],
-    "/auth/register",
-    null,
-    {
-      onSuccess: (data) => {
-        console.log("signup response:", data);
-        navigate(ROUTES.HOSTPORTFOLIO);
-        removeRoleId();
-      },
-      onError: (error) => {
-        toast.error(error.message || "Signup failed");
-      },
-    }
-  );
+  const onSubmit = async (formData) => {
+    try {
+      setIsLoading(true);
 
-  const onSubmit = (formData) => {
-    formData.role_id = roleId
-    console.log("Submitting data:", formData);
-    mutate(formData);
+      const payload = {
+        name: formData.name,
+        number: formData.number,
+        email: formData.email,
+        password: formData.password,
+        role_id: roleId,
+        designation: formData.designation,
+        number_of_properties: formData.cleaningHandledBy[0],
+      };
+
+      const response = await postData("/auth/register", payload);
+
+      if (response?.payload?.accessToken) {
+        localStorage.setItem("token", response.payload.accessToken);
+      }
+
+      toast.success("Signup successful!");
+      console.log("signup response:", response);
+
+      removeRoleId();
+      navigate(ROUTES.HOSTPORTFOLIO);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Signup failed");
+      console.error("Signup error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-
-      {/* Full Name */}
       <Controller
         name="name"
         control={control}
@@ -111,7 +120,6 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Email & Phone */}
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <Controller
           name="email"
@@ -158,7 +166,6 @@ const HostCompanyInfoForm = () => {
         />
       </div>
 
-      {/* Password & Confirm */}
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <Controller
           name="password"
@@ -293,11 +300,12 @@ const HostCompanyInfoForm = () => {
           Back
         </Link>
         <Button
+          loading={isLoading}
           type="submit"
-          disabled={isPending}
+          disabled={isLoading}
           className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
         >
-          {isPending ? "Submitting..." : "Save & Continue"}
+          {isLoading ? "Submitting..." : "Save & Continue"}
         </Button>
       </div>
     </form>

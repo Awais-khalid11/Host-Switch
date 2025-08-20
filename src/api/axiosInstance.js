@@ -1,11 +1,15 @@
 import axios from "axios";
- 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,  // VITE_BASE_URL ya hum na apni api k link ka name rukha h .env file m
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_BASE_URL, // Replace with your API base URL
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
-axiosInstance.interceptors.request.use(   // interceptor hr request sa phlay check krta h k token h ya ni
+
+api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -13,12 +17,18 @@ axiosInstance.interceptors.request.use(   // interceptor hr request sa phlay che
   },
   (error) => Promise.reject(error)
 );
-export default axiosInstance;
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.warn("Unauthorized! Redirecting to login...");
+        localStorage.removeItem("token");
+        window.location.href = "/login";
 
-// import.meta.env is how you access env variables in Vite.
-
-// What is an Interceptor?
-// Interceptor means: “Hook” before every request goes out.
-// Yani:
-// Har request se pehle check hoga: kya token present hai?
+      }
+    }
+    return Promise.reject(error);
+  }
+);

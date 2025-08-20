@@ -1,3 +1,4 @@
+
 import toast from "react-hot-toast";
 import axiosInstance from "./axiosInstance";
 import { config } from "zod";
@@ -9,6 +10,8 @@ const handleError = (error) => {
     toast.error("Network error occurred");
     throw new Error("Network error occurred");
   }
+};
+
 
   console.log(error.response.data);
 
@@ -28,9 +31,8 @@ const handleError = (error) => {
   if (status === 401) {
     localStorage.removeItem("token"); // a 401 Unauthorized, it removes the token (maybe expired session).
   }
-
-  throw new Error(errorMessage);
 };
+
 
 export const apiClient = {
   get: async (url, config) => {
@@ -63,35 +65,25 @@ export const apiClient = {
   //   }
   // },
 
-  put: async (url, data = {}, config) => {
-    try {
-      const response = await axiosInstance.put(url, data, config);
-      const payload = response.data?.payload ?? response.data;
-      return payload;
-    } catch (error) {
-      handleError(error);
-    }
-  },
+export const deleteData = async (url, config = {}) => {
+  try {
+    const response = await api.delete(url, config);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
 
-  patch: async (url, data = {}, config) => {
-    try {
-      const response = await axiosInstance.patch(url, data, config);
-      const payload = response.data?.payload ?? response.data;
-      return payload;
-    } catch (error) {
-      handleError(error);
-    }
-  },
+const handleError = (error) => {
+  if (error.response) {
+    toast.error(error.response.data?.message || "Something went wrong!");
+  } else if (error.request) {
+    toast.error("Network error. Please check your connection.");
+  } else {
+    toast.error("Unexpected error occurred.");
+  }
 
-  delete: async (url, config) => {
-    try {
-      const response = await axiosInstance.delete(url, config);
-      const payload = response.data?.payload ?? response.data;
-      return payload;
-    } catch (error) {
-      handleError(error);
-    }
-  },
+  throw error;
 };
 
 export const SubmitFormDataMutation = async (formData) => {

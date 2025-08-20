@@ -3,12 +3,11 @@ import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import Button from "../../Button/Button";
 import { OtpPNG } from "../../../constants/Imgs";
-import { LogoSVG } from "../../../Constants/Icons";
+import { LogoSVG } from "../../../constants/Icons";
 import { ROUTES } from "../../../constants/Routes";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -34,36 +33,8 @@ const Otp = () => {
     },
   });
 
-  const loginMutation = useTantanstackClient.usePostMutation(
-    ["otp"],
-    `/auth/verify/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-    {
-      onSuccess: (data) => {
-        console.log("SUCCESS", data);
-        console.log("Login response token:", data?.resetToken);
-        if (data) {
-          toast.success("Entered Successfully");
-          navigate("/newpassword");
-        } else {
-          toast.error("Token not received");
-        }
-        localStorage.setItem("resetToken", data?.resetToken);
-      },
-      onError: (error) => {
-        console.log("ERROR", error);
-        toast.error(error?.message || "OTP verification failed");
-      },
-    }
-  );
-
   const onSubmit = (data) => {
     console.log("SUBMITTING", data);
-    loginMutation.mutate({ otp: data.otp });
   };
 
   return (

@@ -11,11 +11,6 @@ import * as z from "zod";
 import MultiCheckboxDropdown from "../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../../../constants/Routes";
-import { useMutation } from "@tanstack/react-query";
-import { SubmitFormDataMutation } from "../../../api/apiClient";
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
@@ -153,6 +148,7 @@ const SubmissionForm = () => {
       involvement_level: [],
     },
   });
+
 
   // const { mutate, isPending } = useTantanstackClient.usePostMutation(
   //   ["property"],
