@@ -71,12 +71,16 @@ const HostCompanyInfoForm = () => {
         number: formData.number,
         email: formData.email,
         password: formData.password,
-        role_id: roleId, // ✅ taken from store
+        role_id: roleId,
         designation: formData.designation,
-        number_of_properties: formData.cleaningHandledBy[0], // ✅ match your backend field
+        number_of_properties: formData.cleaningHandledBy[0],
       };
 
       const response = await postData("/auth/register", payload);
+
+      if (response?.payload?.accessToken) {
+        localStorage.setItem("token", response.payload.accessToken);
+      }
 
       toast.success("Signup successful!");
       console.log("signup response:", response);
@@ -93,7 +97,6 @@ const HostCompanyInfoForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
-      {/* Full Name */}
       <Controller
         name="name"
         control={control}
@@ -117,7 +120,6 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Email & Phone */}
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <Controller
           name="email"
@@ -164,7 +166,6 @@ const HostCompanyInfoForm = () => {
         />
       </div>
 
-      {/* Password & Confirm */}
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
         <Controller
           name="password"
@@ -214,7 +215,6 @@ const HostCompanyInfoForm = () => {
         />
       </div>
 
-      {/* Designation */}
       <Controller
         name="designation"
         control={control}
@@ -238,7 +238,6 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Number of Properties */}
       <Controller
         name="cleaningHandledBy"
         control={control}
@@ -265,7 +264,6 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Terms & Conditions */}
       <Controller
         name="terms"
         control={control}
@@ -294,7 +292,6 @@ const HostCompanyInfoForm = () => {
         )}
       />
 
-      {/* Buttons */}
       <div className="flex md:gap-4 gap-2">
         <Link
           className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
@@ -303,6 +300,7 @@ const HostCompanyInfoForm = () => {
           Back
         </Link>
         <Button
+          loading={isLoading}
           type="submit"
           disabled={isLoading}
           className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"

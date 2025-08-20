@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { api } from "./axiosInstance";
 
 export const getData = async (url, config = {}) => {
@@ -38,9 +39,12 @@ export const deleteData = async (url, config = {}) => {
 
 const handleError = (error) => {
   if (error.response) {
-    console.error("API Error:", error.response.data);
+    toast.error(error.response.data?.message || "Something went wrong!");
+  } else if (error.request) {
+    toast.error("Network error. Please check your connection.");
   } else {
-    console.error("Network Error:", error.message);
+    toast.error("Unexpected error occurred.");
   }
-  throw error; 
+
+  throw error;
 };
