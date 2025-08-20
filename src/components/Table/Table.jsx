@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../Button/Button";
 import { NextSVG, PrevSVG } from "../../Constants/Icons";
 
@@ -12,15 +12,16 @@ const Table = ({
   className,
   rowStyle = "bottom-border",
   showCheckbox = false,
-  showPagination = true, 
+  showPagination = true,
+  rowsPerPage = 5,
+  loading = false,
 }) => {
-
   const [selectedRows, setSelectedRows] = useState([]);
   const [sortingKey, setSortingKey] = useState(null);
   const [sortingOrder, setSortingOrder] = useState("asc");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const [loadingPrev, setLoadingPrev] = useState(false);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   const toggleRow = (id) => {
     setSelectedRows((prev) =>
@@ -32,7 +33,7 @@ const Table = ({
     if (selectedRows.length === paginatedData.length) {
       setSelectedRows([]);
     } else {
-      const allIds = paginatedData.map((row) => row.id); 
+      const allIds = paginatedData.map((row) => row.id);
       setSelectedRows(allIds);
     }
   };
@@ -52,40 +53,70 @@ const Table = ({
 
   const filteredData = data
     .filter((item) =>
-      Object.values(item).join(" ").toLowerCase().includes(search.toLowerCase())
+      Object.values(item)
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (!sortingKey) return 0;
       const aVal = a[sortingKey];
       const bVal = b[sortingKey];
       if (aVal === bVal) return 0;
-      return sortingOrder === "asc" ? (aVal > bVal ? 1 : -1) : aVal < bVal ? 1 : -1;
+      return sortingOrder === "asc"
+        ? aVal > bVal
+          ? 1
+          : -1
+        : aVal < bVal
+        ? 1
+        : -1;
     });
 
   const paginatedData =
     rowStyle === "full-border"
       ? filteredData
-      : filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+      : filteredData.slice(
+          (currentPage - 1) * rowsPerPage,
+          currentPage * rowsPerPage
+        );
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
+  // Smooth pagination with per-button loading
   const handlePrevious = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    if (currentPage > 1) {
+      setLoadingPrev(true);
+      setTimeout(() => {
+        setCurrentPage((prev) => prev - 1);
+        setLoadingPrev(false);
+      }, 300);
+    }
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    if (currentPage < totalPages) {
+      setLoadingNext(true);
+      setTimeout(() => {
+        setCurrentPage((prev) => prev + 1);
+        setLoadingNext(false);
+      }, 300);
+    }
   };
 
   return (
     <div className={`${className}`}>
-      <div className="w-full p-2.5" style={{ scrollbarColor: "#a0aec0 transparent" }}>
+      <div
+        className="w-full p-2.5"
+        style={{ scrollbarColor: "#a0aec0 transparent" }}
+      >
         <div className="relative md:w-full md:max-w-[800px] min-w-full sm:w-143 w-[100px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 hover:scrollbar-thumb-gray-500">
           <table className="w-full text-sm text-left">
             <thead className="bg-[#F5F5F5]">
               <tr
                 className={`${
-                  rowStyle === "full-border" ? "h-[34px] mb-2 border-b border-[#E9EAEB]" : ""
+                  rowStyle === "full-border"
+                    ? "h-[34px] mb-2 border-b border-[#E9EAEB]"
+                    : ""
                 }`}
               >
                 {showCheckbox && (
@@ -100,7 +131,6 @@ const Table = ({
                     />
                   </th>
                 )}
-
                 {columns.map((col, index) => {
                   const isSortable = col.showSort;
                   const isSorted = sortingKey === col.accessor;
@@ -132,11 +162,12 @@ const Table = ({
                 )}
               </tr>
             </thead>
-
             <tbody>
               {paginatedData.map((row, rowIndex) => (
                 <React.Fragment key={row.id || rowIndex}>
-                  {rowIndex !== 0 && rowStyle === "full-border" && <tr className="h-2" />}
+                  {rowIndex !== 0 && rowStyle === "full-border" && (
+                    <tr className="h-2" />
+                  )}
                   <tr
                     className={`bg-white ${
                       rowStyle === "full-border"
@@ -153,7 +184,6 @@ const Table = ({
                         />
                       </td>
                     )}
-
                     {columns.map((col, colIndex) => {
                       const value = col.accessor ? row[col.accessor] : null;
                       return (
@@ -181,7 +211,6 @@ const Table = ({
                         </td>
                       );
                     })}
-
                     {showActions && actions && (
                       <td
                         className={`px-6 ${
@@ -199,34 +228,38 @@ const Table = ({
         </div>
       </div>
 
-     {showPagination && rowStyle !== "full-border" && (
-  <div className="flex justify-between items-center mt-2 px-2 border-t border-t-[#E9EAEB] pt-4">
-    <h4 className="text-sm font-normal text-[#414651]">
-      Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-      {Math.min(currentPage * rowsPerPage, filteredData.length)} of{" "}
-      {filteredData.length} Proposals
-    </h4>
-    <div className="flex items-center gap-2.5">
-      <Button
-        onClick={handlePrevious}
-        disabled={currentPage === 1}
-        prefixImg={PrevSVG}
-        className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
-      >
-        Previous
-      </Button>
-      <Button
-        onClick={handleNext}
-        disabled={currentPage === totalPages}
-        suffixImg={NextSVG}
-        className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
-      >
-        Next
-      </Button>
-    </div>
-  </div>
-)}
+      {showPagination && rowStyle !== "full-border" && (
+        <div className="flex justify-between items-center mt-2 px-2 border-t border-t-[#E9EAEB] pt-4">
+          <h4 className="text-sm font-normal text-[#414651]">
+            Showing {(currentPage - 1) * rowsPerPage + 1} to
+            {Math.min(currentPage * rowsPerPage, filteredData.length)} of
+            {filteredData.length} Proposals
+          </h4>
+          <div className="flex items-center gap-2.5">
+            <Button
+              onClick={handlePrevious}
+              disabled={currentPage === 1 || loading || loadingPrev}
+              prefixImg={PrevSVG}
+              className={`font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] flex justify-center items-center ${
+                loading || loadingPrev ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              Previous
+            </Button>
 
+            <Button
+              onClick={handleNext}
+              disabled={currentPage === totalPages || loading || loadingNext}
+              suffixImg={NextSVG}
+              className={`font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] flex justify-center items-center ${
+                loading || loadingNext ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
