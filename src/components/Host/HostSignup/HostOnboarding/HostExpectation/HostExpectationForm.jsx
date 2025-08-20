@@ -8,6 +8,8 @@ import Button from "../../../../Button/Button";
 import CheckBox from "../../../../CheckBox/CheckBox";
 import TextArea from "../../../../TextArea/TextArea";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
+import useHostForm from "../../../../../store/useHostForm";
+import { postData } from "../../../../../api/apiClient";
 
 const HostExpectationForm = () => {
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const HostExpectationForm = () => {
   const [account, setAccount] = useState(false);
   const [require, setRequire] = useState(false);
   const [use, setUse] = useState(false);
+  const [flooringRenovation, setFlooringRenovation] = useState(false);
   const [flooring, setFlooring] = useState(false);
   const [kappliances, setKappliances] = useState(false);
   const [bfixtures, setBfixtures] = useState(false);
@@ -39,23 +42,102 @@ const HostExpectationForm = () => {
   const [pmTypes, setPMTypes] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [propertyTypes, setPropertyTypes] = useState([]);
+  const [currentPMCompany, setCurrentPMCompany] = useState("");
+  const [revenueExpectation, setRevenueExpectation] = useState("");
+  const { getFinalPayload, portfolioData, updateExpectation } = useHostForm();
+  const [files, setFiles] = useState([]);
+  const [desc, setDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const submitHandle = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
+    const renovations = [];
+    if (flooring) renovations.push("Flooring");
+    if (kappliances) renovations.push("Kitchen appliances");
+    if (bfixtures) renovations.push("Bathroom fixtures");
+    if (furniture) renovations.push("Furniture");
+    if (interior) renovations.push("Paint / Interior");
+    if (smart) renovations.push("Smart devices");
+    if (amenities) renovations.push("Outdoor amenities");
+    if (last) renovations.push("Others");
+
+    const absoluteMustHave = [];
+    if (agreed) absoluteMustHave.push("Local PM Company");
+    if (use)
+      absoluteMustHave.push("I use my property personally 25%+ per year");
+    if (account) absoluteMustHave.push("Dedicated account manager");
+    if (require)
+      absoluteMustHave.push(
+        "I require personal approval for every property-related purchase"
+      );
+
+    const payload = {
+      current_pm_company_name: currentPMCompany,
+      seeking_pm_host: ticket,
+      co_hosting: cohosting,
+      involvement_level: day,
+      "condition[Flooring]": floor,
+      "condition[KitchenAppliances]": appliances,
+      "condition[BathroomFixtures]": fixtures,
+      "condition[Furniture]": furniture,
+      "condition[PaintInterior]": paint,
+      "condition[SmartDevices]": devices,
+      "condition[OutdoorAmenities]": outdoor,
+      "condition[Others]": others,
+      suggestion: onboardingFees,
+      open_investing: restockingCharges,
+      photography: markupMaintenance,
+      account,
+      require,
+      use,
+      ...absoluteMustHave.reduce((acc, item, index) => {
+        acc[`absolute_must_have[${index}]`] = item;
+        return acc;
+      }, {}),
+      ...renovations.reduce((acc, renovation, index) => {
+        acc[`renovations[${index}]`] = renovation;
+        return acc;
+      }, {}),
+      pm_charge_percentage: pmTypes[0],
+      type: propertyTypes[0],
+      yearly_revenue: revenueExpectation,
+      // files,
+      desc,
+    };
+
+    updateExpectation(payload);
+
+    const finalPayload = getFinalPayload();
+    try {
+      const res = await postData("/property", finalPayload);
+      console.log("API Success:", res);
+
+      navigate(ROUTES.HOSTDASHBOARD);
+    } catch (error) {
+      console.error(" API Error:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false when done (success or error)
+    }
+  };
   return (
     <div>
-      <form className="md:px-0 px-2.5">
+      <form onSubmit={submitHandle} className="md:px-0 px-2.5">
         <div>
           <InputField
             label="What is the name of your current PM company?"
-            id="address"
-            name="address"
+            id="currentPMCompany"
+            name="currentPMCompany"
             type="text"
             fieldName="w-full"
             placeholder="Enter name"
             asterisk="true"
+            value={currentPMCompany}
+            onChange={(e) => setCurrentPMCompany(e.target.value)}
           />
         </div>
         <div className="flex md:flex-nowrap flex-wrap gap-5">
-          <MultiCheckboxDropdown
+          {/* <MultiCheckboxDropdown
             label="Type of Property"
             options={[
               "Revenue optimization",
@@ -67,7 +149,7 @@ const HostExpectationForm = () => {
               "Guest experience",
               "Tech & automation",
               "Local knowledge",
-              "Other"
+              "Other",
             ]}
             selectedValues={propertyTypes}
             placeholder="Select what you prefer "
@@ -77,7 +159,7 @@ const HostExpectationForm = () => {
             setOpenDropdown={setOpenDropdown}
             isMulti={false}
             className="mb-5"
-          />
+          /> */}
           <MultiCheckboxDropdown
             label="What % does your current PM charge?"
             placeholder="How Often Is Your Property Rented Out?"
@@ -93,11 +175,13 @@ const HostExpectationForm = () => {
         </div>
         <InputField
           label="What is your property's current yearly revenue expectation?"
-          id="pay"
-          name="pay"
+          id="revenueExpectation"
+          name="revenueExpectation"
           type="text"
           fieldName="w-full"
           placeholder="e.g., $10k–$25k, $25k–$50k, "
+          value={revenueExpectation}
+          onChange={(e) => setRevenueExpectation(e.target.value)}
         />
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">
@@ -152,39 +236,6 @@ const HostExpectationForm = () => {
           </div>
         </div>
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
-          <div>
-            <h3 className="text-sm font-bold mb-5">
-              Involvement in Day-to-Day Decisions?
-            </h3>
-            <div className="flex items-center gap-5">
-              <RadioField
-                id="dayHighly"
-                name="day"
-                value="Highly Involved"
-                label="Highly Involved"
-                checked={day === "Highly Involved"}
-                onChange={(e) => setDay(e.target.value)}
-              />
-              <RadioField
-                id="daySomewhat"
-                name="day"
-                value="Somewhat Involved"
-                label="Somewhat Involved"
-                checked={day === "Somewhat Involved"}
-                onChange={(e) => setDay(e.target.value)}
-              />
-              <RadioField
-                id="dayMinimally"
-                name="day"
-                value="Minimally Involved"
-                label="Minimally Involved"
-                checked={day === "Minimally Involved"}
-                onChange={(e) => setDay(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-4">
             Mark if any of these that are ABSOLUTE MUST HAVES
           </h2>
@@ -218,6 +269,106 @@ const HostExpectationForm = () => {
               label="I require personal approval for every property-related purchase"
               checked={require}
               onChange={(e) => setRequire(e.target.checked)}
+            />
+          </div>
+        </div>
+        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
+          <div>
+            <h3 className="text-sm font-bold mb-5">
+              Involvement in Day-to-Day Decisions?
+            </h3>
+            <div className="flex items-center gap-5">
+              <RadioField
+                id="dayHighly"
+                name="day"
+                value="Highly Involved"
+                label="Highly Involved"
+                checked={day === "Highly Involved"}
+                onChange={(e) => setDay(e.target.value)}
+              />
+              <RadioField
+                id="daySomewhat"
+                name="day"
+                value="Somewhat Involved"
+                label="Somewhat Involved"
+                checked={day === "Somewhat Involved"}
+                onChange={(e) => setDay(e.target.value)}
+              />
+              <RadioField
+                id="dayMinimally"
+                name="day"
+                value="Minimally Involved"
+                label="Minimally Involved"
+                checked={day === "Minimally Involved"}
+                onChange={(e) => setDay(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
+          <h2 className="text-sm font-bold mb-3">
+            Renovations in Last 3 Years
+          </h2>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="flooring"
+              id="flooring"
+              label="Flooring"
+              checked={flooringRenovation}
+              onChange={(e) => setFlooringRenovation(e.target.checked)}
+            />
+            <CheckBox
+              name="kappliances"
+              id="kappliances"
+              label="Kitchen appliances"
+              checked={kappliances}
+              onChange={(e) => setKappliances(e.target.checked)}
+            />
+            <CheckBox
+              name="bfixtures"
+              id="bfixtures"
+              label="Bathroom fixtures"
+              checked={bfixtures}
+              onChange={(e) => setBfixtures(e.target.checked)}
+            />
+          </div>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="furniture"
+              id="furniture"
+              label="Furniture"
+              checked={furniture}
+              onChange={(e) => setFurniture(e.target.checked)}
+            />
+            <CheckBox
+              name="Interior"
+              id="interior"
+              label="Paint / Interior"
+              checked={interior}
+              onChange={(e) => setInterior(e.target.checked)}
+            />
+            <CheckBox
+              name="smart"
+              id="smart"
+              label="Smart devices"
+              checked={smart}
+              onChange={(e) => setSmart(e.target.checked)}
+            />
+          </div>
+          <div className="flex items-center gap-8 mb-4">
+            <CheckBox
+              name="amenities"
+              id="amenities"
+              label="Outdoor amenities"
+              checked={amenities}
+              onChange={(e) => setAmenities(e.target.checked)}
+            />
+            <CheckBox
+              name="last"
+              id="last"
+              label="Others"
+              checked={last}
+              onChange={(e) => setLast(e.target.checked)}
             />
           </div>
         </div>
@@ -619,28 +770,32 @@ const HostExpectationForm = () => {
             </div>
           </div>
         </div>
-        <FileUpload label="Upload Photos & Videos" />
+        <FileUpload
+          label="Upload Photos & Videos"
+          onChange={(selectedFiles) => setFiles(selectedFiles)}
+        />
         <TextArea
           type="text"
-          placeholder={"Enter message"}
-          label={
-            "Please tell us more about your property and any unique features or issues. The more we know, the better we can match you with the right PM options"
-          }
+          placeholder="Enter message"
+          label="Please tell us more about your property..."
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
         />
         <div className="flex gap-4">
           <Link
             className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
-            to={ROUTES.HOSTPORTFOLIO}
+            to={ROUTES.HOSTCOMPANYINFO}
           >
             Back
           </Link>
-          <Link
-          
-            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
-            to={ROUTES.HOSTDASHBOARD}
+          <Button
+            loading={isLoading}
+            type="submit"
+            disabled={isLoading}
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
           >
-            Submit
-          </Link>
+            {isLoading ? "Submitting..." : "Next"}
+          </Button>
         </div>
       </form>
     </div>

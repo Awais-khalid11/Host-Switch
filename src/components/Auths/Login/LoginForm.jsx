@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import InputField from "../../InputField/InputField";
 import Button from "../../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import { Controller, useForm } from "react-hook-form";
-import z, { email } from "zod";
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { postData } from "../../../api/apiClient";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   email: z.string().email("Invalid email").min(1, "Email is required"),
@@ -15,6 +16,7 @@ const schema = z.object({
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
@@ -29,15 +31,26 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (formData) => {
+    setIsLoading(true);
     try {
       const payload = {
         email: formData.email,
         password: formData.password,
       };
-      const data = await postData("/auth/login", payload);
-      console.log(data, "sss");
+
+      const response = await postData("/auth/login", payload);
+
+      if (response?.payload?.accessToken) {
+        localStorage.setItem("token", response.payload.accessToken);
+        toast.success("Login successful!");
+        navigate(ROUTES.DASHBOARD);
+      } else {
+        toast.error("Login failed. No token received.");
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message || "Invalid email or password");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,7 +65,6 @@ const LoginForm = () => {
               <InputField
                 label="Email Address"
                 id="email"
-                name="email"
                 type="email"
                 fieldName="w-full"
                 placeholder="Enter your email address"
@@ -68,6 +80,7 @@ const LoginForm = () => {
             </div>
           )}
         />
+
         <Controller
           control={control}
           name="password"
@@ -76,7 +89,6 @@ const LoginForm = () => {
               <InputField
                 label="Password"
                 id="password"
-                name="password"
                 type="password"
                 fieldName="w-full"
                 InputClass="h-[56px]"
@@ -92,12 +104,13 @@ const LoginForm = () => {
             </div>
           )}
         />
+
         <div className="text-[14px] font-medium text-right my-3 mb-5 cursor-pointer">
-          <Link href="#" to={ROUTES.PASSWORD}>
-            Forget Password?
-          </Link>
+          <Link to={ROUTES.PASSWORD}>Forget Password?</Link>
         </div>
+
         <Button
+          loading={isLoading}
           type="submit"
           className="bg-[#4D72FF] text-white font-semibold rounded-[8px] w-full h-[55px] flex justify-center items-center mb-5"
         >

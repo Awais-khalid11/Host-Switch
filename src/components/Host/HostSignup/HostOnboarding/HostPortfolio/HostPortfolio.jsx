@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import HostOnboardingStepper from "../HostOnboardingStepper";
 import HostPortfolioForm from "./HostPortfolioForm";
-import {  PropertyPNG } from "../../../../../constants/Imgs";
-import { LogoSVG } from "../../../../../Constants/Icons";
+import { PropertyPNG } from "../../../../../constants/Imgs";
+import { LogoSVG } from "../../../../../constants/Icons";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../../../constants/Routes";
 
@@ -30,7 +30,10 @@ const HostPortfolio = () => {
         <HostPortfolioForm />
         <h4 className="text-sm font-normal text-[#777777] text-center ">
           If you are already a member, please
-          <Link className="text-sm text-black font-bold cursor-pointer ml-2" to={ROUTES.LOGIN}>
+          <Link
+            className="text-sm text-black font-bold cursor-pointer ml-2"
+            to={ROUTES.LOGIN}
+          >
              Login
           </Link>
         </h4>
