@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../Button/Button";
 import { NextSVG, PrevSVG } from "../../Constants/Icons";
 
@@ -13,13 +13,15 @@ const Table = ({
   rowStyle = "bottom-border",
   showCheckbox = false,
   showPagination = true,
+  rowsPerPage = 5,
+  loading = false,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [sortingKey, setSortingKey] = useState(null);
   const [sortingOrder, setSortingOrder] = useState("asc");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  const [loadingPrev, setLoadingPrev] = useState(false);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   const toggleRow = (id) => {
     setSelectedRows((prev) =>
@@ -51,7 +53,10 @@ const Table = ({
 
   const filteredData = data
     .filter((item) =>
-      Object.values(item).join(" ").toLowerCase().includes(search.toLowerCase())
+      Object.values(item)
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (!sortingKey) return 0;
@@ -77,12 +82,25 @@ const Table = ({
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
+  // Smooth pagination with per-button loading
   const handlePrevious = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    if (currentPage > 1) {
+      setLoadingPrev(true);
+      setTimeout(() => {
+        setCurrentPage((prev) => prev - 1);
+        setLoadingPrev(false);
+      }, 300);
+    }
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    if (currentPage < totalPages) {
+      setLoadingNext(true);
+      setTimeout(() => {
+        setCurrentPage((prev) => prev + 1);
+        setLoadingNext(false);
+      }, 300);
+    }
   };
 
   return (
@@ -113,7 +131,6 @@ const Table = ({
                     />
                   </th>
                 )}
-
                 {columns.map((col, index) => {
                   const isSortable = col.showSort;
                   const isSorted = sortingKey === col.accessor;
@@ -145,7 +162,6 @@ const Table = ({
                 )}
               </tr>
             </thead>
-
             <tbody>
               {paginatedData.map((row, rowIndex) => (
                 <React.Fragment key={row.id || rowIndex}>
@@ -168,7 +184,6 @@ const Table = ({
                         />
                       </td>
                     )}
-
                     {columns.map((col, colIndex) => {
                       const value = col.accessor ? row[col.accessor] : null;
                       return (
@@ -196,7 +211,6 @@ const Table = ({
                         </td>
                       );
                     })}
-
                     {showActions && actions && (
                       <td
                         className={`px-6 ${
@@ -224,17 +238,22 @@ const Table = ({
           <div className="flex items-center gap-2.5">
             <Button
               onClick={handlePrevious}
-              disabled={currentPage === 1}
+              disabled={currentPage === 1 || loading || loadingPrev}
               prefixImg={PrevSVG}
-              className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
+              className={`font-bold text-sm text-[#A4A7AE] h-[36px] w-[109px] border border-[#E9EAEB] flex justify-center items-center ${
+                loading || loadingPrev ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               Previous
             </Button>
+
             <Button
               onClick={handleNext}
-              disabled={currentPage === totalPages}
+              disabled={currentPage === totalPages || loading || loadingNext}
               suffixImg={NextSVG}
-              className="font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] shadow-[0px_1px_2px_0px_#0A0D120D]"
+              className={`font-bold text-sm text-[#A4A7AE] h-[36px] w-[84px] border border-[#E9EAEB] flex justify-center items-center ${
+                loading || loadingNext ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               Next
             </Button>

@@ -1,35 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../Table/Table";
 import ActionMenu from "../../DropDown/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { UserPNG } from "../../../constants/Imgs";
+import { FiUser } from "react-icons/fi";
 import {
   AllSVG,
   ClockSVG,
-  ConsiderSVG,
   EyeSVG,
   FilterSVG,
-  MsgsSVG,
   ProfildeleteSVG,
   ProfiletickSVG,
 } from "../../../constants/Icons";
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
-import { ROUTES } from "../../../constants/Routes";
 import HostProposalView from "./HostProposalView/HostProposalView";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
+import { getData } from "../../../api/apiClient";
+import { format } from "date-fns";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [tablePages, setTablePages] = useState();
+  const [getProposalData, setGetProposalData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Fetch proposals from API
-  const { data: getProposalData } = useTantanstackClient.useGetQuery(
-    ["proposal"],
-    "/proposal"
-  );
+  useEffect(() => {
+    const fetchProposals = async () => {
+      setLoading(true);
+      try {
+        const response = await getData("/proposal");
+        console.log("API RESPONSE ===>", response);
+        setGetProposalData(response);
+      } catch (error) {
+        console.error("Error fetching proposals:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProposals();
+  }, []);
+
+  const formattedData = getProposalData?.payload?.records?.map((doc) => ({
+    id: doc?.id,
+    property: doc?.property?.address || "N/A",
+    first_name: doc?.user?.name || "N/A",
+    reviews: doc?.user?.email || "N/A",
+    UserImg:
+      doc?.user?.image &&
+      doc.user.image.trim() !== "" &&
+      doc.user.image.toLowerCase() !== "null"
+        ? doc.user.image
+        : null, // show React icon if no image
+    status: doc?.status || "N/A",
+    fee: doc?.onboarding_fee ? `$${doc?.onboarding_fee}` : "N/A",
+    revenue: doc?.revenue_expectation ? `$${doc?.revenue_expectation}` : "N/A",
+    date: doc?.created_at
+      ? format(new Date(doc?.created_at), "MMM dd, yyyy")
+      : "N/A",
+    original: doc,
+  }));
 
   // If API returns { data: [...] }
   // const proposalsArray = Array.isArray(getProposalData)
@@ -56,7 +88,7 @@ const HostProposalTable = () => {
   const filteredData =
     filterStatus === "all"
       ? formattedData
-      : formattedData.filter((item) => item.status === filterStatus);
+      : formattedData?.filter((item) => item.status === filterStatus);
 
   const columns = [
     { header: "Property", accessor: "property", showSort: true },
@@ -65,18 +97,21 @@ const HostProposalTable = () => {
       header: "PM Company",
       showSort: true,
       cell: ({ row }) => {
-        const {
-          first_name = "Unknown",
-          reviews = "No Reviews",
-          UserImg = UserPNG,
-        } = row;
+        const { first_name = "Unknown", reviews = "No Reviews", UserImg } = row;
         return (
           <div className="flex items-center gap-3">
-            <img
-              src={UserImg}
-              alt={first_name}
-              className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
-            />
+            {UserImg ? (
+              <img
+                src={UserImg}
+                alt={first_name}
+                onError={(e) => (e.currentTarget.src = UserPNG)}
+                className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
+              />
+            ) : (
+              <div className="w-[38px] h-[38px] rounded-full bg-gray-200 flex items-center justify-center border border-gray-200">
+                <FiUser className="text-gray-500 text-xl" />
+              </div>
+            )}
             <div className="flex flex-col">
               <span className="font-medium text-sm text-[#252525] leading-tight mb-1">
                 {first_name}
@@ -131,7 +166,8 @@ const HostProposalTable = () => {
         {
           label: "Accept",
           icon: <img src={ProfiletickSVG} alt="accept" className="w-4 h-4" />,
-          onClick: () => console.log("Accept", rowData),
+          onClick: () =>
+            setTablePages(<HostProposalView setClose={setTablePages} />),
         },
         {
           label: "Decline",
@@ -169,6 +205,8 @@ const HostProposalTable = () => {
 
     return <ActionMenu actions={actions} />;
   };
+
+  if (loading) return <p>Loading proposals...</p>;
 
   return tablePages ? (
     tablePages
@@ -216,11 +254,17 @@ const HostProposalTable = () => {
           />
         </div>
         <Table
+          key={filterStatus + search} 
           columns={columns}
+<<<<<<< Updated upstream
           data={filteredData || []} 
+=======
+          data={filteredData || []}
+>>>>>>> Stashed changes
           showActions={true}
           actions={rowActions}
           search={search}
+          rowsPerPage={1}
         />
       </div>
     </div>

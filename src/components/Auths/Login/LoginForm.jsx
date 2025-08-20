@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import { Controller, useForm } from "react-hook-form";
 import z, { email } from "zod";
-import useTantanstackClient from "../../../hook/useTantanstackClient";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { postData } from "../../../api/apiClient";
 
 const schema = z.object({
   email: z.string().email("Invalid email").min(1, "Email is required"),
@@ -28,25 +28,17 @@ const LoginForm = () => {
     },
   });
 
-  const loginMutation = useTantanstackClient.usePostMutation(
-    ["login"],
-    "/auth/login",
-    null,
-    {
-      onSuccess: (data) => {
-        console.log("Login response:", data);
-        console.log("Login response token:", data.accessToken);
-        localStorage.setItem("token", data?.accessToken);
-        navigate("/pm/dashboard");
-      },
-      onError: (error) => {
-        toast.error(error.message || "Login failed");
-      },
+  const onSubmit = async (formData) => {
+    try {
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+      };
+      const data = await postData("/auth/login", payload);
+      console.log(data, "sss");
+    } catch (error) {
+      console.log(error);
     }
-  );
-
-  const onSubmit = (formData) => {
-    loginMutation.mutate(formData);
   };
 
   return (
