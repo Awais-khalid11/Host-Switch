@@ -9,17 +9,17 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { postData } from "../../../api/apiClient";
 
 const schema = z.object({
-  otp: z.string().min(4, "OTP must be 4 digits"),
+  otp: z.string().length(4, "OTP must be 6 digits"),
 });
 
 const Otp = () => {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile] = useState(window.innerWidth < 768);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const token = localStorage.getItem("token");
   const id = localStorage.getItem("userID");
 
   const {
@@ -33,8 +33,42 @@ const Otp = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("SUBMITTING", data);
+  const onSubmit = async (data) => {
+    if (!id) {
+      toast.error("User ID not found. Please restart the process.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await postData(`/auth/verify/${id}`, {
+        otp: data.otp,
+      });
+
+      if (response?.success) {
+        toast.success(response?.message || "OTP verified successfully!");
+
+        const token = response?.payload?.resetToken;
+
+        localStorage.setItem("token", token);
+
+        navigate(ROUTES.NEWPASSWORD);
+      } else {
+        toast.error(
+          response?.errors?.[0]?.message ||
+            response?.message ||
+            "Verification failed"
+        );
+      }
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.errors?.[0]?.message ||
+          error?.response?.data?.message ||
+          "Something went wrong"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,8 +87,7 @@ const Otp = () => {
           Please Check Your Email
         </h2>
         <span className="font-medium text-center text-sm max-w-[428px] text-[#252525CC] mb-12 mx-auto block">
-          We’ve sent a 6-digit code to +1 (XXX) XXX-XXXX. Enter it below to
-          verify your number
+          We’ve sent a 6-digit code to your email. Enter it below to verify.
         </span>
 
         <div className="text-sm font-medium text-center mb-5">
@@ -99,10 +132,12 @@ const Otp = () => {
               variant="graybtn"
               className="mb-5 w-[30%]"
               onClick={() => navigate(ROUTES.PASSWORD)}
+              type="button"
             >
               Back
             </Button>
             <Button
+              loading={isLoading}
               variant="defaultBtn"
               className="mb-5 w-full md:py-[16px] rounded-[8px]"
               type="submit"

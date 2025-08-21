@@ -8,6 +8,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { postData } from "../../../api/apiClient";
 import { toast } from "react-toastify";
+import useRoleStore from "../../../store/useRoleIdStore";
 
 const schema = z.object({
   email: z.string().email("Invalid email").min(1, "Email is required"),
@@ -17,6 +18,7 @@ const schema = z.object({
 const LoginForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { setRoleId, roleId } = useRoleStore();
 
   const {
     control,
@@ -29,7 +31,6 @@ const LoginForm = () => {
       password: "",
     },
   });
-
   const onSubmit = async (formData) => {
     setIsLoading(true);
     try {
@@ -40,10 +41,21 @@ const LoginForm = () => {
 
       const response = await postData("/auth/login", payload);
 
-      if (response?.payload?.accessToken) {
-        localStorage.setItem("token", response.payload.accessToken);
+      const token = response?.payload?.accessToken;
+      const userRoleId = response?.payload?.user?.role_id;
+
+      if (token) {
+        localStorage.setItem("token", token);
         toast.success("Login successful!");
-        navigate(ROUTES.DASHBOARD);
+        setRoleId(userRoleId);
+
+        const redirectRoute =
+          userRoleId === 3
+            ? ROUTES.DASHBOARD
+            : userRoleId === 2
+            ? ROUTES.HOSTDASHBOARD
+            : ROUTES.ADMINDASHBOARD;
+        navigate(redirectRoute);
       } else {
         toast.error("Login failed. No token received.");
       }

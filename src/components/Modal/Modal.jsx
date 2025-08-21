@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ModalbgPNG } from "../../constants/Imgs";
-import { IoClose } from "react-icons/io5"; // You can change this icon if needed
+import { IoClose } from "react-icons/io5";
 
 const Modal = ({
   modalTitle,
