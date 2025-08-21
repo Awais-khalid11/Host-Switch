@@ -11,10 +11,14 @@ import * as z from "zod";
 import MultiCheckboxDropdown from "../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import { postData } from "../../../api/apiClient"; // Adjust path as needed
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
+  unit_apt: z.string().optional(), // Added missing field
   link: z.string().min(1, "Link is required"),
+  scope_service: z.array(z.string()).min(1, "Select at least one service"),
   split_percentage: z.string().min(1, "Enter Percentage"),
   files: z
     .any()
@@ -31,20 +35,31 @@ const schema = z.object({
   co_hosting: z.enum(["Yes", "No", "May be"], {
     required_error: "Please select an option",
   }),
-  manger: z.enum(["True", "False"], {
+  seeking_pm_host: z.enum(["Full Service", "Co-Host"], {
+    // Added missing field
     required_error: "Please select an option",
   }),
-  involvement_level: z.enum(["Yes", "No", "Minimal involvement preferred"], {
+  accountManager: z.enum(["yes", "no"], {
+    // Added missing field
     required_error: "Please select an option",
   }),
+  involvement_level: z.enum(
+    ["Highly Involved", "Somewhat Involved", "Minimally Involved"],
+    {
+      required_error: "Please select an option",
+    }
+  ),
   pm_top_priority: z.array(z.string()).min(1, "Select at least one"),
   renovations: z.array(z.string()).min(1, "Select at least one"),
   reason_switching: z.array(z.string()).min(1, "Select at least one"),
   type: z.array(z.string()).min(1, "Select at least one"),
   rented_out: z.array(z.string()).min(1, "Select at least one"),
+  hostingTypes: z.array(z.string()).min(1, "Select at least one"), // Added missing field
+  cleanTypes: z.array(z.string()).min(1, "Select at least one"), // Added missing field
   desc: z.string().optional(),
+  message: z.string().optional(), // Additional message field
 
-  current_pm_company_name: z.string().min(1, "CompanyName is required"),
+  current_pm_company_name: z.string().min(1, "Company Name is required"),
   pm_charge_percentage: z.array(z.string()).min(1, "Select at least one"),
   yearly_revenue: z.string().min(1, "Revenue is required"),
   condition: z.object({
@@ -60,16 +75,10 @@ const schema = z.object({
     SmartDevices: z.string().nonempty("Smart Devices condition is required"),
     OutdoorAmenities: z
       .string()
-      .nonempty("Smart Devices condition is required"),
-    Others: z.string().nonempty("Smart Devices condition is required"),
+      .nonempty("Outdoor Amenities condition is required"),
+    Others: z.string().nonempty("Others condition is required"),
   }),
 
-  involvement_level: z.enum(
-    ["Highly Involved", "Somewhat Involved", "Minimally Involved"],
-    {
-      required_error: "Please select an option",
-    }
-  ),
   absolute_must_have: z
     .array(z.string())
     .nonempty("Select at least one absolute must have"),
@@ -77,6 +86,7 @@ const schema = z.object({
 
 const SubmissionForm = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const absoluteMustHaveOptions = [
@@ -107,119 +117,164 @@ const SubmissionForm = () => {
     { id: 6, label: "Poor owner relations" },
     { id: 7, label: "Unclear reporting" },
     { id: 8, label: "Poor maintenance / upkeep" },
-    { id: 8, label: "Others" },
+    { id: 9, label: "Others" },
   ];
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       address: "",
+      unit_apt: "",
       link: "",
       files: [],
       open_investing: "",
       suggestion: "",
+      scope_service: [],
       photography: "",
       desc: "",
+      message: "",
       co_hosting: "",
+      seeking_pm_host: "",
+      accountManager: "",
       involvement_level: "",
       split_percentage: "",
-      manger: "",
-      pm_top_priority: "",
+      pm_top_priority: [],
       type: [],
       rented_out: [],
+      hostingTypes: [],
+      cleanTypes: [],
       renovations: [],
       reason_switching: [],
       current_pm_company_name: "",
-      pm_charge_percentage: "",
+      pm_charge_percentage: [],
       yearly_revenue: "",
       absolute_must_have: [],
-      flooringcondition: "",
-      kitechencondition: "",
-      bathroomcondition: "",
-      furniturecondition: "",
-      paintcondition: "",
-      devicescondition: "",
-      outdoorcondition: "",
-      othercondition: "",
-      involvement_level: [],
+      condition: {
+        Flooring: "",
+        KitchenAppliances: "",
+        BathroomFixtures: "",
+        Furniture: "",
+        PaintInterior: "",
+        SmartDevices: "",
+        OutdoorAmenities: "",
+        Others: "",
+      },
     },
   });
 
+  const onSubmit = async (data) => {
+    setIsLoading(true);
 
-  // const { mutate, isPending } = useTantanstackClient.usePostMutation(
-  //   ["property"],
-  //   "/property/",
-  //   null,
-  //   {
-  //     onSuccess: (data) => {
-  //       console.log("Submission response:", data);
-  //       alert("submit data");
-  //     },
-  //     onError: (error) => {
-  //       toast.error(error.message || "Submission failed");
-  //     },
-  //   }
-  // );
+    try {
+      // Transform data to match API expectations
+      const renovations = data.renovations || [];
+      const absoluteMustHave = data.absolute_must_have || [];
 
-  const { mutateAsync: PostSubmitForm, isPending } = useMutation({
-    mutationFn: SubmitFormDataMutation,
+      const payload = {
+        address: data.address,
+        unit_apt: data.unit_apt,
+        link: data.link,
+        rented_out: data.rented_out?.[0] || "", // Get first item from array
+        type: data.type?.[0] || "", // Get first item from array
+        hostingTypes: data.hostingTypes?.[0] || "", // Get first item from array
+        cleanTypes: data.cleanTypes?.[0] || "",
+        ...data.scope_service.reduce((acc, item, index) => {
+          acc[`scope_service[${index}]`] = item;
+          return acc;
+        }, {}),
+        accountManager: data.accountManager,
+        anything_else: data.message,
+        split_percentage: 100,
 
-    onSuccess: (data) => {
-      console.log("Submission response:", data);
-      alert("submit data");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Submission failed");
-    },
-  });
+        // Expectation form fields
+        current_pm_company_name: data.current_pm_company_name,
+        seeking_pm_host: data.seeking_pm_host,
+        co_hosting: data.co_hosting,
+        involvement_level: data.involvement_level,
 
+        // Condition fields
+        "condition[Flooring]": data.condition.Flooring,
+        "condition[KitchenAppliances]": data.condition.KitchenAppliances,
+        "condition[BathroomFixtures]": data.condition.BathroomFixtures,
+        "condition[Furniture]": data.condition.Furniture,
+        "condition[PaintInterior]": data.condition.PaintInterior,
+        "condition[SmartDevices]": data.condition.SmartDevices,
+        "condition[OutdoorAmenities]": data.condition.OutdoorAmenities,
+        "condition[Others]": data.condition.Others,
 
-  const onSubmit = (data) => {
-    const formData = new FormData();
+        suggestion: data.suggestion,
+        open_investing: data.open_investing,
+        photography: data.photography,
 
-    formData.append("link", data.link);
-    data.reason_switching.forEach((reason, index) => {
-      formData.append(`reason_switching[${index}]`, reason);
-    });
-    (data.renovations || []).forEach((renovate, index) => {
-      formData.append(`renovations[${index}]`, renovate);
-    });
+        // Transform absolute must have array
+        ...absoluteMustHave.reduce((acc, item, index) => {
+          acc[`absolute_must_have[${index}]`] = item;
+          return acc;
+        }, {}),
 
-    formData.append("rented_out", data.rented_out.join(","));
-    formData.append("type", data.type.join(","));
-    formData.append("manger", data.manger);
-    formData.append("pm_top_priority", data.pm_top_priority.join(","));
-    formData.append("co_hosting", data.co_hosting);
-    formData.append("involvement_level", data.involvement_level);
-    formData.append("suggestion", data.suggestion);
-    formData.append("open_investing", data.open_investing);
-    formData.append("photography", data.photography);
-    formData.append("desc", data.desc);
-    formData.append("address", data.address || "");
-    formData.append("split_percentage", data.split_percentage || "");
+        // Transform renovations array
+        ...renovations.reduce((acc, renovation, index) => {
+          acc[`renovations[${index}]`] = renovation;
+          return acc;
+        }, {}),
 
-    if (data.files && data.files.length > 0) {
-      data.files.forEach((file) => {
-        formData.append("files", file);
+        pm_charge_percentage: data.pm_charge_percentage?.[0] || "",
+        yearly_revenue: data.yearly_revenue,
+        desc: data.desc,
+
+        // Additional fields from reason switching
+        ...data.reason_switching.reduce((acc, item, index) => {
+          acc[`reason_switching[${index}]`] = item;
+          return acc;
+        }, {}),
+
+        pm_top_priority: data.pm_top_priority?.[0] || "",
+      };
+
+      console.log("Submitting payload:", payload);
+
+      // Create FormData for file upload
+      const formData = new FormData();
+
+      // Append all payload fields
+      Object.keys(payload).forEach((key) => {
+        formData.append(key, payload[key]);
       });
+
+      // Append files
+      if (data.files && data.files.length > 0) {
+        Array.from(data.files).forEach((file) => {
+          formData.append("files", file);
+        });
+      }
+
+      // Use the same API endpoint as HostExpectationForm
+      const response = await postData("/property", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("API Success:", response);
+      toast.success("Form submitted successfully!");
+      reset();
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error(error.message || "Submission failed");
+    } finally {
+      setIsLoading(false);
     }
-    Object.entries(data.condition).forEach(([key, value]) => {
-      formData.append(`condition[${key}]`, value);
-    });
-
-    console.log("Submitting data:", formData);
-    console.log("Form Values before append:", data);
-    PostSubmitForm(formData);
   };
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-4">
+        {/* Address & Unit */}
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <Controller
             name="address"
             control={control}
@@ -231,7 +286,8 @@ const SubmissionForm = () => {
                   name="address"
                   type="text"
                   fieldName="w-full"
-                  placeholder="DHA Phase 6, Lahore"
+                  placeholder="Type and select location..."
+                  asterisk="true"
                   {...field}
                 />
                 {errors.address && (
@@ -243,17 +299,68 @@ const SubmissionForm = () => {
             )}
           />
           <Controller
-            name="link"
+            name="unit_apt"
             control={control}
             render={({ field }) => (
               <div className="md:w-1/2 w-full">
+                <InputField
+                  label="Unit/Apt # (if applicable)"
+                  id="unit_apt"
+                  name="unit_apt"
+                  type="text"
+                  fieldName="w-full"
+                  placeholder="Unit/Apt #"
+                  {...field}
+                />
+                {errors.unit_apt && (
+                  <p className="text-red-500 text-sm -mt-7 mb-2">
+                    {errors.unit_apt.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Rent & Link */}
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
+          <Controller
+            name="rented_out"
+            control={control}
+            render={({ field }) => (
+              <div className="md:w-1/2 w-full">
+                <MultiCheckboxDropdown
+                  label="How Often Is Your Property Rented Out?"
+                  placeholder="How Often Is Your Property Rented Out?"
+                  options={["Full-time", "Seasonal", "Occasionally"]}
+                  selectedValues={field.value}
+                  setSelectedValues={(values) => field.onChange(values)}
+                  dropdownKey="rent"
+                  isOpen={openDropdown === "rent"}
+                  setOpenDropdown={setOpenDropdown}
+                  isMulti={false}
+                  className="mb-8"
+                />
+                {errors.rented_out && (
+                  <p className="text-red-500 text-sm">
+                    {errors.rented_out.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+          <Controller
+            name="link"
+            control={control}
+            render={({ field }) => (
+              <div className="w-full">
                 <InputField
                   label="Airbnb/Vrbo Link"
                   id="link"
                   name="link"
                   type="text"
-                  fieldName=" w-full"
-                  placeholder="Enter your last name"
+                  fieldName="w-full"
+                  placeholder="Airbnb/Vrbo listing link"
                   {...field}
                 />
                 {errors.link && (
@@ -265,67 +372,19 @@ const SubmissionForm = () => {
             )}
           />
         </div>
-        <Controller
-          name="files"
-          control={control}
-          render={({ field }) => {
-            const handleFileChange = (selectedFiles) => {
-              field.onChange(selectedFiles);
-              console.log("Files selected:", selectedFiles);
-            };
 
-            return (
-              <div>
-                <FileUpload
-                  label="Upload Files"
-                  value={field.value}
-                  onChange={handleFileChange}
-                />
-                {errors.files && (
-                  <p className="text-red-500 text-sm -mt-5 mb-2">
-                    {errors.files.message}
-                  </p>
-                )}
-              </div>
-            );
-          }}
-        />
-        <div className="flex md:flex-nowrap flex-wrap items-center gap-4 mb-5">
-          <Controller
-            name="rented_out"
-            control={control}
-            render={({ field }) => (
-              <div className="md:w-1/2 w-full">
-                <MultiCheckboxDropdown
-                  label="How Often Is Your Property Rented Out?"
-                  placeholder="Select option"
-                  options={["Full-time", "Seasonal", "Occasionally"]}
-                  selectedValues={field.value}
-                  setSelectedValues={(values) => field.onChange(values)}
-                  dropdownKey="rent"
-                  isOpen={openDropdown === "rent"}
-                  setOpenDropdown={setOpenDropdown}
-                  isMulti={false}
-                />
-                {errors.rented_out && (
-                  <p className="text-red-500 text-sm">
-                    {errors.rented_out.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-
+        {/* Property / Hosting / Cleaning */}
+        <div>
           <Controller
             name="type"
             control={control}
             render={({ field }) => (
-              <div className="md:w-1/2 w-full">
+              <div className="mb-5">
                 <MultiCheckboxDropdown
                   label="Type of Property"
                   options={[
                     "Condo",
-                    "Multi-Family/Fuplex",
+                    "Multi-Family/Duplex",
                     "Luxury Home",
                     "Tiny Home",
                     "Single Family Home",
@@ -338,7 +397,7 @@ const SubmissionForm = () => {
                   dropdownKey="type"
                   isOpen={openDropdown === "type"}
                   setOpenDropdown={setOpenDropdown}
-                  isMulti={true}
+                  isMulti={false}
                 />
                 {errors.type && (
                   <p className="text-red-500 text-sm">{errors.type.message}</p>
@@ -346,8 +405,167 @@ const SubmissionForm = () => {
               </div>
             )}
           />
+          <Controller
+            name="scope_service"
+            control={control}
+            render={({ field }) => (
+              <div className="mb-5">
+                <MultiCheckboxDropdown
+                  label="Scope of Services"
+                  options={[
+                    "Guest communication",
+                    "24/7 Guest Support",
+                    "Booking Management",
+                    "Owner Portal / Dashboard Access ",
+                    "Concierge Services ",
+                    "Cleaning Coordination ",
+                    "In-House Cleaning Team ",
+                    "Permit & Licensing Assistance ",
+                    "Light Maintenance / Handyman Work ",
+                    "Heavy Maintenance / Handyman Work ",
+                    "Light Construction / Renovation ",
+                    "Heavy Construction / Renovation ",
+                    "Utilities Management ",
+                    "Pool Upkeep ",
+                    "Yard & Landscaping Management ",
+                  ]}
+                  placeholder="Select Scope of services"
+                  selectedValues={field.value}
+                  setSelectedValues={(values) => field.onChange(values)}
+                  dropdownKey="scope_service" // Changed to match field name
+                  isOpen={openDropdown === "scope_service"} // Changed to match field name
+                  setOpenDropdown={setOpenDropdown}
+                  isMulti={true}
+                />
+                {errors.scope_service && (
+                  <p className="text-red-500 text-sm">
+                    {errors.scope_service.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+          <Controller
+            name="hostingTypes"
+            control={control}
+            render={({ field }) => (
+              <div className="mb-5">
+                <MultiCheckboxDropdown
+                  label="Do you have a preference in size of your PM (Property Manager)?"
+                  options={[
+                    "20 properties or less",
+                    "100 properties or less",
+                    "Size doesn't matter",
+                  ]}
+                  placeholder="Select PM size preference"
+                  selectedValues={field.value}
+                  setSelectedValues={(values) => field.onChange(values)}
+                  dropdownKey="hosting"
+                  isOpen={openDropdown === "hosting"}
+                  setOpenDropdown={setOpenDropdown}
+                  isMulti={true}
+                />
+                {errors.hostingTypes && (
+                  <p className="text-red-500 text-sm">
+                    {errors.hostingTypes.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="cleanTypes"
+            control={control}
+            render={({ field }) => (
+              <div className="mb-5">
+                <MultiCheckboxDropdown
+                  label="Do you have a cleaning preference?"
+                  options={[
+                    "In-house cleaners",
+                    "3rd party cleaners",
+                    "Doesn't matter to me",
+                  ]}
+                  placeholder="Select cleaning preference"
+                  selectedValues={field.value}
+                  setSelectedValues={(values) => field.onChange(values)}
+                  dropdownKey="clean"
+                  isOpen={openDropdown === "clean"}
+                  setOpenDropdown={setOpenDropdown}
+                  isMulti={true}
+                />
+                {errors.cleanTypes && (
+                  <p className="text-red-500 text-sm">
+                    {errors.cleanTypes.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
         </div>
 
+        {/* Account Manager */}
+        <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
+          <h3 className="text-sm font-bold">
+            Do You Currently Have a Property Manager?
+          </h3>
+          <Controller
+            name="accountManager"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="accountYes"
+                  name="accountManager"
+                  value="yes"
+                  label="Yes"
+                  checked={field.value === "yes"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="accountNo"
+                  name="accountManager"
+                  value="no"
+                  label="No"
+                  checked={field.value === "no"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                {errors.accountManager && (
+                  <p className="text-red-500 text-sm">
+                    {errors.accountManager.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Files Upload */}
+        <Controller
+          name="files"
+          control={control}
+          render={({ field }) => {
+            const handleFileChange = (selectedFiles) => {
+              field.onChange(selectedFiles);
+            };
+            return (
+              <div>
+                <FileUpload
+                  label="Upload Photos & Videos"
+                  value={field.value}
+                  onChange={handleFileChange}
+                />
+                {errors.files && (
+                  <p className="text-red-500 text-sm -mt-5 mb-2">
+                    {errors.files.message}
+                  </p>
+                )}
+              </div>
+            );
+          }}
+        />
+
+        {/* Reason for Switching */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">Reason for Switching</h4>
           <Controller
@@ -355,7 +573,6 @@ const SubmissionForm = () => {
             control={control}
             render={({ field }) => {
               const selected = field.value || [];
-
               const toggleValue = (label) => {
                 if (selected.includes(label)) {
                   field.onChange(selected.filter((val) => val !== label));
@@ -366,19 +583,16 @@ const SubmissionForm = () => {
               return (
                 <>
                   <div className="flex flex-wrap items-center gap-5 mb-3">
-                    {reasonSwitchingList.map((item) => {
-                      return (
-                        <CheckBox
-                          key={item.index}
-                          id={item.id}
-                          label={item.label}
-                          checked={selected.includes(item.label)}
-                          onChange={() => toggleValue(item.label)}
-                        />
-                      );
-                    })}
+                    {reasonSwitchingList.map((item) => (
+                      <CheckBox
+                        key={item.id}
+                        id={item.id}
+                        label={item.label}
+                        checked={selected.includes(item.label)}
+                        onChange={() => toggleValue(item.label)}
+                      />
+                    ))}
                   </div>
-
                   {errors.reason_switching && (
                     <p className="text-red-500 text-sm">
                       {errors.reason_switching.message}
@@ -390,42 +604,7 @@ const SubmissionForm = () => {
           />
         </div>
 
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-5 mb-6">
-          <h3 className="text-sm font-bold">
-            Do You Currently Have a Property Manager?
-          </h3>
-          <Controller
-            name="manger"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <div className="flex items-center gap-5">
-                  <RadioField
-                    id="ManagerNo"
-                    name="isManager"
-                    value="False"
-                    label="False"
-                    checked={field.value === "False"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="ManagerYes"
-                    name="isManager"
-                    value="True"
-                    label="True"
-                    checked={field.value === "True"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </div>
-                {errors.manger && (
-                  <p className="text-red-500 text-sm -mt-2">
-                    {errors.manger.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
+        {/* Split Percentage & PM Top Priority */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-4">
           <Controller
             name="split_percentage"
@@ -433,7 +612,7 @@ const SubmissionForm = () => {
             render={({ field }) => (
               <div className="md:w-1/2 w-full">
                 <InputField
-                  label="Property AdIdeal % Split You’d Like to Paydress"
+                  label="Ideal % Split You'd Like to Pay"
                   id="split_percentage"
                   name="split_percentage"
                   type="text"
@@ -487,49 +666,251 @@ const SubmissionForm = () => {
             )}
           />
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-4 mb-6">
-          <div className="md:w-1/2 w-full">
-            <h3 className="text-sm font-bold mb-4">
-              Would You Consider Co-hosting?
-            </h3>
-            <Controller
-              name="co_hosting"
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <div className="flex items-center gap-5">
-                    <RadioField
-                      id="hostingNo"
-                      value="No"
-                      label="No"
-                      checked={field.value === "No"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="hostingYes"
-                      value="Yes"
-                      label="Yes"
-                      checked={field.value === "Yes"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                    <RadioField
-                      id="hostingMaybe"
-                      value="May be"
-                      label="May be"
-                      checked={field.value === "May be"}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </div>
-                  {errors.co_hosting && (
-                    <p className="text-red-500 text-sm ">
-                      {errors.co_hosting.message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-          </div>
+
+        {/* Current PM Company Name */}
+        <div>
+          <Controller
+            name="current_pm_company_name"
+            control={control}
+            render={({ field }) => (
+              <div>
+                <InputField
+                  label="What is the name of your current PM company?"
+                  id="current_pm_company_name"
+                  name="current_pm_company_name"
+                  type="text"
+                  fieldName="w-full"
+                  placeholder="Enter name"
+                  asterisk="true"
+                  {...field}
+                />
+                {errors.current_pm_company_name && (
+                  <p className="text-red-500 text-sm -mt-8">
+                    {errors.current_pm_company_name.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
         </div>
+
+        {/* PM Charge Percentage */}
+        <div>
+          <Controller
+            name="pm_charge_percentage"
+            control={control}
+            render={({ field }) => (
+              <div>
+                <MultiCheckboxDropdown
+                  label="What % does your current PM charge?"
+                  placeholder="Select percentage range"
+                  options={["<10%", "10–15%", ">15%"]}
+                  selectedValues={field.value}
+                  setSelectedValues={(values) => field.onChange(values)}
+                  dropdownKey="charge"
+                  isOpen={openDropdown === "charge"}
+                  setOpenDropdown={setOpenDropdown}
+                  isMulti={false}
+                  className="mb-5"
+                />
+                {errors.pm_charge_percentage && (
+                  <p className="text-red-500 text-sm -mt-4">
+                    {errors.pm_charge_percentage.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Yearly Revenue */}
+        <Controller
+          name="yearly_revenue"
+          control={control}
+          render={({ field }) => (
+            <div>
+              <InputField
+                label="What is your property's current yearly revenue expectation?"
+                id="yearly_revenue"
+                name="yearly_revenue"
+                type="text"
+                fieldName="w-full"
+                placeholder="e.g., $10k–$25k, $25k–$50k"
+                {...field}
+              />
+              {errors.yearly_revenue && (
+                <p className="text-red-500 text-sm -mt-8">
+                  {errors.yearly_revenue.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+
+        {/* Full Service vs Co-Host */}
+        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
+          <h3 className="text-sm font-bold">
+            Are you seeking Full PM or Co-Host?
+          </h3>
+          <Controller
+            name="seeking_pm_host"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="seekingFull"
+                  name="seeking_pm_host"
+                  value="Full Service"
+                  label="Full Service"
+                  checked={field.value === "Full Service"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="seekingCoHost"
+                  name="seeking_pm_host"
+                  value="Co-Host"
+                  label="Co-Host"
+                  checked={field.value === "Co-Host"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                {errors.seeking_pm_host && (
+                  <p className="text-red-500 text-sm">
+                    {errors.seeking_pm_host.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Co-hosting consideration */}
+        <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
+          <h3 className="text-sm font-bold">Would You Consider Co-hosting?</h3>
+          <Controller
+            name="co_hosting"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="cohostingYes"
+                  name="co_hosting"
+                  value="Yes"
+                  label="Yes"
+                  checked={field.value === "Yes"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="cohostingNo"
+                  name="co_hosting"
+                  value="No"
+                  label="No"
+                  checked={field.value === "No"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="cohostingMaybe"
+                  name="co_hosting"
+                  value="May be"
+                  label="May be"
+                  checked={field.value === "May be"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                {errors.co_hosting && (
+                  <p className="text-red-500 text-sm">
+                    {errors.co_hosting.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Absolute Must Haves */}
+        <Controller
+          name="absolute_must_have"
+          control={control}
+          render={({ field }) => {
+            const selected = field.value || [];
+            const toggleOption = (option) => {
+              if (selected.includes(option)) {
+                field.onChange(selected.filter((item) => item !== option));
+              } else {
+                field.onChange([...selected, option]);
+              }
+            };
+
+            return (
+              <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
+                <h2 className="text-sm font-bold mb-4">
+                  Mark if any of these that are ABSOLUTE MUST HAVES
+                </h2>
+                <div className="flex flex-wrap gap-8 mb-3">
+                  {absoluteMustHaveOptions.map((label, index) => (
+                    <CheckBox
+                      key={index}
+                      id={`absolute_must_have_${index}`}
+                      name={`absolute_must_have_${index}`}
+                      label={label}
+                      checked={selected.includes(label)}
+                      onChange={() => toggleOption(label)}
+                    />
+                  ))}
+                </div>
+                {errors.absolute_must_have && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.absolute_must_have.message}
+                  </p>
+                )}
+              </div>
+            );
+          }}
+        />
+
+        {/* Involvement Level */}
+        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
+          <h3 className="text-sm font-bold mb-5">
+            Involvement in Day-to-Day Decisions?
+          </h3>
+          <Controller
+            name="involvement_level"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="dayHighly"
+                  name="involvement_level"
+                  value="Highly Involved"
+                  label="Highly Involved"
+                  checked={field.value === "Highly Involved"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="daySomewhat"
+                  name="involvement_level"
+                  value="Somewhat Involved"
+                  label="Somewhat Involved"
+                  checked={field.value === "Somewhat Involved"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                <RadioField
+                  id="dayMinimally"
+                  name="involvement_level"
+                  value="Minimally Involved"
+                  label="Minimally Involved"
+                  checked={field.value === "Minimally Involved"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                />
+                {errors.involvement_level && (
+                  <p className="text-red-500 text-sm">
+                    {errors.involvement_level.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Renovations in Last 3 Years */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">
             Renovations in Last 3 Years
@@ -539,7 +920,6 @@ const SubmissionForm = () => {
             control={control}
             render={({ field }) => {
               const selected = field.value || [];
-
               const toggleValue = (label) => {
                 if (selected.includes(label)) {
                   field.onChange(selected.filter((val) => val !== label));
@@ -560,7 +940,6 @@ const SubmissionForm = () => {
                       />
                     ))}
                   </div>
-
                   {errors.renovations && (
                     <p className="text-red-500 text-sm">
                       {errors.renovations.message}
@@ -572,326 +951,15 @@ const SubmissionForm = () => {
           />
         </div>
 
-        <div className="flex flex-wrap md:flex-nowrap items-center justify-between mb-6">
-          <Controller
-            name="suggestion"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <div className="md:w-[40%] w-full">
-                <h3 className="text-sm font-bold mb-4">
-                  Are You Open to Upgrade Suggestions?
-                </h3>
-                <div className="flex items-center gap-5">
-                  <RadioField
-                    id="UpgradeYes"
-                    name={field.name}
-                    value="Yes"
-                    label="Yes"
-                    checked={field.value === "Yes"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="UpgradeNo"
-                    name={field.name}
-                    value="No"
-                    label="No"
-                    checked={field.value === "No"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="Upgradecost"
-                    name={field.name}
-                    value="Possibly, depending on cost"
-                    label="Possibly, depending on cost"
-                    checked={field.value === "Possibly, depending on cost"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </div>
-                {errors.suggestion && (
-                  <p className="text-red-500 text-sm ">
-                    {errors.suggestion.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-
-          <Controller
-            name="open_investing"
-            control={control}
-            render={({ field }) => (
-              <div className="md:w-[30%] w-full">
-                <h3 className="text-sm font-bold mb-4">
-                  Open to Investing for Higher ROI?
-                </h3>
-                <div className="flex items-center gap-5">
-                  <RadioField
-                    id="Openyes"
-                    name="isOpen"
-                    value="Yes"
-                    label="Yes"
-                    checked={field.value === "Yes"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="OpenNo"
-                    name="isOpen"
-                    value="No"
-                    label="No"
-                    checked={field.value === "No"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="Openbe"
-                    name="isOpen"
-                    value="May be"
-                    label="May be"
-                    checked={field.value === "May be"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </div>
-                {errors.open_investing && (
-                  <p className="text-red-500 text-sm ">
-                    {errors.open_investing.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-
-          <Controller
-            name="photography"
-            control={control}
-            render={({ field }) => (
-              <div className="md:w-[30%] w-full">
-                <h3 className="text-sm font-bold mb-4">
-                  Furniture & Décor Photography Ready?
-                </h3>
-                <div className="flex items-center gap-5">
-                  <RadioField
-                    id="Décoryes"
-                    name={field.name}
-                    value="Yes"
-                    label="Yes"
-                    checked={field.value === "Yes"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="DécorNo"
-                    name={field.name}
-                    value="No"
-                    label="No"
-                    checked={field.value === "No"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                  <RadioField
-                    id="DécorSomewhat"
-                    name={field.name}
-                    value="Somewhat"
-                    label="Somewhat"
-                    checked={field.value === "Somewhat"}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </div>
-                {errors.photography && (
-                  <p className="text-red-500 text-sm ">
-                    {errors.photography.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
-        <Controller
-          name="desc"
-          control={control}
-          render={({ field }) => (
-            <TextArea
-              type="text"
-              value="meesage"
-              placeholder="Enter message..."
-              label="Anything else you'd like us to know?"
-              {...field}
-            />
-          )}
-        />
-
-        <div>
-          <Controller
-            name="current_pm_company_name"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <InputField
-                  label="What is the name of your current PM company?"
-                  id="address"
-                  name="address"
-                  type="text"
-                  fieldName="w-full"
-                  placeholder="Enter name"
-                  asterisk="true"
-                  {...field}
-                />
-                {errors.current_pm_company_name && (
-                  <p className="text-red-500 text-sm -mt-8">
-                    {errors.current_pm_company_name.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
-        <div>
-          <Controller
-            name="pm_charge_percentage"
-            control={control}
-            render={({ field }) => (
-              <div>
-                <MultiCheckboxDropdown
-                  label="What % does your current PM charge?"
-                  placeholder="How Often Is Your Property Rented Out?"
-                  options={["<10%", "10–15%", ">15%"]}
-                  selectedValues={field.value}
-                  setSelectedValues={(values) => field.onChange(values)}
-                  dropdownKey="charge"
-                  isOpen={openDropdown === "charge"}
-                  setOpenDropdown={setOpenDropdown}
-                  isMulti={false}
-                  className="mb-5"
-                />
-                {errors.pm_charge_percentage && (
-                  <p className="text-red-500 text-sm -mt-4">
-                    {errors.pm_charge_percentage.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
-        </div>
-        <Controller
-          name="yearly_revenue"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <InputField
-                label="What is your property's current yearly revenue expectation?"
-                id="pay"
-                name="pay"
-                type="text"
-                fieldName="w-full"
-                placeholder="e.g., $10k–$25k, $25k–$50k,"
-                {...field}
-              />
-              {errors.yearly_revenue && (
-                <p className="text-red-500 text-sm -mt-8">
-                  {errors.yearly_revenue.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
-        <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
-          <div>
-            <h3 className="text-sm font-bold mb-5">
-              Involvement in Day-to-Day Decisions?
-            </h3>
-            <div>
-              <Controller
-                name="involvement_level"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="dayHighly"
-                        name={field.name} // use controller name here
-                        value="Highly Involved"
-                        label="Highly Involved"
-                        checked={field.value === "Highly Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="daySomewhat"
-                        name={field.name}
-                        value="Somewhat Involved"
-                        label="Somewhat Involved"
-                        checked={field.value === "Somewhat Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="dayMinimally"
-                        name={field.name}
-                        value="Minimally Involved"
-                        label="Minimally Involved"
-                        checked={field.value === "Minimally Involved"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.involvement_level && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.involvement_level.message}
-                      </p>
-                    )}
-                  </div>
-                )}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Controller
-            name="absolute_must_have"
-            control={control}
-            render={({ field }) => {
-              // field.value is the array of selected options (or empty)
-              const selected = field.value || [];
-
-              const toggleOption = (option) => {
-                if (selected.includes(option)) {
-                  // Remove option
-                  field.onChange(selected.filter((item) => item !== option));
-                } else {
-                  // Add option
-                  field.onChange([...selected, option]);
-                }
-              };
-
-              return (
-                <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
-                  <h2 className="text-sm font-bold mb-4">
-                    Mark if any of these that are ABSOLUTE MUST HAVES
-                  </h2>
-                  <div className="flex flex-wrap justify-between  gap-4 mb-3">
-                    {absoluteMustHaveOptions.map((label, index) => (
-                      <CheckBox
-                        key={index}
-                        id={`absolute_must_have[${index}]`}
-                        name={`absolute_must_have[${index}]`}
-                        label={label}
-                        checked={selected.includes(label)}
-                        onChange={() => toggleOption(label)}
-                      />
-                    ))}
-                  </div>
-
-                  {errors.absolute_must_have && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {errors.absolute_must_have.message}
-                    </p>
-                  )}
-                </div>
-              );
-            }}
-          />
-        </div>
+        {/* Condition of Property */}
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-3">Condition of Property</h2>
+
+          {/* Flooring */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Flooring</h2>
             <Controller
               name="condition.Flooring"
-              id="flooring"
               control={control}
               render={({ field }) => (
                 <div>
@@ -927,11 +995,12 @@ const SubmissionForm = () => {
               )}
             />
           </div>
+
+          {/* Kitchen Appliances */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Kitchen Appliances</h2>
             <Controller
               name="condition.KitchenAppliances"
-              id="kitchen"
               control={control}
               render={({ field }) => (
                 <div>
@@ -959,7 +1028,7 @@ const SubmissionForm = () => {
                     />
                   </div>
                   {errors.condition?.KitchenAppliances && (
-                    <p className="text-red-500 text-sm ">
+                    <p className="text-red-500 text-sm">
                       {errors.condition.KitchenAppliances.message}
                     </p>
                   )}
@@ -967,291 +1036,423 @@ const SubmissionForm = () => {
               )}
             />
           </div>
+
+          {/* Bathroom Fixtures */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Bathroom Fixtures</h2>
-            <div>
-              <Controller
-                name="condition.BathroomFixtures"
-                id="BathroomFixtures"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="fixturesExcellent"
-                        name="fixtures"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="fixturesAverage"
-                        name="fixtures"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="fixturesNeeds"
-                        name="fixtures"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.BathroomFixtures && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.BathroomFixtures.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.BathroomFixtures"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="fixturesExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="fixturesAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="fixturesNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.BathroomFixtures && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.BathroomFixtures.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
+
+          {/* Furniture */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Furniture</h2>
-            <div>
-              <Controller
-                name="condition.Furniture"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="furnitureExcellent"
-                        name="furniture"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="furnitureAverage"
-                        name="furniture"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="furnitureNeeds"
-                        name="furniture"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.Furniture && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.Furniture.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.Furniture"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="furnitureExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="furnitureAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="furnitureNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.Furniture && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.Furniture.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
+
+          {/* Paint/Interior */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Paint/Interior</h2>
-            <div>
-              <Controller
-                name="condition.PaintInterior"
-                id="PaintInterior"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="paintExcellent"
-                        name="paint"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="paintAverage"
-                        name="paint"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="paintNeeds"
-                        name="paint"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.PaintInterior && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.PaintInterior.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.PaintInterior"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="paintExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="paintAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="paintNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.PaintInterior && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.PaintInterior.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
+
+          {/* Smart Devices */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Smart Devices</h2>
-            <div>
-              <Controller
-                name="condition.SmartDevices"
-                id="SmartDevices"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="devicesExcellent"
-                        name="devices"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="devicesAverage"
-                        name="devices"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="devicesNeeds"
-                        name="devices"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.SmartDevices && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.SmartDevices.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.SmartDevices"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="devicesExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="devicesAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="devicesNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.SmartDevices && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.SmartDevices.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
+
+          {/* Outdoor Amenities */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Outdoor Amenities</h2>
-            <div>
-              <Controller
-                name="condition.OutdoorAmenities"
-                id="OutdoorAmenities"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="outdoorExcellent"
-                        name="outdoor"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="outdoorAverage"
-                        name="outdoor"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="outdoorNeeds"
-                        name="outdoor"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.OutdoorAmenities && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.OutdoorAmenities.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.OutdoorAmenities"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="outdoorExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="outdoorAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="outdoorNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.OutdoorAmenities && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.OutdoorAmenities.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
+
+          {/* Others */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Others</h2>
-            <div>
-              <Controller
-                name="condition.Others"
-                id="Others"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <div className="flex items-center gap-5">
-                      <RadioField
-                        id="othersExcellent"
-                        name="others"
-                        value="Excellent condition"
-                        label="Excellent condition"
-                        checked={field.value === "Excellent condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="othersAverage"
-                        name="others"
-                        value="Average condition"
-                        label="Average condition"
-                        checked={field.value === "Average condition"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                      <RadioField
-                        id="othersNeeds"
-                        name="others"
-                        value="Needs attention"
-                        label="Needs attention"
-                        checked={field.value === "Needs attention"}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                    {errors.condition?.Others && (
-                      <p className="text-red-500 text-sm ">
-                        {errors.condition.Others.message}
-                      </p>
-                    )}
+            <Controller
+              name="condition.Others"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="othersExcellent"
+                      value="Excellent condition"
+                      label="Excellent condition"
+                      checked={field.value === "Excellent condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="othersAverage"
+                      value="Average condition"
+                      label="Average condition"
+                      checked={field.value === "Average condition"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="othersNeeds"
+                      value="Needs attention"
+                      label="Needs attention"
+                      checked={field.value === "Needs attention"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </div>
-                )}
-              />
-            </div>
+                  {errors.condition?.Others && (
+                    <p className="text-red-500 text-sm">
+                      {errors.condition.Others.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
         </div>
-        <TextArea
-          type="text"
-          placeholder={"Enter message"}
-          label={
-            "Please tell us more about your property and any unique features or issues. The more we know, the better we can match you with the right PM options"
-          }
-        />
-        <div className="flex justify-end gap-2.5">
 
+        {/* Upgrade Suggestions, Investment, Photography */}
+        <div className="flex flex-wrap md:flex-nowrap items-start justify-between mb-6 gap-4">
+          <Controller
+            name="suggestion"
+            control={control}
+            render={({ field }) => (
+              <div className="md:w-[33%] w-full">
+                <h3 className="text-sm font-bold mb-4">
+                  Are You Open to Upgrade Suggestions?
+                </h3>
+                <div className="flex flex-col gap-3">
+                  <RadioField
+                    id="suggestionYes"
+                    name="suggestion"
+                    value="Yes"
+                    label="Yes"
+                    checked={field.value === "Yes"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="suggestionNo"
+                    name="suggestion"
+                    value="No"
+                    label="No"
+                    checked={field.value === "No"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="suggestionCost"
+                    name="suggestion"
+                    value="Possibly, depending on cost"
+                    label="Possibly, depending on cost"
+                    checked={field.value === "Possibly, depending on cost"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </div>
+                {errors.suggestion && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.suggestion.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="open_investing"
+            control={control}
+            render={({ field }) => (
+              <div className="md:w-[33%] w-full">
+                <h3 className="text-sm font-bold mb-4">
+                  Open to Investing for Higher ROI?
+                </h3>
+                <div className="flex flex-col gap-3">
+                  <RadioField
+                    id="investingYes"
+                    name="open_investing"
+                    value="Yes"
+                    label="Yes"
+                    checked={field.value === "Yes"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="investingNo"
+                    name="open_investing"
+                    value="No"
+                    label="No"
+                    checked={field.value === "No"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="investingMaybe"
+                    name="open_investing"
+                    value="May be"
+                    label="May be"
+                    checked={field.value === "May be"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </div>
+                {errors.open_investing && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.open_investing.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="photography"
+            control={control}
+            render={({ field }) => (
+              <div className="md:w-[33%] w-full">
+                <h3 className="text-sm font-bold mb-4">
+                  Furniture & Décor Photography Ready?
+                </h3>
+                <div className="flex flex-col gap-3">
+                  <RadioField
+                    id="photographyYes"
+                    name="photography"
+                    value="Yes"
+                    label="Yes"
+                    checked={field.value === "Yes"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="photographyNo"
+                    name="photography"
+                    value="No"
+                    label="No"
+                    checked={field.value === "No"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                  <RadioField
+                    id="photographySomewhat"
+                    name="photography"
+                    value="Somewhat"
+                    label="Somewhat"
+                    checked={field.value === "Somewhat"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </div>
+                {errors.photography && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.photography.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Additional Message */}
+        <Controller
+          name="message"
+          control={control}
+          render={({ field }) => (
+            <TextArea
+              type="text"
+              placeholder="Enter message..."
+              label="Anything else you'd like us to know?"
+              {...field}
+            />
+          )}
+        />
+
+        {/* Description */}
+        <Controller
+          name="desc"
+          control={control}
+          render={({ field }) => (
+            <TextArea
+              type="text"
+              placeholder="Enter message"
+              label="Please tell us more about your property and any unique features or issues. The more we know, the better we can match you with the right PM options"
+              {...field}
+            />
+          )}
+        />
+
+        {/* Submit Button */}
+        <div className="flex justify-end gap-2.5">
           <Button
             type="submit"
-            displayed={isPending}
-            className="mb-5 w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF]"
+            loading={isLoading}
+            disabled={isLoading}
+            className="mb-5 w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
           >
-            {isPending ? "Submitting...." : "Submit"}
+            {isLoading ? "Submitting..." : "Submit"}
           </Button>
         </div>
       </form>

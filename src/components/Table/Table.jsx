@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../Button/Button";
-import { NextSVG, PrevSVG } from "../../Constants/Icons";
+import { NextSVG, PrevSVG } from "../../constants/Icons";
 
 const Table = ({
   columns,
@@ -53,10 +53,7 @@ const Table = ({
 
   const filteredData = data
     .filter((item) =>
-      Object.values(item)
-        .join(" ")
-        .toLowerCase()
-        .includes(search.toLowerCase())
+      Object.values(item).join(" ").toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (!sortingKey) return 0;

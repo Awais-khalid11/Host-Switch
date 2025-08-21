@@ -12,7 +12,19 @@ export const getData = async (url, config = {}) => {
 
 export const postData = async (url, data, config = {}) => {
   try {
-    const response = await api.post(url, data, config);
+    // If data is FormData, don't set Content-Type header
+    // Let the browser set it automatically with the correct boundary
+    const headers = data instanceof FormData 
+      ? { ...config.headers } 
+      : { 
+          "Content-Type": "application/json",
+          ...config.headers 
+        };
+
+    const response = await api.post(url, data, {
+      ...config,
+      headers,
+    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -21,7 +33,18 @@ export const postData = async (url, data, config = {}) => {
 
 export const putData = async (url, data, config = {}) => {
   try {
-    const response = await api.put(url, data, config);
+    // If data is FormData, don't set Content-Type header
+    const headers = data instanceof FormData 
+      ? { ...config.headers } 
+      : { 
+          "Content-Type": "application/json",
+          ...config.headers 
+        };
+
+    const response = await api.put(url, data, {
+      ...config,
+      headers,
+    });
     return response.data;
   } catch (error) {
     handleError(error);
