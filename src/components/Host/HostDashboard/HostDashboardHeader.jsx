@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../Button/Button";
 import {
   AcceptSVG,
@@ -7,14 +7,47 @@ import {
   WhitecircleSVG,
 } from "../../../constants/Icons";
 import DashboardCards from "../../DashboardCards/DashboardCards";
-
-const hostcards = [
-  { img: LeadsSVG, text: "New Leads", title: "2534+" },
-  { img: TotalSVG, text: "Total Matches", title: "1007" },
-  { img: AcceptSVG, text: "The Best Matches", title: "100" },
-];
+import { getData } from "../../../api/apiClient";
+import NoDataFound from "../../NoDataFound";
 
 const HostDashboardHeader = ({ onAddClick }) => {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        setLoading(true);
+        const data = await getData("/host/dashboard/summary");
+
+        if (data?.payload) {
+          setStats({
+            totalProposals: data.payload.totalProposals ?? 0,
+            totalMatches: data.payload.totalMatches ?? 0,
+            bestMatches: data.payload.bestMatches ?? 0,
+          });
+        } else {
+          setStats(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch dashboard summary:", err);
+        setStats(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, []);
+
+  const hostcards = stats
+    ? [
+        { img: LeadsSVG, text: "Total Proposals", title: stats.totalProposals },
+        { img: TotalSVG, text: "Total Matches", title: stats.totalMatches },
+        { img: AcceptSVG, text: "The Best Matches", title: stats.bestMatches },
+      ]
+    : [];
+
   return (
     <div>
       <div className=" bg-white -mt-5 pt-5">
@@ -29,8 +62,19 @@ const HostDashboardHeader = ({ onAddClick }) => {
             Add New Submissions
           </Button>
         </div>
+
         <div className="mb-5">
-          <DashboardCards data={hostcards} />
+          {loading ? (
+            <p className="text-gray-500">Loading...</p>
+          ) : hostcards.length > 0 ? (
+            <DashboardCards data={hostcards} />
+          ) : (
+            <NoDataFound
+              message="No Dashboard Data"
+              subMessage="We couldn't load your dashboard summary at this time."
+              className="my-6"
+            />
+          )}
         </div>
       </div>
     </div>

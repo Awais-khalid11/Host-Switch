@@ -12,8 +12,7 @@ export const getData = async (url, config = {}) => {
 
 export const postData = async (url, data, config = {}) => {
   try {
-    // If data is FormData, don't set Content-Type header
-    // Let the browser set it automatically with the correct boundary
+   
     const headers = data instanceof FormData 
       ? { ...config.headers } 
       : { 
@@ -33,7 +32,6 @@ export const postData = async (url, data, config = {}) => {
 
 export const putData = async (url, data, config = {}) => {
   try {
-    // If data is FormData, don't set Content-Type header
     const headers = data instanceof FormData 
       ? { ...config.headers } 
       : { 
