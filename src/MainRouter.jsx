@@ -60,6 +60,7 @@ const MainRouter = () => {
       <ScrollToTop />
       <Routes>
         {/* Public Auth Routes */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/password" element={<Password />} />
         <Route path="/otp" element={<Otp />} />

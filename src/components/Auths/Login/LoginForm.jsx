@@ -18,7 +18,9 @@ const schema = z.object({
 const LoginForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { setRoleId, roleId } = useRoleStore();
+
+  // ✅ now also destructure setUserId from the store
+  const { setRoleId, setUser } = useRoleStore();
 
   const {
     control,
@@ -31,6 +33,7 @@ const LoginForm = () => {
       password: "",
     },
   });
+
   const onSubmit = async (formData) => {
     setIsLoading(true);
     try {
@@ -43,23 +46,28 @@ const LoginForm = () => {
 
       const token = response?.payload?.accessToken;
       const userRoleId = response?.payload?.user?.role_id;
-
+      const user = response?.payload?.user;
       if (token) {
         localStorage.setItem("token", token);
         toast.success("Login successful!");
-        setRoleId(userRoleId);
 
+        // ✅ Save both values in Zustand
+        setRoleId(userRoleId);
+        setUser(user);
+        // Redirect based on role
         const redirectRoute =
           userRoleId === 3
             ? ROUTES.DASHBOARD
             : userRoleId === 2
             ? ROUTES.HOSTDASHBOARD
             : ROUTES.ADMINDASHBOARD;
+
         navigate(redirectRoute);
       } else {
         toast.error("Login failed. No token received.");
       }
     } catch (error) {
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }

@@ -1,19 +1,17 @@
-import React from 'react';
+import React from "react";
 
 const SemiCircleProgress = ({ percentage = 94 }) => {
   const angle = (percentage / 100) * 180;
 
   return (
-    <div >
+    <div>
       <svg width="80" height="38" viewBox="0 0 160 80">
-        {/* Grey Background Arc */}
         <path
           d="M10,80 A70,70 0 0,1 150,80"
           fill="none"
           stroke="#ddd"
           strokeWidth="10"
         />
-        {/* Blue Progress Arc */}
         <path
           d="M10,80 A70,70 0 0,1 150,80"
           fill="none"
@@ -23,7 +21,6 @@ const SemiCircleProgress = ({ percentage = 94 }) => {
           strokeDashoffset={220 - (220 * percentage) / 100}
           strokeLinecap="round"
         />
-        {/* Centered Text */}
         <text
           x="80"
           y="60"
@@ -35,7 +32,16 @@ const SemiCircleProgress = ({ percentage = 94 }) => {
           {percentage}%
         </text>
       </svg>
-      <div style={{ fontSize: 16, fontWeight: 'semibold', marginTop: 5, color: "#727272"}}>Match Score</div>
+      <div
+        style={{
+          fontSize: 16,
+          fontWeight: "semibold",
+          marginTop: 5,
+          color: "#727272",
+        }}
+      >
+        Match Score
+      </div>
     </div>
   );
 };
