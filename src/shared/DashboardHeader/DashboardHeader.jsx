@@ -5,31 +5,36 @@ import { UserPNG } from "../../constants/Imgs";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/Routes";
+import useRoleStore from "../../store/useRoleIdStore";
 
-const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
+const DashboardHeader = ({ showSidebar, setShowSidebar, property }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useRoleStore();
+  console.log("user in dashboard header", user);
+  const role =
+    user?.role_id === 1 ? "Admin" : user?.role_id === 2 ? "Host" : "PM";
 
   const HandleLogoClick = () => {
-    if (location.pathname.startsWith("/pm")){
-      navigate(ROUTES.DASHBOARD)
-    } else if (location.pathname.startsWith("/host")){
-      navigate(ROUTES.HOSTDASHBOARD)
-    }else if (location.pathname.startsWith("/admin")){
-      navigate(ROUTES.ADMINDASHBOARD)
+    if (location.pathname.startsWith("/pm")) {
+      navigate(ROUTES.DASHBOARD);
+    } else if (location.pathname.startsWith("/host")) {
+      navigate(ROUTES.HOSTDASHBOARD);
+    } else if (location.pathname.startsWith("/admin")) {
+      navigate(ROUTES.ADMINDASHBOARD);
     }
-  }
+  };
 
-  const HandleUserClick = () =>{
-    if (location.pathname.startsWith("/pm")){
-      navigate(ROUTES.SETTINGS)
-    }else if (location.pathname.startsWith("/host")){
-      navigate(ROUTES.HOSTSETTINGS)
-    }else if (location.pathname.startsWith("/admin")){
-      navigate(ROUTES.ADMINSETTINGS)
+  const HandleUserClick = () => {
+    if (location.pathname.startsWith("/pm")) {
+      navigate(ROUTES.SETTINGS);
+    } else if (location.pathname.startsWith("/host")) {
+      navigate(ROUTES.HOSTSETTINGS);
+    } else if (location.pathname.startsWith("/admin")) {
+      navigate(ROUTES.ADMINSETTINGS);
     }
-  }
+  };
 
   return (
     <>
@@ -54,7 +59,7 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
                   onClick={HandleLogoClick}
                 />
                 <h2 className="hidden lg:block font-bold text-2xl whitespace-nowrap">
-                  👋 Welcome back, Harry Doe.
+                  👋 Welcome back, {user?.name}.
                 </h2>
               </div>
 
@@ -79,15 +84,17 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
                 <div className="hidden md:block pl-2.5">
                   <div className="flex items-center gap-2.5">
                     <img
-                      src={UserPNG}
+                      src={`${import.meta.env.VITE_IMG_URL}${
+                        user?.image || UserPNG
+                      }`}
                       alt="userImg"
                       className="rounded-full w-10 h-10 cursor-pointer"
                       onClick={HandleUserClick}
                     />
                     <div>
-                      <h4 className="font-bold text-base">Harry Doe</h4>
+                      <h4 className="font-bold text-base">{user?.name}</h4>
                       <h5 className="text-[12px] text-[#1B252B80] font-normal">
-                        {name}
+                        {role}
                       </h5>
                     </div>
                   </div>
@@ -100,7 +107,5 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, name, property }) => {
     </>
   );
 };
-
-
 
 export default DashboardHeader;

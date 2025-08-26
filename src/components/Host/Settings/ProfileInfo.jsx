@@ -104,7 +104,9 @@ const ProfileInfo = () => {
   };
 
   if (isLoading) {
-    return <SkeletonCard count={1} className="p-4" />;
+    return (
+      <SkeletonCard variant="card" count={1} hasImage hasButtons rows={2} />
+    );
   }
 
   return (

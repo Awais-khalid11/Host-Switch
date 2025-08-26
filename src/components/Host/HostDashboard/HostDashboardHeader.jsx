@@ -9,6 +9,7 @@ import {
 import DashboardCards from "../../DashboardCards/DashboardCards";
 import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
+import Skeleton from "../../Skeleton/SkeletonCard";
 
 const HostDashboardHeader = ({ onAddClick }) => {
   const [stats, setStats] = useState(null);
@@ -65,7 +66,7 @@ const HostDashboardHeader = ({ onAddClick }) => {
 
         <div className="mb-5">
           {loading ? (
-            <p className="text-gray-500">Loading...</p>
+            <Skeleton variant="card" count={1} hasImage rows={3} />
           ) : hostcards.length > 0 ? (
             <DashboardCards data={hostcards} />
           ) : (

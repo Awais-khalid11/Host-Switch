@@ -7,8 +7,10 @@ import { FiUser } from "react-icons/fi";
 import {
   AllSVG,
   ClockSVG,
+  ConsiderSVG,
   EyeSVG,
   FilterSVG,
+  MsgsSVG,
   ProfildeleteSVG,
   ProfiletickSVG,
 } from "../../../constants/Icons";
@@ -16,6 +18,7 @@ import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import HostProposalView from "./HostProposalView/HostProposalView";
 import { getData } from "../../../api/apiClient";
+import { ROUTES } from "../../../constants/Routes";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
@@ -30,7 +33,6 @@ const HostProposalTable = () => {
       setLoading(true);
       try {
         const response = await getData("/proposal");
-        console.log("API RESPONSE ===>", response);
         setGetProposalData(response);
       } catch (error) {
         console.error("Error fetching proposals:", error);
@@ -41,13 +43,6 @@ const HostProposalTable = () => {
 
     fetchProposals();
   }, []);
-
-  // If API returns { data: [...] }
-  // const proposalsArray = Array.isArray(getProposalData)
-  //   ? getProposalData
-  //   : Array.isArray(getProposalData?.data)
-  //   ? getProposalData.data
-  //   : [];
 
   const formattedData = getProposalData?.records?.map((doc) => ({
     id: doc?.id,
@@ -61,9 +56,7 @@ const HostProposalTable = () => {
     date: doc?.date_received || "N/A",
     original: doc,
   }));
-  console.log(getProposalData, "formattedData");
 
-  // Filtered data based on status
   const filteredData =
     filterStatus === "all"
       ? formattedData
@@ -185,8 +178,6 @@ const HostProposalTable = () => {
     return <ActionMenu actions={actions} />;
   };
 
-  if (loading) return <p>Loading proposals...</p>;
-
   return tablePages ? (
     tablePages
   ) : (
@@ -240,6 +231,7 @@ const HostProposalTable = () => {
           actions={rowActions}
           search={search}
           rowsPerPage={1}
+          loading={loading}
         />
       </div>
     </div>

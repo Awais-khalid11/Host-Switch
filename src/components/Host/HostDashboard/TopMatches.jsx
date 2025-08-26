@@ -9,25 +9,6 @@ import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
 import SkeletonCard from "../../Skeleton/SkeletonCard";
 
-const fallbackData = [
-  {
-    image: LuxePNG,
-    globalImg: AvatorSVG,
-    name: "LuxeBnB Mgmt",
-    points: "4.8 (125 reviews)",
-    desc: "Your property stays well-maintained, profitable, and in trusted hands — from tenant screening to maintenance and reporting.",
-    location: "4517 Washington Ave. Manchester,",
-  },
-  {
-    image: ManImgPNG,
-    globalImg: StaySVG,
-    name: "StayWell Homes",
-    points: "4.8 (125 reviews)",
-    desc: "Your property stays well-maintained, profitable, and in trusted hands — from tenant screening to maintenance and reporting.",
-    location: "4517 Washington Ave. Manchester,",
-  },
-];
-
 const TopMatches = ({ matchClass, setRenderPage }) => {
   const [showModal, setShowModal] = useState(false);
   const [matches, setMatches] = useState([]);
@@ -71,7 +52,7 @@ const TopMatches = ({ matchClass, setRenderPage }) => {
       </div>
 
       {loading ? (
-        <SkeletonCard count={3} />
+        <SkeletonCard variant="" count={3} />
       ) : matches.length > 0 ? (
         <Match
           matchdata={matches}
