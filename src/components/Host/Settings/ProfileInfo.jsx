@@ -127,7 +127,6 @@ const ProfileInfo = () => {
                   e.currentTarget.src = UserPNG;
                 }}
               />
-              {/* Camera Icon Overlay */}
               <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 hover:bg-blue-600 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +164,6 @@ const ProfileInfo = () => {
 
       <div>
         <div className="flex flex-col gap-4">
-          {/* Full Name */}
           <InputField
             label="Full Name"
             id="name"
@@ -177,9 +175,9 @@ const ProfileInfo = () => {
             placeholder="Sara Ava"
           />
 
-          {/* DOB + Gender */}
-          <div className="flex flex-col sm:flex-row gap-3 w-full ">
-            <div className="flex-1 ">
+          <div className="flex flex-col sm:flex-row gap-3 w-full">
+            {/* Date of Birth */}
+            <div className="w-full sm:flex-1">
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Date of Birth
               </label>
@@ -190,15 +188,17 @@ const ProfileInfo = () => {
                 }
                 dateFormat="yyyy-MM-dd"
                 placeholderText="Select Date of Birth"
-                className="border rounded-md px-3 py-2.5 text-sm w-full" // <-- changed
+                className="border rounded-md px-3 py-2.5 text-sm w-full" // 🔹 ensure full width
                 maxDate={new Date()}
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
                 isClearable
+                wrapperClassName="w-full" // 🔹 force wrapper to also expand
               />
             </div>
 
+            {/* Gender */}
             <div className="w-full sm:flex-1">
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Gender
@@ -208,7 +208,7 @@ const ProfileInfo = () => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="border rounded-md px-3 py-2.5 w-full bg-white text-sm appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="border rounded-md px-3 py-2.5 w-full bg-white text-sm appearance-none  transition-colors"
                 >
                   <option value="">Select Gender</option>
                   <option value="M">Male</option>
@@ -234,7 +234,6 @@ const ProfileInfo = () => {
           </div>
         </div>
 
-        {/* Update Button */}
         <div className="flex justify-end mt-6">
           <Button
             onClick={handleSubmit}
