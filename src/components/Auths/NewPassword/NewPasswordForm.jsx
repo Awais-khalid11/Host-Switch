@@ -50,6 +50,8 @@ const NewPasswordForm = () => {
       });
 
       if (response?.success) {
+        localStorage.removeItem("userID");
+        localStorage.removeItem("token");
         setShowModal(true);
       } else {
         toast.error(
@@ -68,7 +70,6 @@ const NewPasswordForm = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
       <Controller
@@ -133,25 +134,27 @@ const NewPasswordForm = () => {
       </div>
 
       {showModal && (
-        <Modal
-          modalTitle="Password has been updated"
-          modalText="Please press sign in to continue"
-          modalImg={Thumbsup}
-          onClose={() => {
-            setShowModal(false);
-            navigate(ROUTES.LOGIN);
-          }}
-          width="384px"
-          height="238px"
-          useBgImage={true}
-          showModalIcon={true}
-          showTitle={true}
-          showText={true}
-          updateClass="px-5 pt-15"
-          ModalbgClass={PasswordmodalPNG}
-        >
-          <PasswordModal />
-        </Modal>
+        <>
+          <Modal
+            modalTitle="Password has been updated"
+            modalText="Please press sign in to continue"
+            modalImg={Thumbsup}
+            onClose={() => {
+              setShowModal(false);
+              navigate(ROUTES.LOGIN);
+            }}
+            width="384px"
+            height="238px"
+            useBgImage={true}
+            showModalIcon={true}
+            showTitle={true}
+            showText={true}
+            updateClass="px-5 pt-15"
+            ModalbgClass={PasswordmodalPNG}
+          >
+            <PasswordModal />
+          </Modal>
+        </>
       )}
     </form>
   );
