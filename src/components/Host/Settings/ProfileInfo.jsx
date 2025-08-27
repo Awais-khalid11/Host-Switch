@@ -18,6 +18,7 @@ const ProfileInfo = () => {
     imageUrl: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const { user, setUser } = useRoleStore();
 
   useEffect(() => {
@@ -33,13 +34,12 @@ const ProfileInfo = () => {
 
         setFormData({
           name: userData.name || "",
-          dob: userData.dob ? new Date(userData.dob) : null,
+          dob: userData.birth_date ? new Date(userData.birth_date) : null,
           gender: userData.gender || "",
           imageUrl: userData.image || UserPNG,
         });
       } catch (error) {
         console.error("Failed to fetch user data:", error);
-        toast.error("Failed to load user data");
       } finally {
         setIsLoading(false);
       }
@@ -62,6 +62,7 @@ const ProfileInfo = () => {
   };
 
   const handleSubmit = async () => {
+    setUpdateLoading(true);
     try {
       if (!user?.id) {
         toast.error("User ID not found!");
@@ -71,7 +72,7 @@ const ProfileInfo = () => {
       const formDataObj = new FormData();
       formDataObj.append("name", formData.name);
       formDataObj.append(
-        "dob",
+        "birth_date",
         formData.dob ? formData.dob.toISOString().split("T")[0] : ""
       );
       formDataObj.append("gender", formData.gender);
@@ -93,13 +94,8 @@ const ProfileInfo = () => {
       }));
     } catch (error) {
       console.error("Update failed:", error);
-      if (error.response?.data?.errors) {
-        error.response.data.errors.forEach((err) => {
-          toast.error(err.message);
-        });
-      } else {
-        toast.error("Failed to update profile!");
-      }
+    } finally {
+      setUpdateLoading(false);
     }
   };
 
@@ -108,13 +104,12 @@ const ProfileInfo = () => {
       <SkeletonCard variant="card" count={1} hasImage hasButtons rows={2} />
     );
   }
-
+  console.log(updateLoading);
   return (
     <div className="bg-white border border-[#E9EAEB] rounded-[12px] py-4 px-5">
       <div className="mb-3">
         <h4 className="text-lg font-bold mb-4 text-[#414651]">Profile Info</h4>
 
-        {/* Profile Image */}
         <div className="flex items-center gap-3 mb-3">
           <div className="relative">
             <label htmlFor="image-upload" className="cursor-pointer">
@@ -178,7 +173,6 @@ const ProfileInfo = () => {
           />
 
           <div className="flex flex-col sm:flex-row gap-3 w-full">
-            {/* Date of Birth */}
             <div className="w-full sm:flex-1">
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Date of Birth
@@ -190,17 +184,14 @@ const ProfileInfo = () => {
                 }
                 dateFormat="yyyy-MM-dd"
                 placeholderText="Select Date of Birth"
-                className="border rounded-md px-3 py-2.5 text-sm w-full" // 🔹 ensure full width
+                className="border rounded-md border-gray-300 px-3 py-2.5 text-sm w-full"
                 maxDate={new Date()}
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
-                isClearable
-                wrapperClassName="w-full" // 🔹 force wrapper to also expand
+                wrapperClassName="w-full"
               />
             </div>
-
-            {/* Gender */}
             <div className="w-full sm:flex-1">
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Gender
@@ -210,7 +201,7 @@ const ProfileInfo = () => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="border rounded-md px-3 py-2.5 w-full bg-white text-sm appearance-none  transition-colors"
+                  className="border rounded-md border-gray-300 px-3 py-2.5 w-full bg-white text-sm appearance-none  transition-colors"
                 >
                   <option value="">Select Gender</option>
                   <option value="M">Male</option>
@@ -241,9 +232,10 @@ const ProfileInfo = () => {
             onClick={handleSubmit}
             variant="defaultBtn"
             className="bg-[#4D72FF] text-white font-medium h-[46px] md:w-[160px] w-full hover:bg-[#3A5BD9] transition-colors text-sm rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={isLoading}
+            disabled={updateLoading}
+            loading={updateLoading}
           >
-            {isLoading ? "Updating..." : "Update Profile"}
+            Update Profile
           </Button>
         </div>
       </div>

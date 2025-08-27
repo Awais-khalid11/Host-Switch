@@ -12,7 +12,6 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, property }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useRoleStore();
-  console.log("user in dashboard header", user);
   const role =
     user?.role_id === 1 ? "Admin" : user?.role_id === 2 ? "Host" : "PM";
 

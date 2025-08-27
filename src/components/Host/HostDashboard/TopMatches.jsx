@@ -20,8 +20,8 @@ const TopMatches = ({ matchClass, setRenderPage }) => {
         setLoading(true);
         const data = await getData("/matche?status=suggested&limit=3");
 
-        if (Array.isArray(data) && data.length > 0) {
-          setMatches(data);
+        if (data?.payload?.records?.length > 0) {
+          setMatches(data?.payload?.records);
         } else {
           setMatches([]);
         }

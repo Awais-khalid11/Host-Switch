@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import Button from "../Button/Button";
 import TextArea from "../TextArea/TextArea";
+import { putData } from "../../api/apiClient";
 
 const optionsList = [
-  "Property type doesn’t fit our portfolio",
-  "Location is outside our service area",
-  "Property condition is below our standards",
-  "Owner’s expectations are unrealistic",
-  "Other (text area for custom reason)",
+  "Services offered did not match my needs",
+  "PM had poor communication or responsiveness",
+  "I didn't like their proposal or presentation",
+  "I don't feel they are a good fit for my property",
+  "Other",
 ];
 
-const HostDeclineModal = ({ setClose }) => {
+const HostDeclineModal = ({ onClose, id }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [otherReason, setOtherReason] = useState("");
-
+  const [updateStatus, setUpdateStatus] = useState(false);
   const toggleOption = (option) => {
     setSelectedOptions((prev) =>
       prev.includes(option)
@@ -22,18 +23,26 @@ const HostDeclineModal = ({ setClose }) => {
     );
   };
 
-  const handleSubmit = () => {
-    const feedback = {
-      reasons: selectedOptions,
-      otherText: selectedOptions.includes(optionsList[4]) ? otherReason : "",
-    };
-    console.log("Submitted Feedback:", feedback);
-    setClose();
-  };
+  async function handleSubmit() {
+    setUpdateStatus(true);
+    try {
+      const payload = {
+        status: "declined",
+        reason_message: otherReason,
+        reasons: selectedOptions,
+      };
+
+      await putData(`/matche/${id}`, payload);
+      onClose();
+    } catch (error) {
+      console.error("API Error:", error);
+    } finally {
+      setUpdateStatus(false);
+    }
+  }
 
   return (
     <div className="w-full text-black p-2.5 h-[230px] overflow-auto">
-      {/* Dropdown label simulation */}
       <div className="text-sm font-medium mb-2 text-[#252525b3] rounded-[8px] px-2 py-2 bg-white">
         What was your main reasons for declining?
       </div>
@@ -53,20 +62,22 @@ const HostDeclineModal = ({ setClose }) => {
       </div>
 
       <TextArea
-          type="text"
-          placeholder={"Enter message..."}
-          label={"Any Other reason for decline ?"}
-          rows={2}
-          labelClass="text-white"
-          placeClass="!text-[#25252580] bg-white"
-        />
+        type="text"
+        placeholder={"Enter message..."}
+        label={"Any Other reason for decline ?"}
+        rows={2}
+        labelClass="text-white"
+        placeClass="!text-[#25252580] bg-white"
+        value={otherReason}
+        onChange={(e) => setOtherReason(e.target.value)}
+      />
 
-      {/* Submit Button */}
       <div className="flex justify-end">
         <Button
           variant="whitebtn"
           className="px-6 py-4 text-black !w-[200px] h-[45px]"
           onClick={handleSubmit}
+          loading={updateStatus}
         >
           Submit Feedback
         </Button>

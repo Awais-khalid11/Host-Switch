@@ -17,8 +17,9 @@ import {
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import HostProposalView from "./HostProposalView/HostProposalView";
-import { getData } from "../../../api/apiClient";
+import { getData, postData, putData } from "../../../api/apiClient";
 import { ROUTES } from "../../../constants/Routes";
+import { formatDate } from "../../../utils";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
@@ -27,33 +28,48 @@ const HostProposalTable = () => {
   const [tablePages, setTablePages] = useState();
   const [getProposalData, setGetProposalData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState(false);
+
+  const fetchProposals = async () => {
+    setLoading(true);
+    try {
+      const response = await getData("/proposal");
+      setGetProposalData(response);
+    } catch (error) {
+      console.error("Error fetching proposals:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function updateProposal(id, status) {
+    setUpdateStatus(true);
+    try {
+      const payload = { status };
+      const response = await putData(`/proposal/${id}`, payload);
+      console.log("API Success:", response);
+      fetchProposals();
+    } catch (error) {
+      console.error("API Error:", error);
+    } finally {
+      setUpdateStatus(false);
+    }
+  }
 
   useEffect(() => {
-    const fetchProposals = async () => {
-      setLoading(true);
-      try {
-        const response = await getData("/proposal");
-        setGetProposalData(response);
-      } catch (error) {
-        console.error("Error fetching proposals:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProposals();
   }, []);
 
-  const formattedData = getProposalData?.records?.map((doc) => ({
+  const formattedData = getProposalData?.payload?.records?.map((doc) => ({
     id: doc?.id,
-    property: doc?.user_id || "N/A",
-    first_name: doc?.property_id || "N/A",
+    property: doc?.property?.address || "N/A",
+    first_name: doc?.property?.current_pm_company_name || "N/A",
     reviews: doc?.property_owner_id || "N/A",
     UserImg: doc?.limit || UserPNG,
     status: doc?.status || "N/A",
-    fee: doc?.page || "N/A",
-    revenue: doc?.asc || "N/A",
-    date: doc?.date_received || "N/A",
+    fee: doc?.onboarding_fee || "N/A",
+    revenue: doc?.revenue_expectation || "N/A",
+    date: formatDate(doc?.created_at) || "N/A",
     original: doc,
   }));
 
@@ -89,7 +105,7 @@ const HostProposalTable = () => {
                 {first_name}
               </span>
               <span className="text-xs text-gray-500 leading-tight">
-                {reviews}
+                4.8 (125 reviews)
               </span>
             </div>
           </div>
@@ -138,16 +154,15 @@ const HostProposalTable = () => {
         {
           label: "Accept",
           icon: <img src={ProfiletickSVG} alt="accept" className="w-4 h-4" />,
-          onClick: () =>
-            setTablePages(<HostProposalView setClose={setTablePages} />),
+          onClick: () => updateProposal(rowData.id, "accepted"),
         },
         {
           label: "Decline",
           icon: <img src={ProfildeleteSVG} alt="decline" className="w-4 h-4" />,
-          onClick: () => console.log("Decline", rowData),
+          onClick: () => updateProposal(rowData.id, "declined"),
         }
       );
-    } else if (rowData.status === "Accepted") {
+    } else if (rowData.status === "accepted") {
       actions.push(
         {
           label: "View",
@@ -160,7 +175,7 @@ const HostProposalTable = () => {
           onClick: () => navigate(ROUTES.PAY),
         }
       );
-    } else if (rowData.status === "Declined") {
+    } else if (rowData.status === "declined") {
       actions.push(
         {
           label: "View",
@@ -170,7 +185,7 @@ const HostProposalTable = () => {
         {
           label: "Reconsider",
           icon: <img src={ConsiderSVG} alt="reconsider" className="w-4 h-4" />,
-          onClick: () => console.log("Reconsider", rowData),
+          onClick: () => updateProposal(rowData.id, "accepted"),
         }
       );
     }

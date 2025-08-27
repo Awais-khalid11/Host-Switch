@@ -12,9 +12,9 @@ const Media = () => {
       </div>
       <div>
         <div className="flex gap-x-3 flex-wrap">
-          <FileUpload label="Logo Upload"/>
-          <FileUpload label="Office Photos"/>
-          <FileUpload label="Introduction Video"/>
+          <FileUpload label="Logo Upload" />
+          <FileUpload label="Office Photos" />
+          <FileUpload label="Introduction Video" />
         </div>
         <div className="flex justify-end">
           <Button
