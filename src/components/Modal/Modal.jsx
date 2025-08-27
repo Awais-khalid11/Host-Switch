@@ -45,8 +45,6 @@ const Modal = ({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [onClose]);
 
-  if (!isDesktop) return null;
-
   return (
     <div
       className="fixed inset-0 z-50 px-2.5 flex justify-center items-center"

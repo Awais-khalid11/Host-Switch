@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import Button from "../Button/Button";
-import { FilterSVG, TwoSVG } from "../../Constants/Icons";
+import { FilterSVG, TwoSVG } from "../../constants/Icons";
 import NotificationLists from "./NotificationLists";
 
 const BelliconNotification = ({
   tabs = ["Unread", "All"],
   notificationData,
-   filterOptions = [],
+  filterOptions = [],
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
