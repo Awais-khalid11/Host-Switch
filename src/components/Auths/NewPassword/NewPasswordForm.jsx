@@ -50,8 +50,6 @@ const NewPasswordForm = () => {
       });
 
       if (response?.success) {
-        localStorage.removeItem("userID");
-        localStorage.removeItem("token");
         setShowModal(true);
       } else {
         toast.error(

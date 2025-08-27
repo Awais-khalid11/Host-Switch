@@ -1,27 +1,97 @@
+import { useState, useEffect } from "react";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
+import { putData, getData, postData } from "../../../api/apiClient";
+import { toast } from "react-toastify";
+import useRoleStore from "../../../store/useRoleIdStore";
 
 const Notification = () => {
+  const { user } = useRoleStore();
+  const [prefs, setPrefs] = useState({});
+
+  useEffect(() => {
+    const fetchPrefs = async () => {
+      try {
+        if (!user?.id) return;
+        const res = await getData(`/userMeta?userId=${user.id}`);
+        console.log(res);
+        if (res?.payload?.records) {
+          const prefsObj = res.payload.records.reduce((acc, item) => {
+            acc[item.key] = item.value === "true";
+            return acc;
+          }, {});
+          setPrefs(prefsObj);
+        }
+      } catch (err) {
+        console.error("Fetch prefs failed:", err);
+      }
+    };
+    fetchPrefs();
+  }, [user?.id]);
+
+  const handleToggle = async (key) => {
+    if (!user?.id) {
+      toast.error("User not found");
+      return;
+    }
+
+    const newValue = !prefs[key];
+    const updatedPrefs = { ...prefs, [key]: newValue };
+
+    setPrefs(updatedPrefs);
+
+    const payloadArray = Object.entries(updatedPrefs).map(([k, v]) => ({
+      key: k,
+      value: v ? "true" : "false",
+    }));
+
+    try {
+      await postData(`/userMeta`, payloadArray);
+
+      toast.success(`${key} set to ${newValue ? "true" : "false"}`);
+    } catch (err) {
+      console.error("Update failed:", err);
+      toast.error("Failed to update preference");
+
+      setPrefs(prefs);
+    }
+  };
+
+  console.log(prefs, "ss");
   return (
     <div className="border border-[#2F354233] rounded-[12px] p-5 mb-5">
       <h5 className="text-[18px] font-bold mb-8">Notification Preferences</h5>
+
       <div className="flex md:flex-nowrap flex-wrap gap-2.5">
         <div className="flex items-center justify-between text-sm md:w-1/2 w-full bg-[#F9F9F9] rounded-lg p-4 mb-4">
           <p>System Alerts</p>
-          <SwitchBtn />
+          <SwitchBtn
+            checked={prefs.system_alerts}
+            onChange={() => handleToggle("system_alerts")}
+          />
         </div>
         <div className="flex items-center justify-between text-sm md:w-1/2 w-full bg-[#F9F9F9] rounded-lg p-4 mb-4">
           <p>Annual Check-In Reminder</p>
-          <SwitchBtn />
+          <SwitchBtn
+            checked={prefs.annual_check_in_reminder}
+            onChange={() => handleToggle("annual_check_in_reminder")}
+          />
         </div>
       </div>
+
       <div className="flex md:flex-nowrap flex-wrap gap-2.5">
         <div className="flex items-center justify-between text-sm md:w-1/2 w-full bg-[#F9F9F9] rounded-lg p-4 mb-4">
           <p>Inactivity Trigger Reminder</p>
-          <SwitchBtn />
+          <SwitchBtn
+            checked={prefs.inactivity_trigger_reminder}
+            onChange={() => handleToggle("inactivity_trigger_reminder")}
+          />
         </div>
         <div className="flex items-center justify-between text-sm md:w-1/2 w-full bg-[#F9F9F9] rounded-lg p-4 mb-4">
           <p>Login Notification</p>
-          <SwitchBtn />
+          <SwitchBtn
+            checked={prefs.login_notification}
+            onChange={() => handleToggle("login_notification")}
+          />
         </div>
       </div>
     </div>
