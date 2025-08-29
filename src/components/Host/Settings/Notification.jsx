@@ -56,7 +56,6 @@ const Notification = () => {
     }
   };
 
-  console.log(prefs, "ss");
   return (
     <div className="border border-[#2F354233] rounded-[12px] p-5 mb-5">
       <h5 className="text-[18px] font-bold mb-8">Notification Preferences</h5>

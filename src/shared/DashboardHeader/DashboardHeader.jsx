@@ -12,6 +12,7 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, property }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useRoleStore();
+  console.log(user, "ss");
   const role =
     user?.role_id === 1 ? "Admin" : user?.role_id === 2 ? "Host" : "PM";
 
@@ -83,9 +84,11 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, property }) => {
                 <div className="hidden md:block pl-2.5">
                   <div className="flex items-center gap-2.5">
                     <img
-                      src={`${import.meta.env.VITE_IMG_URL}${
-                        user?.image || UserPNG
-                      }`}
+                      src={
+                        user?.image
+                          ? `${import.meta.env.VITE_IMG_URL}${user.image}`
+                          : UserPNG
+                      }
                       alt="userImg"
                       className="rounded-full w-10 h-10 cursor-pointer"
                       onClick={HandleUserClick}

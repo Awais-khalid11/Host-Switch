@@ -5,7 +5,8 @@ import PropertySubmission from "./PropertySubmission";
 import HostSubmission from "./HostSubmission";
 
 const MySubmissions = () => {
-  const [isEditing, setIsEditing] = useState(false); 
+  const [isEditing, setIsEditing] = useState(false);
+  console.log(isEditing);
 
   return isEditing ? (
     <HostSubmission setClose={() => setIsEditing(false)} />

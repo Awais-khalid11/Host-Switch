@@ -10,11 +10,9 @@ const BelliconNotification = ({
   filterOptions = [],
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  console.log(notificationData, "ss");
   return (
     <>
       <div className="flex items-center justify-between mt-2.5 mb-5">
-        {/* Tabs */}
         <div className="flex items-center md:gap-5 gap-3">
           {tabs.map((tab, index) => (
             <div
@@ -32,9 +30,9 @@ const BelliconNotification = ({
                 }`}
               >
                 {tab}
-                {tab === "Unread" && activeTab === "Unread" && (
+                {/* {tab === "Unread" && activeTab === "Unread" && (
                   <img src={TwoSVG} alt="unread-icon" className="w-4 h-4" />
-                )}
+                )} */}
               </h2>
             </div>
           ))}

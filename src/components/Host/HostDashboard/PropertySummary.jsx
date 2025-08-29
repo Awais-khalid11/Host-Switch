@@ -35,18 +35,17 @@ const PropertySummary = () => {
 
     getAllProperties();
   }, []);
-  console.log(property);
   return (
     <div className="border border-[#2525251A] p-5 rounded-[20px] ">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl font-bold text-[#181D27]">Property Summary</h2>
-        <Button
+        {/* <Button
           variant="borderbtn"
           className="border-[#555555] text-[#555555] max-w-[180px]"
           prefixImg={EditSVG}
         >
           Edit Property Info
-        </Button>
+        </Button> */}
       </div>
       {loading ? (
         <Skeleton variant="card" count={2} />
