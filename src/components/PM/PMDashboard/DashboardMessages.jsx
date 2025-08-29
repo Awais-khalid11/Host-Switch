@@ -12,7 +12,7 @@ const DashboardMessages = () => {
     const fetchRecentConversations = async () => {
       try {
         setLoading(true);
-        const data = await getData("/host/dashboard/summary");
+        const data = await getData("auth/property-manager/dashboard/summary");
 
         if (data?.payload?.recentConversations?.records) {
           setMessages(data.payload.recentConversations.records);
@@ -31,7 +31,7 @@ const DashboardMessages = () => {
   }, []);
 
   return (
-    <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px]">
+    <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px] overflow-y-auto">
       <div className="flex justify-between items-center lg:mb-6 mb-2">
         <h3 className="text-xl font-semibold text-[#181818]">
           Recent Messages
@@ -42,22 +42,39 @@ const DashboardMessages = () => {
       {loading ? (
         <p className="text-gray-500">Loading...</p>
       ) : messages.length > 0 ? (
-        messages.map((item, index) => (
-          <div
-            key={item.id || index}
-            className="flex items-center gap-4 last-of-type:mb-0 mb-5"
-          >
-            <img src={UserPNG} alt="" className="h-10 w-10 rounded-full" />
-            <div>
-              <h4 className="text-[14px] font-normal text-[#181818]">
-                <i>{item.name}</i>
-              </h4>
-              <h5 className="text-[12px] font-normal text-[#7F7F7F]">
-                {item.type} • {new Date(item.created_at).toLocaleDateString()}
-              </h5>
+        messages.map((conv, index) => {
+          // ✅ get last message
+          const lastMsg =
+            conv.messages && conv.messages.length > 0
+              ? conv.messages[conv.messages.length - 1]
+              : null;
+
+          // ✅ pick participant image (not null, else fallback)
+          const participantImg = conv.participants?.[0]?.user?.image
+            ? `/uploads/${conv.participants[0].user.image}`
+            : UserPNG;
+
+          return (
+            <div
+              key={conv.id || index}
+              className="flex items-center gap-4 last-of-type:mb-0 mb-5"
+            >
+              <img
+                src={participantImg}
+                alt={conv.name}
+                className="h-10 w-10 rounded-full object-cover"
+              />
+              <div>
+                <h4 className="text-[14px] font-medium text-[#181818]">
+                  {conv.name}
+                </h4>
+                <h5 className="text-[12px] text-[#7F7F7F] truncate max-w-[200px]">
+                  {lastMsg ? lastMsg.content : "No messages yet"}
+                </h5>
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       ) : (
         <NoDataFound
           message="No Messages"

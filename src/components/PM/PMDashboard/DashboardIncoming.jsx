@@ -1,31 +1,51 @@
-import React from 'react';
-import IncomingCards from '../../IncomingCards/IncomingCards';
-import { UserPNG } from '../../../constants/Imgs';
-import { DotsSVG } from '../../../constants/Icons';
-
-const IncomeCards = [
-  {
-    img: UserPNG,
-    title: "Sam Smith",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Cameron Williamson",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Robert Fox",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-];
+// DashboardIncoming.jsx
+import React, { useEffect, useState } from "react";
+import IncomingCards from "../../IncomingCards/IncomingCards";
+import { getData } from "../../../api/apiClient";
+import Skeleton from "../../Skeleton/SkeletonCard";
+import NoDataFound from "../../NoDataFound";
 
 const DashboardIncoming = ({ setCardDetail }) => {
-  return <IncomingCards incomingData={IncomeCards} setCardDetail={setCardDetail} />;
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        setLoading(true);
+        const res = await getData("/leads/incoming?limit=3");
+
+        if (res?.payload?.records) {
+          setLeads(res.payload.records);
+        } else {
+          setLeads([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch incoming leads:", err);
+        setLeads([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
+  return (
+    <div>
+      {loading ? (
+        <Skeleton variant="card" count={3} />
+      ) : leads.length > 0 ? (
+        <IncomingCards incomingData={leads} setCardDetail={setCardDetail} />
+      ) : (
+        <NoDataFound
+          message="No Leads"
+          subMessage="You don't have any incoming leads yet."
+          className="my-6"
+        />
+      )}
+    </div>
+  );
 };
 
 export default DashboardIncoming;
