@@ -12,7 +12,6 @@ const NotificationLists = ({ activeTab, notifications }) => {
             : group.items,
       }))
       .filter((group) => group.items.length > 0) || [];
-
   return (
     <div className="w-full mx-auto space-y-6">
       {filteredNotifications.map((group, i) => (
@@ -35,9 +34,11 @@ const NotificationLists = ({ activeTab, notifications }) => {
                   </div>
                   <div>
                     <p className="font-semibold text-[#181D27] text-base">
-                      {item.title}
+                      {item.title.subject}
                     </p>
-                    <p className="text-[#181D27] text-sm">{item.description}</p>
+                    <p className="text-[#181D27] text-sm">
+                      {item.title.message}
+                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col-reverse items-end gap-1">

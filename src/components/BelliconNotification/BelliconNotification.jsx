@@ -10,7 +10,7 @@ const BelliconNotification = ({
   filterOptions = [],
 }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
-
+  console.log(notificationData, "ss");
   return (
     <>
       <div className="flex items-center justify-between mt-2.5 mb-5">
