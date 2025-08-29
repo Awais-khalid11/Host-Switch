@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import LoginForm from "./LoginForm";
 import { LogoSVG } from "../../../constants/Icons";
 import { LoginPNG } from "../../../constants/Imgs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 
 const Login = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="flex md:flex-row flex-col items-center bg-white justify-center md:p-5 md:!pr-10 gap-[30px] p-2.5">
       <div className="md:w-1/2 hidden md:block w-full">

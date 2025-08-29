@@ -3,16 +3,22 @@ import { TableiconSVG } from "../../../constants/Icons";
 import { UserPNG } from "../../../constants/Imgs";
 import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
+import Skeleton from "../../Skeleton/SkeletonCard";
+import useRoleStore from "../../../store/useRoleIdStore";
 
 const DashboardMessages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { user } = useRoleStore();
   useEffect(() => {
     const fetchRecentConversations = async () => {
+      const msgUrl =
+        user?.role_id === 2
+          ? "host/dashboard/summary"
+          : "auth/property-manager/dashboard/summary";
       try {
         setLoading(true);
-        const data = await getData("auth/property-manager/dashboard/summary");
+        const data = await getData(msgUrl);
 
         if (data?.payload?.recentConversations?.records) {
           setMessages(data.payload.recentConversations.records);
@@ -40,18 +46,16 @@ const DashboardMessages = () => {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <Skeleton variant="card" />
       ) : messages.length > 0 ? (
         messages.map((conv, index) => {
-          // ✅ get last message
           const lastMsg =
             conv.messages && conv.messages.length > 0
               ? conv.messages[conv.messages.length - 1]
               : null;
 
-          // ✅ pick participant image (not null, else fallback)
           const participantImg = conv.participants?.[0]?.user?.image
-            ? `/uploads/${conv.participants[0].user.image}`
+            ? `/${conv.participants[0].user.image}`
             : UserPNG;
 
           return (
@@ -60,7 +64,7 @@ const DashboardMessages = () => {
               className="flex items-center gap-4 last-of-type:mb-0 mb-5"
             >
               <img
-                src={participantImg}
+                src={`${import.meta.env.VITE_IMG_URL}${participantImg}`}
                 alt={conv.name}
                 className="h-10 w-10 rounded-full object-cover"
               />

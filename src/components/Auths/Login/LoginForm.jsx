@@ -19,7 +19,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ now also destructure setUserId from the store
   const { setRoleId, setUser } = useRoleStore();
 
   const {
@@ -51,10 +50,8 @@ const LoginForm = () => {
         localStorage.setItem("token", token);
         toast.success("Login successful!");
 
-        // ✅ Save both values in Zustand
         setRoleId(userRoleId);
         setUser(user);
-        // Redirect based on role
         const redirectRoute =
           userRoleId === 3
             ? ROUTES.DASHBOARD
