@@ -3,7 +3,12 @@ import DashboardIncoming from "./DashboardIncoming";
 import TrustedContactsTable from "./TrustedContactsTable";
 import DashboardMessages from "./DashboardMessages";
 import DashboardCards from "../../DashboardCards/DashboardCards";
-import { AcceptSVG, PendingSVG, SentSVG } from "../../../constants/Icons";
+import {
+  AcceptSVG,
+  LeadsSVG,
+  PendingSVG,
+  SentSVG,
+} from "../../../constants/Icons";
 import Views from "../../Views/Views";
 import SendProposal from "../../SendProposal/SendProposal";
 import { getData } from "../../../api/apiClient";
@@ -23,6 +28,7 @@ const PMDashboard = () => {
 
         if (data?.payload) {
           setStats({
+            newLeads: data.payload.leads ?? 0,
             sentProposals: data.payload.sentProposals ?? 0,
             acceptedProposals: data.payload.acceptedProposals ?? 0,
             pendingProposals: data.payload.pendingProposals ?? 0,
@@ -47,6 +53,7 @@ const PMDashboard = () => {
 
   const cardsInfo = stats
     ? [
+        { img: LeadsSVG, text: "New Leads", title: stats.newLeads },
         { img: SentSVG, text: "Sent Proposals", title: stats.sentProposals },
         {
           img: AcceptSVG,
