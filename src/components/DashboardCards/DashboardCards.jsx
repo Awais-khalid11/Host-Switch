@@ -1,8 +1,8 @@
 import React from "react";
 
-const DashboardCards = ({data}) => {
+const DashboardCards = ({ data }) => {
   return (
-   <div className="flex flex-wrap lg:flex-nowrap justify-between md:gap-5 gap-1 w-full">
+    <div className="flex flex-wrap lg:flex-nowrap justify-between md:gap-5 gap-1 w-full">
       {data.map((item, index) => (
         <div
           key={index}

@@ -1,60 +1,43 @@
-
-import { UserPNG } from "../../../constants/Imgs";
-import {
-  AllSVG,
-  EyeSVG,
-  NewSVG,
-  DotsSVG,
-  FilterSVG,
-} from "../../../constants/Icons";
+import React, { useEffect, useState } from "react";
+import { AllSVG, EyeSVG, NewSVG, FilterSVG } from "../../../constants/Icons";
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import IncomingCards from "../../IncomingCards/IncomingCards";
+import { getData } from "../../../api/apiClient"; // ✅ import API helper
+import NoDataFound from "../../NoDataFound";
+import Skeleton from "../../Skeleton/SkeletonCard";
 
-const IncomeCards = [
-  {
-    img: UserPNG,
-    title: "Sam Smith",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Cameron Williamson",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Robert Fox",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Robert Fox",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Robert Fox",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-  {
-    img: UserPNG,
-    title: "Robert Fox",
-    text: "Property Owner",
-    dotImg: DotsSVG,
-  },
-];
+const LeadCards = ({ setCardDetail }) => {
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const LeadCards = ({ setCardDetail,  }) => {
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        setLoading(true);
+        const res = await getData("/leads/incoming");
+
+        if (res?.payload?.records) {
+          setLeads(res.payload.records);
+        } else {
+          setLeads([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch incoming leads:", err);
+        setLeads([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between py-5">
         <h2 className="font-bold text-2xl">Incoming Leads</h2>
+
         <FilterDropdown
           button={
             <Button variant="filterbtn" suffixImg={FilterSVG}>
@@ -68,7 +51,18 @@ const LeadCards = ({ setCardDetail,  }) => {
           ]}
         />
       </div>
-      <IncomingCards incomingData={IncomeCards} setCardDetail={setCardDetail}/>
+
+      {loading ? (
+        <Skeleton variant="card" count={4} />
+      ) : leads.length > 0 ? (
+        <IncomingCards incomingData={leads} setCardDetail={setCardDetail} />
+      ) : (
+        <NoDataFound
+          message="No Leads"
+          subMessage="You don't have any incoming leads yet."
+          className="my-6"
+        />
+      )}
     </div>
   );
 };
