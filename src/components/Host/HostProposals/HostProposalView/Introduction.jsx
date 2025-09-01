@@ -36,7 +36,8 @@ const nameData = [
   },
 ];
 
-const Introduction = ({ mainClass, text }) => {
+const Introduction = ({ data }) => {
+  console.warn(data);
   return (
     <div className="shadow-[4px_0px_10px_0px_#0000000F] pl-0 p-5 lg:p-5 rounded-[20px]">
       <div className="flex md:flex-nowrap flex-wrap items-center gap-[30px]">

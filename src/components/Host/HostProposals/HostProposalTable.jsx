@@ -17,14 +17,14 @@ import {
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import HostProposalView from "./HostProposalView/HostProposalView";
-import { getData, postData, putData } from "../../../api/apiClient";
+import { getData, putData } from "../../../api/apiClient";
 import { ROUTES } from "../../../constants/Routes";
 import { formatDate } from "../../../utils";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("");
   const [tablePages, setTablePages] = useState();
   const [getProposalData, setGetProposalData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const HostProposalTable = () => {
   const fetchProposals = async () => {
     setLoading(true);
     try {
-      const response = await getData("/proposal");
+      const response = await getData(`/proposal/?status=${filterStatus}`);
       setGetProposalData(response);
     } catch (error) {
       console.error("Error fetching proposals:", error);
@@ -55,10 +55,9 @@ const HostProposalTable = () => {
       setUpdateStatus(false);
     }
   }
-
   useEffect(() => {
     fetchProposals();
-  }, []);
+  }, [filterStatus]);
 
   const formattedData = getProposalData?.payload?.records?.map((doc) => ({
     id: doc?.id,
@@ -72,11 +71,6 @@ const HostProposalTable = () => {
     date: formatDate(doc?.created_at) || "N/A",
     original: doc,
   }));
-
-  const filteredData =
-    filterStatus === "all"
-      ? formattedData
-      : formattedData?.filter((item) => item.status === filterStatus);
 
   const columns = [
     { header: "Property", accessor: "property", showSort: true },
@@ -119,16 +113,16 @@ const HostProposalTable = () => {
       cell: ({ getValue }) => {
         const status = getValue();
         const statusClass =
-          status === "Accepted"
+          status === "Accepted" || status === "accepted"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
-            : status === "Declined"
+            : status === "Declined" || status === "declined"
             ? "bg-[#CE1B1B1A] border border-[#CE1B1B] text-[#CE1B1B]"
-            : status === "Received"
+            : status === "Received" || status === "received"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
             : "bg-[#FFAF3F1A] border border-[#FFAF3F] text-[#FFAF3F]";
         return (
           <div
-            className={`px-3 py-1 text-xs font-medium rounded-full inline-block ${statusClass}`}
+            className={`px-3 py-1 text-xs font-medium rounded-full inline-block ${statusClass} capitalize`}
           >
             {status}
           </div>
@@ -142,14 +136,14 @@ const HostProposalTable = () => {
 
   const rowActions = (rowData) => {
     const actions = [];
+    const rowId = rowData?.id;
 
     if (rowData.status === "pending") {
       actions.push(
         {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-          onClick: () =>
-            setTablePages(<HostProposalView setClose={setTablePages} />),
+          onClick: () => navigate(`${ROUTES.HOSTPROPOSALVIEW}/${rowId}`),
         },
         {
           label: "Accept",
@@ -162,12 +156,15 @@ const HostProposalTable = () => {
           onClick: () => updateProposal(rowData.id, "declined"),
         }
       );
-    } else if (rowData.status === "accepted") {
+    } else if (
+      rowData.status === "accepted" ||
+      rowData.status === "withdrawn"
+    ) {
       actions.push(
         {
           label: "View",
           icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-          onClick: () => navigate(ROUTES.HOSTPROPOSALVIEW),
+          onClick: () => navigate(`${ROUTES.HOSTPROPOSALVIEW}/${rowId}`),
         },
         {
           label: "Message PM",
@@ -212,7 +209,7 @@ const HostProposalTable = () => {
             options={[
               {
                 label: "All",
-                value: "all",
+                value: "",
                 icon: <img src={AllSVG} alt="All" />,
               },
               {
@@ -239,13 +236,11 @@ const HostProposalTable = () => {
           />
         </div>
         <Table
-          key={filterStatus + search}
           columns={columns}
-          data={filteredData || []}
-          showActions={true}
+          data={formattedData}
+          showActions
           actions={rowActions}
           search={search}
-          rowsPerPage={1}
           loading={loading}
         />
       </div>
