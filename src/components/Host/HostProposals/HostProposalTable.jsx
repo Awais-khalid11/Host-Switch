@@ -62,7 +62,7 @@ const HostProposalTable = () => {
   const formattedData = getProposalData?.payload?.records?.map((doc) => ({
     id: doc?.id,
     property: doc?.property?.address || "N/A",
-    first_name: doc?.property?.current_pm_company_name || "N/A",
+    first_name: doc?.user?.company_profile?.business_name || "N/A",
     reviews: doc?.property_owner_id || "N/A",
     UserImg: doc?.limit || UserPNG,
     status: doc?.status || "N/A",

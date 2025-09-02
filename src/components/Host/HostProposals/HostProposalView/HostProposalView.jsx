@@ -20,7 +20,7 @@ import HostDeclineModal from "../../../Modal/HostDeclineModal";
 import SendMessageModal from "../../../Modal/SendMessageModal";
 import { HostdeclinePNG, RequestPNG } from "../../../../constants/Imgs";
 import HostFeedback from "../HostFeedback/HostFeedback";
-import { getData } from "../../../../api/apiClient";
+import { getData, putData } from "../../../../api/apiClient";
 import Skeleton from "../../../Skeleton/SkeletonCard";
 
 const HostProposalView = ({ setClose = null }) => {
@@ -30,6 +30,8 @@ const HostProposalView = ({ setClose = null }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const { status } = data;
+  const [updateStatus, setUpdateStatus] = useState(false);
 
   const fetchProposals = async () => {
     setLoading(true);
@@ -42,10 +44,25 @@ const HostProposalView = ({ setClose = null }) => {
       setLoading(false);
     }
   };
+
+  async function updateProposal(status) {
+    setUpdateStatus(true);
+    try {
+      const payload = { status };
+      const response = await putData(`/proposal/${id}`, payload);
+      setFeedback(<HostFeedback setClose={setFeedback} />);
+      console.log("API Success:", response);
+      fetchProposals();
+    } catch (error) {
+      console.error("API Error:", error);
+    } finally {
+      setUpdateStatus(false);
+    }
+  }
+
   useEffect(() => {
     fetchProposals();
   }, []);
-
   return feedback ? (
     feedback
   ) : (
@@ -69,11 +86,10 @@ const HostProposalView = ({ setClose = null }) => {
                 variant="greenbtn"
                 className="w-[157px] px-5"
                 prefixImg={GreentickSVG}
-                onClick={() =>
-                  setFeedback(<HostFeedback setClose={setFeedback} />)
-                }
+                onClick={() => updateProposal("accepted")}
+                loading={updateStatus}
               >
-                Mark As Hired
+                {status === "accepted" ? "Hired" : "Mark As Hired"}
               </Button>
               <Button
                 variant="borderbtn"
