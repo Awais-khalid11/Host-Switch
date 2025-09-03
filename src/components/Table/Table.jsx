@@ -28,7 +28,6 @@ const Table = ({
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
   };
-  console.log(data, "nbh");
   const toggleAllRows = () => {
     if (selectedRows.length === paginatedData.length) {
       setSelectedRows([]);

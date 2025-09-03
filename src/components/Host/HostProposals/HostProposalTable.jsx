@@ -46,8 +46,7 @@ const HostProposalTable = () => {
     setUpdateStatus(true);
     try {
       const payload = { status };
-      const response = await putData(`/proposal/${id}`, payload);
-      console.log("API Success:", response);
+      await putData(`/proposal/${id}`, payload);
       fetchProposals();
     } catch (error) {
       console.error("API Error:", error);

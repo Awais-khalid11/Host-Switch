@@ -3,6 +3,7 @@ import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import Button from "../Button/Button";
 import { FilterSVG, TwoSVG } from "../../constants/Icons";
 import NotificationLists from "./NotificationLists";
+import NoDataFound from "../NoDataFound";
 
 const BelliconNotification = ({
   tabs = ["Unread", "All"],
@@ -48,12 +49,14 @@ const BelliconNotification = ({
           options={filterOptions}
         />
       </div>
-
-      {/* Notification List */}
-      <NotificationLists
-        activeTab={activeTab}
-        notifications={notificationData}
-      />
+      {notificationData.length > 0 ? (
+        <NotificationLists
+          activeTab={activeTab}
+          notifications={notificationData}
+        />
+      ) : (
+        <NoDataFound message="No notifications available " />
+      )}
     </>
   );
 };

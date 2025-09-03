@@ -16,7 +16,7 @@ import { postData } from "../../../api/apiClient"; // Adjust path as needed
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
-  unit_apt: z.string().optional(), // Added missing field
+  unit_apt: z.string().optional(),
   link: z.string().min(1, "Link is required"),
   scope_service: z.array(z.string()).min(1, "Select at least one service"),
   split_percentage: z.string().min(1, "Enter Percentage"),
@@ -36,11 +36,9 @@ const schema = z.object({
     required_error: "Please select an option",
   }),
   seeking_pm_host: z.enum(["Full Service", "Co-Host"], {
-    // Added missing field
     required_error: "Please select an option",
   }),
   accountManager: z.enum(["yes", "no"], {
-    // Added missing field
     required_error: "Please select an option",
   }),
   involvement_level: z.enum(
@@ -171,7 +169,6 @@ const SubmissionForm = () => {
     setIsLoading(true);
 
     try {
-      // Transform data to match API expectations
       const renovations = data.renovations || [];
       const absoluteMustHave = data.absolute_must_have || [];
 
@@ -179,9 +176,9 @@ const SubmissionForm = () => {
         address: data.address,
         unit_apt: data.unit_apt,
         link: data.link,
-        rented_out: data.rented_out?.[0] || "", // Get first item from array
-        type: data.type?.[0] || "", // Get first item from array
-        hostingTypes: data.hostingTypes?.[0] || "", // Get first item from array
+        rented_out: data.rented_out?.[0] || "",
+        type: data.type?.[0] || "",
+        hostingTypes: data.hostingTypes?.[0] || "",
         cleanTypes: data.cleanTypes?.[0] || "",
         ...data.scope_service.reduce((acc, item, index) => {
           acc[`scope_service[${index}]`] = item;
@@ -191,13 +188,11 @@ const SubmissionForm = () => {
         anything_else: data.message,
         split_percentage: 100,
 
-        // Expectation form fields
         current_pm_company_name: data.current_pm_company_name,
         seeking_pm_host: data.seeking_pm_host,
         co_hosting: data.co_hosting,
         involvement_level: data.involvement_level,
 
-        // Condition fields
         "condition[Flooring]": data.condition.Flooring,
         "condition[KitchenAppliances]": data.condition.KitchenAppliances,
         "condition[BathroomFixtures]": data.condition.BathroomFixtures,
@@ -211,13 +206,11 @@ const SubmissionForm = () => {
         open_investing: data.open_investing,
         photography: data.photography,
 
-        // Transform absolute must have array
         ...absoluteMustHave.reduce((acc, item, index) => {
           acc[`absolute_must_have[${index}]`] = item;
           return acc;
         }, {}),
 
-        // Transform renovations array
         ...renovations.reduce((acc, renovation, index) => {
           acc[`renovations[${index}]`] = renovation;
           return acc;
@@ -227,7 +220,6 @@ const SubmissionForm = () => {
         yearly_revenue: data.yearly_revenue,
         desc: data.desc,
 
-        // Additional fields from reason switching
         ...data.reason_switching.reduce((acc, item, index) => {
           acc[`reason_switching[${index}]`] = item;
           return acc;
@@ -236,24 +228,18 @@ const SubmissionForm = () => {
         pm_top_priority: data.pm_top_priority?.[0] || "",
       };
 
-      console.log("Submitting payload:", payload);
-
-      // Create FormData for file upload
       const formData = new FormData();
 
-      // Append all payload fields
       Object.keys(payload).forEach((key) => {
         formData.append(key, payload[key]);
       });
 
-      // Append files
       if (data.files && data.files.length > 0) {
         Array.from(data.files).forEach((file) => {
           formData.append("files", file);
         });
       }
 
-      // Use the same API endpoint as HostExpectationForm
       const response = await postData("/property", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
