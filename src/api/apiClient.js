@@ -32,12 +32,11 @@ export const postData = async (url, data, config = {}) => {
 
 export const putData = async (url, data, config = {}) => {
   try {
-    const headers = data instanceof FormData 
+    const isFormData = data instanceof FormData;
+
+    const headers = isFormData
       ? { ...config.headers } 
-      : { 
-          "Content-Type": "application/json",
-          ...config.headers 
-        };
+      : { "Content-Type": "application/json", ...config.headers };
 
     const response = await api.put(url, data, {
       ...config,

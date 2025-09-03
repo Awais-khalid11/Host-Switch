@@ -14,7 +14,7 @@ const RoleSelection = () => {
   const handleContinue = () => {
     if (selectedRole === "pm") {
       setRoleId(3);
-      navigate(ROUTES.COMPANYINFO);
+      navigate(ROUTES.PMSIGNUP);
     } else if (selectedRole === "host") {
       setRoleId(2);
       navigate(ROUTES.HOSTCOMPANYINFO);

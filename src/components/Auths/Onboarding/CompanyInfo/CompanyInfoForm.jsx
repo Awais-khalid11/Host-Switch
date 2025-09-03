@@ -9,10 +9,11 @@ import RadioField from "../../RadioField/RadioField";
 import CheckBox from "../../../CheckBox/CheckBox";
 import { ROUTES } from "../../../../constants/Routes";
 import { MarkSVG } from "../../../../constants/Icons";
-import useRoleStore from "../../../../store/useRoleIdStore";
+import usePMForm from "../../../../store/usePMForm";
 import Button from "../../../Button/Button";
 
-// Zod schema
+const yesNoToBool = z.enum(["yes", "no"]).transform((val) => val === "yes");
+
 const CompanyInfoSchema = z.object({
   businessName: z.string().min(1, "Business Name is required"),
   operatingName: z.string().min(1, "Operating Name is required"),
@@ -25,22 +26,16 @@ const CompanyInfoSchema = z.object({
   contactEmail: z.string().email("Invalid email"),
   yearFounded: z.string().min(1, "Please select Year Founded"),
   entityType: z.string().min(1, "Please select Entity Type"),
-  isLocal: z.enum(["yes", "no"], { required_error: "Please select an option" }),
-  isFullTime: z.enum(["yes", "no"], {
-    required_error: "Please select an option",
-  }),
+  isLocal: yesNoToBool,
+  isFullTime: yesNoToBool,
   involvement: z.string().min(1, "Please select Owner involvement"),
   markets: z.string().min(1, "Primary Market(s) is required"),
   zones: z.string().min(1, "Zones Served is required"),
   zip: z.string().min(1, "Secondary Market(s) is required"),
   specific: z.string().min(1, "Specific Neighborhoods is required"),
   distance: z.string().min(1, "Please select Distance"),
-  isLicensed: z.enum(["yes", "no"], {
-    required_error: "Please select an option",
-  }),
-  doesPermit: z.enum(["yes", "no"], {
-    required_error: "Please select an option",
-  }),
+  isLicensed: yesNoToBool,
+  doesPermit: yesNoToBool,
   terms: z.boolean().refine((v) => v === true, {
     message: "You must agree to Terms & Conditions",
   }),
@@ -48,7 +43,7 @@ const CompanyInfoSchema = z.object({
 
 const CompanyInfoForm = () => {
   const navigate = useNavigate();
-  const { roleId } = useRoleStore();
+  const { updateCompanyInfo } = usePMForm();
 
   const {
     control,
@@ -104,7 +99,33 @@ const CompanyInfoForm = () => {
   ];
 
   const onSubmit = (data) => {
-    console.log("Form Submitted:", data);
+    console.warn(data, "validated data ");
+
+    const formData = new FormData();
+    formData.append("company_profile[business_name]", data.businessName);
+    formData.append("company_profile[operating_name]", data.operatingName);
+    formData.append("company_profile[business_address]", data.address);
+    formData.append("company_profile[year_founded]", data.yearFounded);
+    formData.append("company_profile[business_type]", data.entityType);
+    formData.append("company_profile[locally_based]", data.isLocal);
+    formData.append("company_profile[full_time_business]", data.isFullTime);
+    formData.append("company_profile[owner_involvement]", data.involvement);
+    formData.append("company_profile[zip_code]", data.markets);
+    formData.append("company_profile[neighborhoods_zone]", data.specific);
+    formData.append("company_profile[distance_service]", data.distance);
+    formData.append("company_profile[licensed_market]", data.isLicensed);
+    formData.append("company_profile[permitting_client]", data.doesPermit);
+
+    formData.append("contacts[name]", data.contactName);
+    formData.append("contacts[phone]", data.contactPhone);
+    formData.append("contacts[email]", data.contactEmail);
+    formData.append("contacts[is_primary]", data.isPrimary ? "1" : "0");
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    updateCompanyInfo(formData);
     navigate(ROUTES.PORTFOLIO);
   };
 
@@ -150,7 +171,6 @@ const CompanyInfoForm = () => {
           />
         </div>
 
-        {/* Address */}
         <Controller
           name="address"
           control={control}
@@ -170,7 +190,6 @@ const CompanyInfoForm = () => {
           )}
         />
 
-        {/* Contact Name & Phone */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-2">
           <Controller
             name="contactName"
@@ -252,7 +271,6 @@ const CompanyInfoForm = () => {
           />
         </div>
 
-        {/* Entity Type */}
         <div className="mb-4">
           <Controller
             name="entityType"
@@ -273,7 +291,6 @@ const CompanyInfoForm = () => {
           </p>
         )}
 
-        {/* Locally Based */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-2.5 md:gap-5 mt-3 mb-5">
           <h3 className="text-sm font-bold">
             Are you locally based in the market(s) you serve?
@@ -305,7 +322,6 @@ const CompanyInfoForm = () => {
           </p>
         )}
 
-        {/* Full Time */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mt-3 mb-5">
           <h3 className="text-sm font-bold">
             Is this your full-time business?
@@ -337,7 +353,6 @@ const CompanyInfoForm = () => {
           </p>
         )}
 
-        {/* Owner Involvement */}
         <div className="mt-3">
           <Controller
             name="involvement"
@@ -358,7 +373,6 @@ const CompanyInfoForm = () => {
           )}
         </div>
 
-        {/* Primary Markets & Zones */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-2">
           <Controller
             name="markets"
@@ -402,7 +416,6 @@ const CompanyInfoForm = () => {
           Separate all zip codes by a commas.
         </div>
 
-        {/* Secondary Markets & Specific */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mt-8">
           <Controller
             name="zip"
@@ -445,7 +458,6 @@ const CompanyInfoForm = () => {
           <img src={MarkSVG} alt="" />
           Separate all zip codes by a commas.
         </div>
-        {/* Distance */}
         <div className="mb-2.5 mt-5">
           <Controller
             name="distance"
@@ -466,7 +478,6 @@ const CompanyInfoForm = () => {
           )}
         </div>
 
-        {/* Licensed */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Are you licensed to operate in all markets?
@@ -498,7 +509,6 @@ const CompanyInfoForm = () => {
           </p>
         )}
 
-        {/* Permitting */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5 mt-3">
           <h3 className="text-sm font-bold">
             Do you handle permitting for new clients?
@@ -530,7 +540,6 @@ const CompanyInfoForm = () => {
           </p>
         )}
 
-        {/* Terms */}
         <div className="my-5">
           <Controller
             name="terms"

@@ -5,7 +5,7 @@ import {
   Portfolio3PNG,
   PortfolioPNG,
 } from "../../../constants/Imgs";
-import { BellSVG, LogoSVG } from "../../../Constants/Icons";
+import { BellSVG, LogoSVG } from "../../../constants/Icons";
 
 const Submitting = () => {
   const images = [PortfolioPNG, Portfolio2PNG, Portfolio3PNG];
@@ -15,19 +15,19 @@ const Submitting = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFade(false); 
+      setFade(false);
 
       setTimeout(() => {
         const nextIndex = index + 1;
         if (nextIndex < images.length) {
           setIndex(nextIndex);
-          setFade(true); 
+          setFade(true);
         } else {
           clearInterval(interval);
-          navigate("/pm/dashboard");
+          navigate("/login");
         }
-      }, 200); 
-    }, 2000); 
+      }, 200);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [index, navigate]);
@@ -54,7 +54,10 @@ const Submitting = () => {
           Thank You for Submitting Your Information!
         </h2>
         <div className="text-center text-sm leading-6 mb-10">
-          <p>Your profile is now under review. You won’t be able to log in or appear in matches until your verification is complete.</p>
+          <p>
+            Your profile is now under review. You won’t be able to log in or
+            appear in matches until your verification is complete.
+          </p>
         </div>
         <h4 className="text-center pl-6 py-2.5 text-sm bg-[#F2F7F9] rounded-[12px] flex items-center gap-2.5">
           <img src={BellSVG} alt="bellImg" />

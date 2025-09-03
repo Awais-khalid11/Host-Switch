@@ -10,9 +10,17 @@ import RadioField from "../../RadioField/RadioField";
 import SmartHome from "./SmartHome";
 import { ROUTES } from "../../../../constants/Routes";
 import MultiCheckboxDropdown from "./MultiCheckboxDropdown";
+import usePMForm from "../../../../store/usePMForm";
 
-const PortfolioForm = ({ onNext }) => {
+const PortfolioForm = () => {
   const navigate = useNavigate();
+  const { updatePortfolio } = usePMForm();
+
+  const [activeStr, setActiveStr] = useState("");
+  const [maxOnboard, setMaxOnboard] = useState("");
+  const [website, setWebsite] = useState("");
+  const [propertyRequirement, setPropertyRequirement] = useState("");
+
   const [accountManager, setAccountManager] = useState("");
   const [linens, setLinens] = useState("");
   const [smartLock, setSmartLock] = useState("");
@@ -22,6 +30,7 @@ const PortfolioForm = ({ onNext }) => {
   const [financialProjection, setFinancialProjection] = useState("");
   const [selected, setSelected] = useState("");
   const [ticket, setTicket] = useState("");
+  const [message, setMessage] = useState("");
 
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [agreementTypes, setAgreementTypes] = useState([]);
@@ -30,10 +39,116 @@ const PortfolioForm = ({ onNext }) => {
   const [pmsTools, setPmsTools] = useState([]);
   const [pricingTools, setPricingTools] = useState([]);
   const [guest, setGuest] = useState([]);
+  const [scopeServices, setScopeServices] = useState([]);
+  const [smartHomeTech, setSmartHomeTech] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  // extra number fields
+  const [overTime, setOverTime] = useState("");
+  const [maintenanceResponse, setMaintenanceResponse] = useState("");
+  const [guestResponse, setGuestResponse] = useState("");
+  const [commission, setCommission] = useState("");
 
   const submitHandle = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("operation_service[active_str_number]", activeStr);
+    formData.append("operation_service[max_properties]", maxOnboard);
+    formData.append("operation_service[website]", website);
+
+    propertyTypes.forEach((val) =>
+      formData.append("operation_service[property_type][]", val)
+    );
+
+    formData.append(
+      "operation_service[property_requirement]",
+      propertyRequirement
+    );
+
+    agreementTypes.forEach((val) =>
+      formData.append("operation_service[agreement][]", val)
+    );
+    cohostOptions.forEach((val) =>
+      formData.append("operation_service[co_hosting_service][]", val)
+    );
+
+    scopeServices.forEach((val, index) => {
+      formData.append(`operation_service[scope_service][${index}]`, val);
+    });
+
+    formData.append(
+      "operation_service[dedicated_account_manager]",
+      accountManager === "yes" ? "1" : "0"
+    );
+    cleaningHandledBy.forEach((val) =>
+      formData.append("operation_service[handle_cleaning][]", val)
+    );
+    formData.append("operation_service[over_time]", overTime);
+    formData.append(
+      "operation_service[linens_consumables]",
+      linens === "yes" ? "1" : "0"
+    );
+    formData.append(
+      "operation_service[maintenance_response_time]",
+      maintenanceResponse
+    );
+    formData.append("operation_service[guest_response_time]", guestResponse);
+    formData.append(
+      "operation_service[smart_lock_tech]",
+      smartLock === "yes" ? "1" : "0"
+    );
+    formData.append("operation_service[commission_percentage]", commission);
+    formData.append(
+      "operation_service[onboarding_fee]",
+      onboardingFees === "yes" ? "1" : "0"
+    );
+    formData.append(
+      "operation_service[charges_linens]",
+      restockingCharges === "yes" ? "1" : "0"
+    );
+    formData.append(
+      "operation_service[mark_maintenance]",
+      markupMaintenance === "yes" ? "1" : "0"
+    );
+    formData.append(
+      "operation_service[financial_projection_onboarding]",
+      financialProjection === "yes" ? "1" : "0"
+    );
+
+    pmsTools.forEach((val) =>
+      formData.append("operation_service[pms_channel_manager][]", val)
+    );
+    pricingTools.forEach((val) =>
+      formData.append("operation_service[dynamic_pricing_tool][]", val)
+    );
+
+    formData.append(
+      "operation_service[owner_reporting_portal]",
+      selected === "after3months" ? "1" : "0"
+    );
+
+    smartHomeTech.forEach((val, index) => {
+      formData.append(`operation_service[smart_home_tech][${index}]`, val);
+    });
+
+    guest.forEach((val) =>
+      formData.append("operation_service[guest_communication][]", val)
+    );
+    formData.append(
+      "operation_service[maintenance_ticketing_system]",
+      ticket === "yes" ? "1" : "0"
+    );
+
+    formData.append("operation_service[anything_else_to_know]", message);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ":", pair[1]);
+    }
+
+    updatePortfolio(Object.fromEntries(formData.entries()));
+    navigate(ROUTES.EXPECTATIONS);
   };
 
   return (
@@ -42,28 +157,25 @@ const PortfolioForm = ({ onNext }) => {
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <InputField
             label="Number of Active STR Properties Managed"
-            id="num"
-            name="num"
             type="number"
-            fieldName="md:w-1/2 w-full"
             placeholder="Enter number"
+            value={activeStr}
+            onChange={(e) => setActiveStr(e.target.value)}
           />
           <InputField
             label="Max Properties You Can Onboard (30 Days)"
-            id="no"
-            name="no"
             type="number"
-            fieldName="md:w-1/2 w-full"
             placeholder="Enter number"
+            value={maxOnboard}
+            onChange={(e) => setMaxOnboard(e.target.value)}
           />
         </div>
         <InputField
           label="Company Website"
-          id="url"
-          name="url"
           type="text"
-          fieldName="w-full"
           placeholder="Enter url.."
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
         />
         <MultiCheckboxDropdown
           label="Property Types Managed"
@@ -86,9 +198,10 @@ const PortfolioForm = ({ onNext }) => {
           isMulti={true}
         />
         <TextArea
-          type="text"
-          placeholder={"Enter message..."}
+          placeholder={"Enter requirements..."}
           label={"Minimum Property Requirements"}
+          value={propertyRequirement}
+          onChange={(e) => setPropertyRequirement(e.target.value)}
         />
         <MultiCheckboxDropdown
           label="Exclusive or Non-Exclusive Agreements?"
@@ -96,14 +209,12 @@ const PortfolioForm = ({ onNext }) => {
           options={["Exclusive", "Non-Exclusive"]}
           selectedValues={agreementTypes}
           setSelectedValues={setAgreementTypes}
-          customGrid={true}
           className="mb-5"
           dropdownKey="exc"
           isOpen={openDropdown === "exc"}
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-
         <MultiCheckboxDropdown
           label="Co-hosting or Full-Service?"
           options={["Co-Host for Owners", "Only Full-Services"]}
@@ -116,14 +227,14 @@ const PortfolioForm = ({ onNext }) => {
           setOpenDropdown={setOpenDropdown}
           isMulti={true}
         />
-        <ScopeBox />
+        <ScopeBox setScopeServices={setScopeServices} />
+
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Do you provide a dedicated account manager to home owners?
           </h3>
           <div className="flex items-center gap-5">
             <RadioField
-              id="accountYes"
               name="accountManager"
               value="yes"
               label="Yes"
@@ -131,7 +242,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setAccountManager(e.target.value)}
             />
             <RadioField
-              id="accountNo"
               name="accountManager"
               value="no"
               label="No"
@@ -140,6 +250,7 @@ const PortfolioForm = ({ onNext }) => {
             />
           </div>
         </div>
+
         <MultiCheckboxDropdown
           label="Who handles cleaning?"
           options={["In-house", "3rd Party", "Hybrid"]}
@@ -154,11 +265,10 @@ const PortfolioForm = ({ onNext }) => {
         />
         <InputField
           label="Avg Turnover Time (hours)"
-          id="num"
-          name="num"
           type="number"
-          fieldName="w-full"
           placeholder="Enter number"
+          value={overTime}
+          onChange={(e) => setOverTime(e.target.value)}
         />
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
@@ -166,7 +276,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-5">
             <RadioField
-              id="linensYes"
               name="linens"
               value="yes"
               label="Yes"
@@ -174,7 +283,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setLinens(e.target.value)}
             />
             <RadioField
-              id="linensNo"
               name="linens"
               value="no"
               label="No"
@@ -185,19 +293,17 @@ const PortfolioForm = ({ onNext }) => {
         </div>
         <InputField
           label="Maintenance Response Time (Avg)"
-          id="num"
-          name="num"
           type="number"
-          fieldName="w-full"
           placeholder="Enter number"
+          value={maintenanceResponse}
+          onChange={(e) => setMaintenanceResponse(e.target.value)}
         />
         <InputField
           label="Guest Response Time (Avg)"
-          id="num"
-          name="num"
           type="number"
-          fieldName="w-full"
           placeholder="Enter number"
+          value={guestResponse}
+          onChange={(e) => setGuestResponse(e.target.value)}
         />
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
@@ -205,7 +311,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-5">
             <RadioField
-              id="smartYes"
               name="smartLock"
               value="yes"
               label="Yes"
@@ -213,7 +318,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setSmartLock(e.target.value)}
             />
             <RadioField
-              id="smartNo"
               name="smartLock"
               value="no"
               label="No"
@@ -223,12 +327,11 @@ const PortfolioForm = ({ onNext }) => {
           </div>
         </div>
         <InputField
-          label="What % commission do you charge on a standard PM contract (non-promotional)?"
-          id="num"
-          name="num"
+          label="What % commission do you charge?"
           type="number"
-          fieldName="w-full"
-          placeholder="Enter number percentage"
+          placeholder="Enter %"
+          value={commission}
+          onChange={(e) => setCommission(e.target.value)}
         />
         <div className="mb-5">
           <h3 className="text-sm font-bold mb-3">
@@ -236,7 +339,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-10">
             <RadioField
-              id="onboardingYes"
               name="onboardingFees"
               value="yes"
               label="Yes"
@@ -244,7 +346,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setOnboardingFees(e.target.value)}
             />
             <RadioField
-              id="onboardingNo"
               name="onboardingFees"
               value="no"
               label="No "
@@ -259,7 +360,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-10">
             <RadioField
-              id="restockingYes"
               name="restockingCharges"
               value="yes"
               label="Yes"
@@ -267,7 +367,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setRestockingCharges(e.target.value)}
             />
             <RadioField
-              id="restockingNo"
               name="restockingCharges"
               value="no"
               label="No "
@@ -282,7 +381,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-10">
             <RadioField
-              id="markupYes"
               name="markupMaintenance"
               value="yes"
               label="Yes"
@@ -290,7 +388,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setMarkupMaintenance(e.target.value)}
             />
             <RadioField
-              id="markupNo"
               name="markupMaintenance"
               value="no"
               label="No "
@@ -305,7 +402,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-10">
             <RadioField
-              id="projectionYes"
               name="financialProjection"
               value="yes"
               label="Yes"
@@ -313,7 +409,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setFinancialProjection(e.target.value)}
             />
             <RadioField
-              id="projectionNo"
               name="financialProjection"
               value="no"
               label="No "
@@ -352,16 +447,14 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-5">
             <RadioField
-              id="field11"
-              name="inactivity"
+              name="ownerPortal"
               value="after3months"
               label="Yes"
               checked={selected === "after3months"}
               onChange={(e) => setSelected(e.target.value)}
             />
             <RadioField
-              id="field22"
-              name="inactivity"
+              name="ownerPortal"
               value="after6months"
               label="No "
               checked={selected === "after6months"}
@@ -369,10 +462,12 @@ const PortfolioForm = ({ onNext }) => {
             />
           </div>
         </div>
-        <SmartHome />
+
+        <SmartHome setSmartHomeTech={setSmartHomeTech} />
+
         <MultiCheckboxDropdown
           label="Guest Communication Platform"
-          options={["Mnual", "Automated", "Hybrid"]}
+          options={["Manual", "Automated", "Hybrid"]}
           placeholder="Select or type..."
           selectedValues={guest}
           setSelectedValues={setGuest}
@@ -388,7 +483,6 @@ const PortfolioForm = ({ onNext }) => {
           </h3>
           <div className="flex items-center gap-5">
             <RadioField
-              id="ticketYes"
               name="ticket"
               value="yes"
               label="Yes"
@@ -396,7 +490,6 @@ const PortfolioForm = ({ onNext }) => {
               onChange={(e) => setTicket(e.target.value)}
             />
             <RadioField
-              id="ticketNo"
               name="ticket"
               value="no"
               label="No"
@@ -406,9 +499,9 @@ const PortfolioForm = ({ onNext }) => {
           </div>
         </div>
         <TextArea
-          type="text"
           placeholder={"Enter message..."}
           label={"Anything else you'd like us to know?"}
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <div className="flex md:gap-4 gap-2">
@@ -418,12 +511,13 @@ const PortfolioForm = ({ onNext }) => {
           >
             Back
           </Link>
-          <Link
-            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
-            to={ROUTES.EXPECTATIONS}
+          <button
+            type="submit"
+            className="mb
+-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
           >
             Next
-          </Link>
+          </button>
         </div>
       </form>
     </div>

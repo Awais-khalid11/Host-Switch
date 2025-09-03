@@ -2,14 +2,14 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { ROUTES } from "../../../../constants/Routes";
 
-const steps = [
-  { label: "Company Info", path: ROUTES.HOSTCOMPANYINFO },
-  { label: "Portfolio", path: ROUTES.HOSTPORTFOLIO },
-  { label: "Expectations", path: ROUTES.HOSTEXPECTATIONS },
-];
-
 const HostOnboardingStepper = () => {
   const location = useLocation();
+
+  const steps = [
+    { label: "Company Info", path: ROUTES.HOSTCOMPANYINFO },
+    { label: "Portfolio", path: ROUTES.HOSTPORTFOLIO },
+    { label: "Expectations", path: ROUTES.HOSTEXPECTATIONS },
+  ];
 
   const currentIndex = steps.findIndex(
     (step) => step.path === location.pathname
