@@ -54,6 +54,7 @@ import HostIconNotification from "./components/HostIconNotification/HostIconNoti
 import MainLayout from "./components/Layout/MainLayout/MainLayout";
 import PrivateRoute from "./PrivateRoute";
 import NotFound from "./pages/NotFound";
+import PmSignUp from "./components/PmSignUp/PmSignUp";
 const MainRouter = () => {
   return (
     <>
@@ -73,6 +74,7 @@ const MainRouter = () => {
         <Route path="/hostcompanyinfo" element={<HostCompanyInfo />} />
         <Route path="/hostexpectation" element={<HostExpectation />} />
         <Route path="/hostportfolio" element={<HostPortfolio />} />
+        <Route path="/pmsignup" element={<PmSignUp />} />
         <Route path="*" element={<NotFound />} />
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>

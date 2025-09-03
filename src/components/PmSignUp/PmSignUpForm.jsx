@@ -1,0 +1,260 @@
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/Routes";
+import CheckBox from "../CheckBox/CheckBox";
+import InputField from "../InputField/InputField";
+import Button from "../Button/Button";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PhoneNumber from "../PhoneNumber/PhoneNumber";
+import useRoleStore from "../../store/useRoleIdStore";
+import { postData } from "../../api/apiClient";
+
+const schema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email").min(1, "Email is required"),
+    number: z
+      .string()
+      .min(7, "Phone number too short")
+      .regex(/^[0-9]+$/, "Phone number must be numeric"),
+    password: z.string().min(6, "Password too short"),
+    confirmPassword: z.string().min(6, "Confirm Password is required"),
+    terms: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the Terms & Conditions" }),
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+const PmSignUpForm = () => {
+  const navigate = useNavigate();
+  const { roleId, removeRoleId } = useRoleStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+      password: "",
+      confirmPassword: "",
+      role_id: roleId,
+      terms: false,
+    },
+  });
+
+  const onSubmit = async (formData) => {
+    try {
+      setIsLoading(true);
+
+      const payload = {
+        name: formData.name,
+        number: formData.number,
+        email: formData.email,
+        password: formData.password,
+        role_id: roleId,
+      };
+
+      const response = await postData("/auth/register", payload);
+
+      if (response?.payload?.accessToken) {
+        localStorage.setItem("token", response.payload.accessToken);
+        toast.success("Signup successful!");
+        removeRoleId();
+        navigate(ROUTES.COMPANYINFO);
+      } else {
+        toast.error("No token received, please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Signup failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="md:px-0 px-2.5">
+      {/* Full Name */}
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-5">
+            <InputField
+              {...field}
+              label="Full Name"
+              id="name"
+              type="text"
+              fieldName="w-full"
+              placeholder="Enter your full name"
+              asterisk={true}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm -mt-6">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
+
+      {/* Email + Phone */}
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Email Address"
+                id="email"
+                type="email"
+                fieldName="w-full"
+                placeholder="Enter your email address"
+                asterisk={true}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="number"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <PhoneNumber
+                name="number"
+                label="Phone"
+                control={control}
+                required={true}
+                defaultCountry="se"
+                onChange={(value) => field.onChange(value)}
+              />
+              {errors.number && (
+                <p className="text-red-500 text-sm -mt-5">
+                  {errors.number.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+      </div>
+
+      {/* Password + Confirm Password */}
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Password"
+                id="password"
+                type="password"
+                fieldName="w-full"
+                InputClass="h-[56px]"
+                placeholder="*************"
+                asterisk={true}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="confirmPassword"
+          control={control}
+          render={({ field }) => (
+            <div className="md:w-1/2 w-full">
+              <InputField
+                {...field}
+                label="Confirm Password"
+                id="confirmPassword"
+                type="password"
+                fieldName="w-full"
+                InputClass="h-[56px]"
+                placeholder="*************"
+                asterisk={true}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm -mt-6">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+          )}
+        />
+      </div>
+
+      {/* Terms */}
+      <Controller
+        name="terms"
+        control={control}
+        render={({ field }) => (
+          <div className="mb-8">
+            <CheckBox
+              {...field}
+              checked={field.value}
+              onChange={(e) => field.onChange(e.target.checked)}
+              label={
+                <>
+                  I agree to the
+                  <span className="text-[#0050B3] ml-1 cursor-pointer">
+                    Terms & Conditions
+                  </span>
+                </>
+              }
+              error={errors.terms?.message}
+            />
+            {errors.terms && (
+              <p className="text-red-500 text-sm mt-1.5">
+                {errors.terms.message}
+              </p>
+            )}
+          </div>
+        )}
+      />
+
+      {/* Buttons */}
+      <div className="flex md:gap-4 gap-2">
+        <Link
+          className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+          to={ROUTES.ROLESELECTION}
+        >
+          Back
+        </Link>
+        <Button
+          loading={isLoading}
+          type="submit"
+          disabled={isLoading}
+          className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
+        >
+          {isLoading ? "Submitting..." : "Save & Continue"}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default PmSignUpForm;

@@ -1,3 +1,5 @@
+import PmSignUp from "../components/PmSignUp/PmSignUp";
+
 export const ROUTES = {
   DASHBOARD: "/pm/dashboard",
   INCOMINGLEADS: "/pm/incomingleads",
@@ -45,4 +47,6 @@ export const ROUTES = {
   PMVERIFIED: "/admin/pmVerified",
   ICONNOTIFICATION: "/admin/adminiconnotification",
   PMICONNOTIFICATION: "/pm/pmiconnotification",
+  PMSIGNUP: "/pmsignup",
+
 };

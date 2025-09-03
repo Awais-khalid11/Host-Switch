@@ -1,100 +1,93 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import CheckBox from "../../../CheckBox/CheckBox";
 
-const SmartHome = () => {
-  const [lock, setLock] = useState(false);
-  const [stats, setStats] = useState(false);
-  const [smart, setSmart] = useState(false);
-  const [door, setDoor] = useState(false);
-  const [sensor, setSensor] = useState(false);
-  const [local, setLocal] = useState(false);
-  const [plug, setPlug] = useState(false);
-  const [hub, setHub] = useState(false);
-  const [energy, setEnergy] = useState(false);
-  const [other, setOther] = useState(false);
- 
+const SmartHome = ({ setSmartHomeTech }) => {
+  const [tech, setTech] = useState({
+    lock: false,
+    stats: false,
+    smart: false,
+    door: false,
+    sensor: false,
+    local: false,
+    plug: false,
+    hub: false,
+    energy: false,
+    other: false,
+  });
+
+  // Map selected values into array for PortfolioForm
+  useEffect(() => {
+    const selected = Object.entries(tech)
+      .filter(([_, val]) => val)
+      .map(([key]) => key);
+    setSmartHomeTech(selected);
+  }, [tech, setSmartHomeTech]);
+
+  const toggleTech = (key) => {
+    setTech((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   return (
     <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
-      <h4 className="text-sm font-bold mb-4">Scope of Services</h4>
-      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-3 mb-3.5">
+      <h4 className="text-sm font-bold mb-4">Smart Home Tech Used</h4>
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
-          name="lock"
-          id="lock"
           label="Smart Locks"
-          checked={lock}
-          onChange={(e) => setLock(e.target.checked)}
+          checked={tech.lock}
+          onChange={() => toggleTech("lock")}
         />
         <CheckBox
-          name="stats"
-          id="stats"
           label="Smart Thermostats"
-          checked={stats}
-          onChange={(e) => setStats(e.target.checked)}
+          checked={tech.stats}
+          onChange={() => toggleTech("stats")}
         />
         <CheckBox
-          name="smart"
-          id="smart"
-          label=" Smart Lights"
-          checked={smart}
-          onChange={(e) => setSmart(e.target.checked)}
+          label="Smart Lights"
+          checked={tech.smart}
+          onChange={() => toggleTech("smart")}
         />
       </div>
-      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-4 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
-          name="door"
-          id="door"
           label="Smart Doorbells"
-          checked={door}
-          onChange={(e) => setDoor(e.target.checked)}
+          checked={tech.door}
+          onChange={() => toggleTech("door")}
         />
         <CheckBox
-          name="sensor"
-          id="sensor"
           label="Smart Sensors"
-          checked={sensor}
-          onChange={(e) => setSensor(e.target.checked)}
+          checked={tech.sensor}
+          onChange={() => toggleTech("sensor")}
         />
         <CheckBox
-          name="local"
-          id="local"
-          label="Not local"
-          checked={local}
-          onChange={(e) => setLocal(e.target.checked)}
+          label="Not Local"
+          checked={tech.local}
+          onChange={() => toggleTech("local")}
         />
       </div>
-      <div className="flex md:flex-nowrap flex-wrap items-center md:gap-6 gap-3 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
-          name="plug"
-          id="plug"
-          label=" Smart Plugs & Outlets"
-          checked={plug}
-          onChange={(e) => setPlug(e.target.checked)}
+          label="Smart Plugs & Outlets"
+          checked={tech.plug}
+          onChange={() => toggleTech("plug")}
         />
         <CheckBox
-          name="hub"
-          id="hub"
           label="Smart Home Hub"
-          checked={hub}
-          onChange={(e) => setHub(e.target.checked)}
+          checked={tech.hub}
+          onChange={() => toggleTech("hub")}
         />
       </div>
-      <div className="flex items-center gap-6 mb-3.5">
+      <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
-          name="energy"
-          id="energy"
-          label=" Energy Monitoring Devices"
-          checked={energy}
-          onChange={(e) => setEnergy(e.target.checked)}
+          label="Energy Monitoring Devices"
+          checked={tech.energy}
+          onChange={() => toggleTech("energy")}
         />
         <CheckBox
-          name="other"
-          id="other"
           label="Other"
-          checked={other}
-          onChange={(e) => setOther(e.target.checked)}
+          checked={tech.other}
+          onChange={() => toggleTech("other")}
         />
       </div>
-
     </div>
   );
 };
