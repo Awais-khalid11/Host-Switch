@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import SwitchBtn from "../../SwitchBtn/SwitchBtn";
-import { putData, getData, postData } from "../../../api/apiClient";
+import { getData, postData } from "../../../api/apiClient";
 import { toast } from "react-toastify";
 import useRoleStore from "../../../store/useRoleIdStore";
 
@@ -13,7 +13,6 @@ const Notification = () => {
       try {
         if (!user?.id) return;
         const res = await getData(`/userMeta?userId=${user.id}`);
-        console.log(res);
         if (res?.payload?.records) {
           const prefsObj = res.payload.records.reduce((acc, item) => {
             acc[item.key] = item.value === "true";

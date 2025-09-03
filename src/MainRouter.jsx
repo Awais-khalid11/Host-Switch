@@ -115,7 +115,7 @@ const MainRouter = () => {
             />
             <Route path="hostlivechat" element={<HostLiveChat />} />
             <Route path="hostsubmission" element={<HostSubmission />} />
-            <Route path="hostproposalview" element={<HostProposalView />} />
+            <Route path="hostproposalview/:id" element={<HostProposalView />} />
             <Route path="hostfeedback" element={<HostFeedback />} />
             <Route path="mymatchproposal" element={<MyMatchProposal />} />
             <Route path="unlock" element={<Unlock />} />

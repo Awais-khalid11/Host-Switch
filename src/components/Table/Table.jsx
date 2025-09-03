@@ -23,13 +23,11 @@ const Table = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingPrev, setLoadingPrev] = useState(false);
   const [loadingNext, setLoadingNext] = useState(false);
-
   const toggleRow = (id) => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
   };
-
   const toggleAllRows = () => {
     if (selectedRows.length === paginatedData.length) {
       setSelectedRows([]);
@@ -53,7 +51,7 @@ const Table = ({
   };
 
   const filteredData = data
-    .filter((item) =>
+    ?.filter((item) =>
       Object.values(item).join(" ").toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
@@ -73,12 +71,12 @@ const Table = ({
   const paginatedData =
     rowStyle === "full-border"
       ? filteredData
-      : filteredData.slice(
+      : filteredData?.slice(
           (currentPage - 1) * rowsPerPage,
           currentPage * rowsPerPage
         );
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -99,7 +97,6 @@ const Table = ({
       }, 300);
     }
   };
-
   return (
     <div className={`${className}`}>
       {loading ? (
@@ -164,7 +161,7 @@ const Table = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedData.length > 0 ? (
+                  {paginatedData?.length > 0 ? (
                     paginatedData.map((row, rowIndex) => (
                       <React.Fragment key={row.id || rowIndex}>
                         {rowIndex !== 0 && rowStyle === "full-border" && (
@@ -253,8 +250,8 @@ const Table = ({
             <div className="flex justify-between items-center mt-2 px-2 border-t border-t-[#E9EAEB] pt-4">
               <h4 className="text-sm font-normal text-[#414651]">
                 Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
-                {Math.min(currentPage * rowsPerPage, filteredData.length)} of{" "}
-                {filteredData.length} Proposals
+                {Math.min(currentPage * rowsPerPage, filteredData?.length)} of{" "}
+                {filteredData?.length} Proposals
               </h4>
               <div className="flex items-center gap-2.5">
                 <Button

@@ -104,7 +104,6 @@ const ProfileInfo = () => {
       <SkeletonCard variant="card" count={1} hasImage hasButtons rows={2} />
     );
   }
-  console.log(updateLoading);
   return (
     <div className="bg-white border border-[#E9EAEB] rounded-[12px] py-4 px-5">
       <div className="mb-3">
@@ -115,8 +114,11 @@ const ProfileInfo = () => {
             <label htmlFor="image-upload" className="cursor-pointer">
               <img
                 src={
-                  `${import.meta.env.VITE_IMG_URL}${formData.imageUrl}` ||
-                  UserPNG
+                  formData.imageUrl?.startsWith("blob:")
+                    ? formData.imageUrl
+                    : formData.imageUrl
+                    ? `${import.meta.env.VITE_IMG_URL}${formData.imageUrl}`
+                    : UserPNG
                 }
                 alt="Profile"
                 className="w-[80px] h-[80px] rounded-full object-cover border border-gray-300"
@@ -124,6 +126,7 @@ const ProfileInfo = () => {
                   e.currentTarget.src = UserPNG;
                 }}
               />
+
               <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 hover:bg-blue-600 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
