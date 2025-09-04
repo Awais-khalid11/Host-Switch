@@ -184,7 +184,7 @@ const SubmissionForm = () => {
           acc[`scope_service[${index}]`] = item;
           return acc;
         }, {}),
-        accountManager: data.accountManager,
+        account_manager: data.accountManager === "yes",
         anything_else: data.message,
         split_percentage: 100,
 

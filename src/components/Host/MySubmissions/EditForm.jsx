@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import z from "zod";
 import Button from "../../Button/Button";
 import TextArea from "../../TextArea/TextArea";
@@ -10,6 +10,9 @@ import InputField from "../../InputField/InputField";
 import MultiCheckboxDropdown from "../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 import FileUpload from "../../UploadFile/UploadFile";
 import CheckBox from "../../CheckBox/CheckBox";
+import { getData, putData } from "../../../api/apiClient";
+import { toast } from "react-toastify";
+import SkeletonCard from "../../Skeleton/SkeletonCard";
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
@@ -80,8 +83,12 @@ const schema = z.object({
 });
 
 const EditForm = () => {
+  const { id } = useParams();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [existingFiles, setExistingFiles] = useState([]);
+  const [propertyData, setPropertyData] = useState(null);
   const navigate = useNavigate();
 
   const absoluteMustHaveOptions = [
@@ -114,11 +121,13 @@ const EditForm = () => {
     { id: 8, label: "Poor maintenance / upkeep" },
     { id: 9, label: "Others" },
   ];
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -160,9 +169,272 @@ const EditForm = () => {
       },
     },
   });
+
+  // Fetch property data
+  const fetchPropertyData = async () => {
+    try {
+      if (!id) return;
+
+      const response = await getData(`/property/${id}`);
+      const data = response.payload;
+      setPropertyData(data);
+
+      // Set form values based on API response
+      setValue("address", data.address || "");
+      setValue("unit_apt", data.unit_apt || "");
+      setValue("link", data.link || "");
+      setValue("rented_out", data.rented_out ? [data.rented_out] : []);
+      setValue("type", data.type ? [data.type] : []);
+      setValue("hostingTypes", data.hostingTypes ? [data.hostingTypes] : []);
+      setValue("cleanTypes", data.cleanTypes ? [data.cleanTypes] : []);
+      setValue("scope_service", data.scope_service || []);
+      setValue("accountManager", data.Manager || "");
+      setValue("message", data.anything_else || "");
+      setValue("split_percentage", data.split_percentage || "");
+      setValue("current_pm_company_name", data.current_pm_company_name || "");
+      setValue("seeking_pm_host", data.seeking_pm_host || "");
+      setValue("co_hosting", data.co_hosting || "");
+      setValue("involvement_level", data.involvement_level || "");
+
+      // Set condition values
+      if (data.condition) {
+        setValue("condition.Flooring", data.condition.Flooring || "");
+        setValue(
+          "condition.KitchenAppliances",
+          data.condition.KitchenAppliances || ""
+        );
+        setValue(
+          "condition.BathroomFixtures",
+          data.condition.BathroomFixtures || ""
+        );
+        setValue("condition.Furniture", data.condition.Furniture || "");
+        setValue("condition.PaintInterior", data.condition.PaintInterior || "");
+        setValue("condition.SmartDevices", data.condition.SmartDevices || "");
+        setValue(
+          "condition.OutdoorAmenities",
+          data.condition.OutdoorAmenities || ""
+        );
+        setValue("condition.Others", data.condition.Others || "");
+      }
+
+      setValue("suggestion", data.suggestion || "");
+      setValue("open_investing", data.open_investing || "");
+      setValue("photography", data.photography || "");
+      setValue("absolute_must_have", data.absolute_must_have || []);
+      setValue("renovations", data.renovations || []);
+      setValue(
+        "pm_charge_percentage",
+        data.pm_charge_percentage ? [data.pm_charge_percentage] : []
+      );
+      setValue("yearly_revenue", data.yearly_revenue || "");
+      setValue("desc", data.desc || "");
+      setValue("reason_switching", data.reason_switching || []);
+      setValue(
+        "pm_top_priority",
+        data.pm_top_priority ? [data.pm_top_priority] : []
+      );
+
+      // Handle existing files
+      if (data.files && data.files.length > 0) {
+        setExistingFiles(data.files);
+      }
+    } catch (error) {
+      console.error("Failed to fetch property data:", error);
+      toast.error("Failed to load property data");
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPropertyData();
+  }, [id, setValue]);
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+
+    try {
+      const renovations = data.renovations || [];
+      const absoluteMustHave = data.absolute_must_have || [];
+
+      const payload = {
+        address: data.address,
+        unit_apt: data.unit_apt,
+        link: data.link,
+        rented_out: data.rented_out?.[0] || "",
+        type: data.type?.[0] || "",
+        hostingTypes: data.hostingTypes?.[0] || "",
+        cleanTypes: data.cleanTypes?.[0] || "",
+        ...data.scope_service.reduce((acc, item, index) => {
+          acc[`scope_service[${index}]`] = item;
+          return acc;
+        }, {}),
+        accountManager: data.accountManager,
+        anything_else: data.message,
+        split_percentage: data.split_percentage,
+
+        current_pm_company_name: data.current_pm_company_name,
+        seeking_pm_host: data.seeking_pm_host,
+        co_hosting: data.co_hosting,
+        involvement_level: data.involvement_level,
+
+        "condition[Flooring]": data.condition.Flooring,
+        "condition[KitchenAppliances]": data.condition.KitchenAppliances,
+        "condition[BathroomFixtures]": data.condition.BathroomFixtures,
+        "condition[Furniture]": data.condition.Furniture,
+        "condition[PaintInterior]": data.condition.PaintInterior,
+        "condition[SmartDevices]": data.condition.SmartDevices,
+        "condition[OutdoorAmenities]": data.condition.OutdoorAmenities,
+        "condition[Others]": data.condition.Others,
+
+        suggestion: data.suggestion,
+        open_investing: data.open_investing,
+        photography: data.photography,
+
+        ...absoluteMustHave.reduce((acc, item, index) => {
+          acc[`absolute_must_have[${index}]`] = item;
+          return acc;
+        }, {}),
+
+        ...renovations.reduce((acc, renovation, index) => {
+          acc[`renovations[${index}]`] = renovation;
+          return acc;
+        }, {}),
+
+        pm_charge_percentage: data.pm_charge_percentage?.[0] || "",
+        yearly_revenue: data.yearly_revenue,
+        desc: data.desc,
+
+        ...data.reason_switching.reduce((acc, item, index) => {
+          acc[`reason_switching[${index}]`] = item;
+          return acc;
+        }, {}),
+
+        pm_top_priority: data.pm_top_priority?.[0] || "",
+      };
+
+      const formData = new FormData();
+
+      Object.keys(payload).forEach((key) => {
+        formData.append(key, payload[key]);
+      });
+
+      if (data.files && data.files.length > 0) {
+        Array.from(data.files).forEach((file) => {
+          formData.append("files", file);
+        });
+      }
+
+      const response = await putData(`/property/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("API Success:", response);
+
+      // Update the local state with the updated data
+      setPropertyData(response.payload);
+
+      // Update form values with the response data
+      const updatedData = response.payload;
+      setValue("address", updatedData.address || "");
+      setValue("unit_apt", updatedData.unit_apt || "");
+      setValue("link", updatedData.link || "");
+      setValue(
+        "rented_out",
+        updatedData.rented_out ? [updatedData.rented_out] : []
+      );
+      setValue("type", updatedData.type ? [updatedData.type] : []);
+      setValue(
+        "hostingTypes",
+        updatedData.hostingTypes ? [updatedData.hostingTypes] : []
+      );
+      setValue(
+        "cleanTypes",
+        updatedData.cleanTypes ? [updatedData.cleanTypes] : []
+      );
+      setValue("scope_service", updatedData.scope_service || []);
+      setValue("accountManager", updatedData.accountManager || "");
+      setValue("message", updatedData.anything_else || "");
+      setValue("split_percentage", updatedData.split_percentage || "");
+      setValue(
+        "current_pm_company_name",
+        updatedData.current_pm_company_name || ""
+      );
+      setValue("seeking_pm_host", updatedData.seeking_pm_host || "");
+      setValue("co_hosting", updatedData.co_hosting || "");
+      setValue("involvement_level", updatedData.involvement_level || "");
+
+      // Set condition values
+      if (updatedData.condition) {
+        setValue("condition.Flooring", updatedData.condition.Flooring || "");
+        setValue(
+          "condition.KitchenAppliances",
+          updatedData.condition.KitchenAppliances || ""
+        );
+        setValue(
+          "condition.BathroomFixtures",
+          updatedData.condition.BathroomFixtures || ""
+        );
+        setValue("condition.Furniture", updatedData.condition.Furniture || "");
+        setValue(
+          "condition.PaintInterior",
+          updatedData.condition.PaintInterior || ""
+        );
+        setValue(
+          "condition.SmartDevices",
+          updatedData.condition.SmartDevices || ""
+        );
+        setValue(
+          "condition.OutdoorAmenities",
+          updatedData.condition.OutdoorAmenities || ""
+        );
+        setValue("condition.Others", updatedData.condition.Others || "");
+      }
+
+      setValue("suggestion", updatedData.suggestion || "");
+      setValue("open_investing", updatedData.open_investing || "");
+      setValue("photography", updatedData.photography || "");
+      setValue("absolute_must_have", updatedData.absolute_must_have || []);
+      setValue("renovations", updatedData.renovations || []);
+      setValue(
+        "pm_charge_percentage",
+        updatedData.pm_charge_percentage
+          ? [updatedData.pm_charge_percentage]
+          : []
+      );
+      setValue("yearly_revenue", updatedData.yearly_revenue || "");
+      setValue("desc", updatedData.desc || "");
+      setValue("reason_switching", updatedData.reason_switching || []);
+      setValue(
+        "pm_top_priority",
+        updatedData.pm_top_priority ? [updatedData.pm_top_priority] : []
+      );
+
+      // Handle existing files
+      if (updatedData.files && updatedData.files.length > 0) {
+        setExistingFiles(updatedData.files);
+      }
+
+      toast.success("Property updated successfully!");
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error(error.message || "Update failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isFetching) {
+    return (
+      <SkeletonCard variant="card" count={1} hasImage hasButtons rows={5} />
+    );
+  }
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <Controller
             name="address"
@@ -1341,7 +1613,7 @@ const EditForm = () => {
             disabled={isLoading}
             className="mb-5 w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
           >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isLoading ? "Updating..." : "Update Property"}
           </Button>
         </div>
       </form>

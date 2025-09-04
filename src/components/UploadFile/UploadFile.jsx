@@ -7,8 +7,8 @@ const FileUpload = ({
   nodetail,
   defaultFileName = "",
   btn = false,
-  value = [],        
-  onChange = () => {} 
+  value = [],
+  onChange = () => {},
 }) => {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState(null);
@@ -38,7 +38,7 @@ const FileUpload = ({
     const files = Array.from(event.dataTransfer.files);
     if (files.length > 0) {
       setFile(files[0]);
-      onChange(files); 
+      onChange(files);
     }
   };
 
@@ -53,7 +53,10 @@ const FileUpload = ({
 
   return (
     <div className="w-full mb-5">
-      <label htmlFor={id} className="block mb-2.5 text-sm font-bold text-[#323232]">
+      <label
+        htmlFor={id}
+        className="block mb-2.5 text-sm font-bold text-[#323232]"
+      >
         {label}
       </label>
 
@@ -107,7 +110,9 @@ const FileUpload = ({
             <>
               <img src={UploadPNG} alt="uploadImg" className="mb-2" />
               <p className="text-sm text-center leading-5">
-                <strong className="text-[#5B5B5B]">Select Files To Upload</strong>
+                <strong className="text-[#5B5B5B]">
+                  Select Files To Upload
+                </strong>
               </p>
               {!nodetail && (
                 <p className="text-[11px] text-[#2F3542] ml-1">
