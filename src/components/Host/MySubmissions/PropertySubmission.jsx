@@ -10,11 +10,13 @@ import Button from "../../Button/Button";
 import { getData } from "../../../api/apiClient";
 import Skeleton from "../../Skeleton/SkeletonCard";
 import NoDataFound from "../../NoDataFound";
+import { useNavigate } from "react-router-dom";
 
-const PropertySubmission = ({ onEditClick }) => {
+const PropertySubmission = () => {
   const [info, setInfo] = useState();
   const [loading, setLoading] = useState(false);
   const [property, setProperty] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllProperties = async () => {
@@ -104,18 +106,16 @@ const PropertySubmission = ({ onEditClick }) => {
               </h6>
             </div>
 
-            {index === 0 && (
-              <div className="flex justify-end items-end mt-5 border-t border-t-[#2525251A] pt-5">
-                <Button
-                  variant="borderbtn"
-                  className="border-[#555555] text-[#555555] max-w-[180px]"
-                  prefixImg={EditSVG}
-                  onClick={onEditClick}
-                >
-                  Edit Property Info
-                </Button>
-              </div>
-            )}
+            <div className="flex justify-end items-end mt-5 border-t border-t-[#2525251A] pt-5">
+              <Button
+                variant="borderbtn"
+                className="border-[#555555] text-[#555555] max-w-[180px]"
+                prefixImg={EditSVG}
+                onClick={() => navigate(`edit-submission/${property.id}`)}
+              >
+                Edit Property Info
+              </Button>
+            </div>
           </div>
         ))
       )}

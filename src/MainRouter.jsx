@@ -55,6 +55,7 @@ import MainLayout from "./components/Layout/MainLayout/MainLayout";
 import PrivateRoute from "./PrivateRoute";
 import NotFound from "./pages/NotFound";
 import PmSignUp from "./components/PmSignUp/PmSignUp";
+import HostEdit from "./components/Host/MySubmissions/HostEdit";
 const MainRouter = () => {
   return (
     <>
@@ -106,6 +107,14 @@ const MainRouter = () => {
             <Route
               path="hostmysubmissions"
               element={<HostMySubmissionsPage />}
+            />
+            <Route
+              path="hostmysubmissions/create-submission"
+              element={<HostSubmission />}
+            />
+            <Route
+              path="hostmysubmissions/edit-submission/:id"
+              element={<HostEdit />}
             />
             <Route path="hostmessages" element={<HostMessagesPage />} />
             <Route path="hostsettings" element={<HostSettingsPage />} />

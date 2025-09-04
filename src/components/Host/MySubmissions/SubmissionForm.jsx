@@ -259,7 +259,6 @@ const SubmissionForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Address & Unit */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <Controller
             name="address"

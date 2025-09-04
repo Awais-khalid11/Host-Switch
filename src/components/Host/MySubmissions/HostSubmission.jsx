@@ -1,9 +1,10 @@
 import React from "react";
 import { BackarrowSVG } from "../../../constants/Icons";
-import { useNavigate } from "react-router-dom";
 import SubmissionForm from "./SubmissionForm";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const HostSubmission = ({ setClose }) => {
+const HostSubmission = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <h2 className="font-bold text-2xl flex items-center gap-2 mb-8">
@@ -11,14 +12,13 @@ const HostSubmission = ({ setClose }) => {
           src={BackarrowSVG}
           alt="img"
           className="cursor-pointer"
-          onClick={() => setClose(false)}
+          onClick={() => navigate(-1)}
         />
         My Submission
       </h2>
-      <SubmissionForm/>
+      <SubmissionForm />
     </div>
   );
 };
-
 
 export default HostSubmission;
