@@ -64,7 +64,7 @@ const DashboardHeader = ({ showSidebar, setShowSidebar, property }) => {
 
               <div className="flex items-center gap-3">
                 <div className="flex items-center md:gap-3.5 md:pr-2.5 md:border-r border-[#A4A8AA4D]">
-                  <SearchField search={search} setSearch={setSearch} />
+                  {/* <SearchField search={search} setSearch={setSearch} /> */}
                   <img
                     src={BellSVG}
                     alt="Bell"

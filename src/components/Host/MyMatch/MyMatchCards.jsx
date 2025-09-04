@@ -46,11 +46,7 @@ const MyMatchCards = () => {
           setShowProposalPage={setShowProposalPage}
         />
       ) : (
-        <NoDataFound
-          message="No Matches Available"
-          subMessage="We couldn't find any property management matches for you at this time. Please try again later."
-          className="my-6"
-        />
+        <NoDataFound message="No Matches Available" className="my-6" />
       )}
     </div>
   );

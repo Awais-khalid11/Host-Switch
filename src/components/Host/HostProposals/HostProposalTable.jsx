@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Table from "../../Table/Table";
 import ActionMenu from "../../DropDown/Dropdown";
 import { useNavigate } from "react-router-dom";
-import { UserPNG } from "../../../constants/Imgs";
 import { FiUser } from "react-icons/fi";
 import {
   AllSVG,
@@ -16,19 +15,15 @@ import {
 } from "../../../constants/Icons";
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
-import HostProposalView from "./HostProposalView/HostProposalView";
 import { getData, putData } from "../../../api/apiClient";
 import { ROUTES } from "../../../constants/Routes";
 import { formatDate } from "../../../utils";
 
 const HostProposalTable = () => {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [tablePages, setTablePages] = useState();
   const [getProposalData, setGetProposalData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [updateStatus, setUpdateStatus] = useState(false);
 
   const fetchProposals = async () => {
     setLoading(true);
@@ -43,15 +38,12 @@ const HostProposalTable = () => {
   };
 
   async function updateProposal(id, status) {
-    setUpdateStatus(true);
     try {
       const payload = { status };
       await putData(`/proposal/${id}`, payload);
       fetchProposals();
     } catch (error) {
       console.error("API Error:", error);
-    } finally {
-      setUpdateStatus(false);
     }
   }
   useEffect(() => {
@@ -63,7 +55,7 @@ const HostProposalTable = () => {
     property: doc?.property?.address || "N/A",
     first_name: doc?.user?.company_profile?.business_name || "N/A",
     reviews: doc?.property_owner_id || "N/A",
-    UserImg: doc?.limit || UserPNG,
+    company_logo: doc?.user?.company_profile?.company_logo,
     status: doc?.status || "N/A",
     fee: doc?.onboarding_fee || "N/A",
     revenue: doc?.revenue_expectation || "N/A",
@@ -78,14 +70,19 @@ const HostProposalTable = () => {
       header: "PM Company",
       showSort: true,
       cell: ({ row }) => {
-        const { first_name = "Unknown", reviews = "No Reviews", UserImg } = row;
+        const {
+          first_name = "Unknown",
+          // reviews = "No Reviews",
+          company_logo,
+        } = row;
+        console.log(company_logo);
         return (
           <div className="flex items-center gap-3">
-            {UserImg ? (
+            {company_logo ? (
               <img
-                src={UserImg}
+                src={`${import.meta.env.VITE_IMG_URL}/${company_logo}`}
                 alt={first_name}
-                onError={(e) => (e.currentTarget.src = UserPNG)}
+                onError={(e) => (e.currentTarget.src = company_logo)}
                 className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
               />
             ) : (
@@ -189,9 +186,7 @@ const HostProposalTable = () => {
     return <ActionMenu actions={actions} />;
   };
 
-  return tablePages ? (
-    tablePages
-  ) : (
+  return (
     <div className="rounded-[12px]">
       <div className="rounded-xl bg-white overflow-visible relative">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
@@ -239,7 +234,6 @@ const HostProposalTable = () => {
           data={formattedData}
           showActions
           actions={rowActions}
-          search={search}
           loading={loading}
         />
       </div>

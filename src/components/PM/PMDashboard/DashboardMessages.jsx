@@ -10,6 +10,7 @@ const DashboardMessages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useRoleStore();
+
   useEffect(() => {
     const fetchRecentConversations = async () => {
       const msgUrl =
@@ -34,7 +35,7 @@ const DashboardMessages = () => {
     };
 
     fetchRecentConversations();
-  }, []);
+  }, [user?.role_id]);
 
   return (
     <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px] overflow-y-auto">
@@ -55,7 +56,9 @@ const DashboardMessages = () => {
               : null;
 
           const participantImg = conv.participants?.[0]?.user?.image
-            ? `/${conv.participants[0].user.image}`
+            ? `${import.meta.env.VITE_IMG_URL}${
+                conv.participants[0].user.image
+              }`
             : UserPNG;
 
           return (
@@ -64,9 +67,10 @@ const DashboardMessages = () => {
               className="flex items-center gap-4 last-of-type:mb-0 mb-5"
             >
               <img
-                src={`${import.meta.env.VITE_IMG_URL}${participantImg}`}
-                alt={conv.name}
+                src={participantImg}
+                alt={conv.name || "User"}
                 className="h-10 w-10 rounded-full object-cover"
+                onError={(e) => (e.currentTarget.src = UserPNG)} // fallback if URL fails
               />
               <div>
                 <h4 className="text-[14px] font-medium text-[#181818]">

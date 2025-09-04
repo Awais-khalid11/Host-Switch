@@ -9,13 +9,15 @@ import {
   SkymsgSVG,
 } from "../../constants/Icons";
 import { getData } from "../../api/apiClient";
+import Skeleton from "../Skeleton/SkeletonCard";
 
 const HostIconNotification = () => {
   const [notifications, setNotifications] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
+        setIsLoading(true);
         const res = await getData("/notification");
         if (res?.payload?.records) {
           const transformed = [
@@ -35,6 +37,8 @@ const HostIconNotification = () => {
         }
       } catch (err) {
         console.error("Error fetching notifications:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -42,17 +46,21 @@ const HostIconNotification = () => {
   }, []);
   return (
     <div>
-      <BelliconNotification
-        tabs={["Unread", "all notifications"]}
-        notificationData={notifications}
-        filterOptions={[
-          { label: "All" },
-          { label: "Unread" },
-          { label: "Proposals" },
-          { label: "Messages" },
-          { label: "Payments & Invoices" },
-        ]}
-      />
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <BelliconNotification
+          tabs={["Unread", "all notifications"]}
+          notificationData={notifications}
+          filterOptions={[
+            { label: "All" },
+            { label: "Unread" },
+            { label: "Proposals" },
+            { label: "Messages" },
+            { label: "Payments & Invoices" },
+          ]}
+        />
+      )}
     </div>
   );
 };

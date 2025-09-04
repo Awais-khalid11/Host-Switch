@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { UserPNG } from "../../constants/Imgs";
 
-
 const TrainerMessages = ({ onSelectUser }) => {
   const recentMessages = [
     {
