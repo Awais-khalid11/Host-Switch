@@ -18,26 +18,7 @@ import {
   IntroPNG,
 } from "../../../../constants/Imgs";
 
-const nameData = [
-  {
-    text: "Cleaning",
-    bg: "bg-[#D8F2D9]",
-    border: "border-[#17642F33]",
-  },
-  {
-    text: "Maintenance",
-    bg: "bg-[#0050B333]",
-    border: "border-[#0050B333]",
-  },
-  {
-    text: "Guest Management",
-    bg: "bg-[#FFD70033]",
-    border: "border-[#FFD70033]",
-  },
-];
-
 const Introduction = ({ data }) => {
-  console.warn(data);
   return (
     <div className="shadow-[4px_0px_10px_0px_#0000000F] pl-0 p-5 lg:p-5 rounded-[20px]">
       <div className="flex md:flex-nowrap flex-wrap items-center gap-[30px]">
@@ -45,10 +26,16 @@ const Introduction = ({ data }) => {
           <div className="flex lg:flex-row flex-col items-start lg:items-end justify-between border-b border-b-[#D8D8D8] pb-5 mb-2">
             <div className="lg:mb-0 mb-2.5">
               <div className="flex items-center gap-2 mb-4">
-                <img src={DellSVG} alt="" className="w-[86px] h-[86px]" />
+                <img
+                  src={`${import.meta.env.VITE_IMG_URL}${
+                    data?.company_profile?.company_logo
+                  }`}
+                  alt=""
+                  className="w-[86px] h-[86px] rounded-full"
+                />
                 <div>
                   <h4 className="text-xl font-bold text-[#151923] ">
-                    StayWell Homes
+                    {data?.company_profile?.business_name}
                   </h4>
                   <div className="flex items-center mb-1">
                     <img src={StarSVG} alt="" />
@@ -59,86 +46,70 @@ const Introduction = ({ data }) => {
                   <div className="flex items-center gap-1 mb-2">
                     <img src={TransparentlocationSVG} alt="" />
                     <h4 className="text-sm font-normal text-black">
-                      4517 Washington Ave.{" "}
+                      {data?.company_profile?.business_address}
                     </h4>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2.5">
                 <div className="flex gap-2">
-                  {nameData.map((item, index) => (
+                  {data?.company_profile?.services?.map((service, index) => (
                     <div
                       key={index}
-                      className={`px-3 py-1 text-[9px] md:text-[12px] font-normal text-black rounded-full border ${item.bg} ${item.border}`}
+                      className="px-3 py-1 text-[9px] md:text-[12px] font-normal text-black rounded-full border border-[#17642F33] bg-[#D8F2D9]"
                     >
-                      {item.text}
+                      {service}
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-            <div>
-              <SemiCircleProgress />
-            </div>
           </div>
           <div className="border-b border-b-[#F5F5F5] pb-6 mb-6">
             <h2 className="text-xl font-bold mb-2">Description</h2>
             <h4 className="text-sm font-normal text-[#1B252B] mb-2">
-              “We don’t just manage — we protect, optimize, and care like it’s
-              our own.”
+              {data?.description}
             </h4>
-            <div className="text-sm font-normal text-[#1B252B80]">
-              <p>
-                Your property stays well-maintained, profitable, and in trusted
-                hands — from tenant screening to maintenance and reporting.
-              </p>
-            </div>
           </div>
-          <HostServices />
+          <HostServices data={data} />
           <h3 className="font-semibold text-xl mb-4">Documents</h3>
           <div className="flex md:flex-nowrap flex-wrap justify-between items-center border border-[#E4E5E8] rounded-[12px] py-8 px-5">
             <h4 className="text-sm font-normal flex items-center gap-1.5 lg:mb-0 mb-2.5">
               <img src={FilePNG} alt="img" />
               PDF Doc
             </h4>
-            <h4 className="text-[12px] font-semibold flex items-center gap-1.5">
-              <img src={BlackpdfSVG} alt="img" />
+
+            <a
+              href={`${import.meta.env.VITE_IMG_URL}${data?.property_proposal}`}
+              download="Document.pdf"
+              className="text-[12px] font-semibold flex items-center gap-1.5 hover:underline cursor-pointer"
+            >
+              <img src={BlackpdfSVG} alt="pdf" />
               Document.pdf
-            </h4>
+            </a>
           </div>
         </div>
         <div className="md:w-[50%] w-full">
           <div className="mb-5">
             <h3 className="text-xl font-bold mb-5">Introduction Video</h3>
-            <img
-              src={IntroPNG}
-              alt=""
-              className="rounded-[12px] lg:min-w-[422px] w-full object-cover lg:min-h-[451px]"
+            <video
+              controls
+              src={`${import.meta.env.VITE_IMG_URL}${data?.introduction_video}`}
+              alt="introduction-video"
+              className="rounded-[12px] lg:min-w-[422px] w-full  lg:min-h-[451px]"
             />
           </div>
           <div>
             <h3 className="text-xl font-bold mb-3">Gallery</h3>
             <div className="flex lg:flex-nowrap flex-wrap items-center gap-2.5">
-              <img
-                src={Gallery1PNG}
-                alt="img"
-                className="w-full md:h-[83px] object-cover rounded-[9px]"
-              />
-              <img
-                src={Gallery2PNG}
-                alt="img"
-                className="w-full md:h-[83px] object-cover rounded-[9px]"
-              />
-              <img
-                src={Gallery3PNG}
-                alt="img"
-                className="w-full md:h-[83px] object-cover rounded-[9px]"
-              />
-              <img
-                src={Gallery4PNG}
-                alt="img"
-                className="w-full md:h-[83px] object-cover rounded-[9px]"
-              />
+              {data?.company_profile?.office_photos?.map((photo, index) => (
+                <img
+                  key={index}
+                  src={`${import.meta.env.VITE_IMG_URL}${photo}`}
+                  alt={`office-photo-${index}`}
+                  className="w-full md:h-[83px] object-cover rounded-[9px]"
+                />
+              ))}
             </div>
           </div>
         </div>

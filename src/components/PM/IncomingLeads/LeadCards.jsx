@@ -3,7 +3,7 @@ import { AllSVG, EyeSVG, NewSVG, FilterSVG } from "../../../constants/Icons";
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import IncomingCards from "../../IncomingCards/IncomingCards";
-import { getData } from "../../../api/apiClient"; // ✅ import API helper
+import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
 import Skeleton from "../../Skeleton/SkeletonCard";
 
@@ -38,7 +38,7 @@ const LeadCards = ({ setCardDetail }) => {
       <div className="flex justify-between py-5">
         <h2 className="font-bold text-2xl">Incoming Leads</h2>
 
-        <FilterDropdown
+        {/* <FilterDropdown
           button={
             <Button variant="filterbtn" suffixImg={FilterSVG}>
               Filter
@@ -49,7 +49,7 @@ const LeadCards = ({ setCardDetail }) => {
             { label: "New", icon: <img src={NewSVG} alt="New" /> },
             { label: "Viewed", icon: <img src={EyeSVG} alt="Viewed" /> },
           ]}
-        />
+        /> */}
       </div>
 
       {loading ? (

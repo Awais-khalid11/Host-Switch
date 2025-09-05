@@ -31,7 +31,6 @@ const TrainerMessages = ({ onSelectUser }) => {
 
     fetchConversations();
   }, []);
-  console.log(conversations);
   return (
     <div className="bg-white border border-[#F5F5F5] py-2 rounded-xl h-[510px] overflow-y-auto w-full">
       <h2 className="font-semibold text-xl mb-4 px-4">Inbox</h2>
@@ -47,7 +46,7 @@ const TrainerMessages = ({ onSelectUser }) => {
               return (
                 <div
                   key={conv.id || index}
-                  onClick={() => onSelectUser(conv)}
+                  onClick={() => onSelectUser(conv.id)}
                   className="cursor-pointer px-4 py-3 flex justify-between items-start hover:bg-[#F5F5F5]"
                 >
                   <div className="flex gap-3">

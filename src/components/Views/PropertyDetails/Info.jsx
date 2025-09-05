@@ -1,7 +1,7 @@
 import React from "react";
 
 const Info = ({ data }) => {
-  const { property } = data;
+  const property = data?.property || {};
 
   const infoData = [
     {

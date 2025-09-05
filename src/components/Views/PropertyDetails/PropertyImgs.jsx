@@ -2,7 +2,7 @@ import React from "react";
 import NoDataFound from "../../NoDataFound";
 
 const PropertyMedia = ({ data }) => {
-  const { property } = data;
+  const property = data?.property || {};
   const images = property?.gallery?.images || [];
   // const videos = property?.gallery?.videos || [];
 

@@ -10,10 +10,12 @@ import DashboardCards from "../../DashboardCards/DashboardCards";
 import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
 import Skeleton from "../../Skeleton/SkeletonCard";
+import { useNavigate } from "react-router-dom";
 
-const HostDashboardHeader = ({ onAddClick }) => {
+const HostDashboardHeader = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -58,7 +60,9 @@ const HostDashboardHeader = ({ onAddClick }) => {
             variant="defaultBtn"
             prefixImg={WhitecircleSVG}
             className="w-[206px]"
-            onClick={onAddClick}
+            onClick={() =>
+              navigate("/host/hostmysubmissions/create-submission")
+            }
           >
             Add New Submissions
           </Button>

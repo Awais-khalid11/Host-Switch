@@ -13,26 +13,25 @@ const TopMatches = ({ matchClass, setRenderPage }) => {
   const [showModal, setShowModal] = useState(false);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const fetchMatches = async () => {
+    try {
+      setLoading(true);
+      const data = await getData("/matche?status=suggested&limit=3");
+
+      if (data?.payload?.records?.length > 0) {
+        setMatches(data?.payload?.records);
+      } else {
+        setMatches([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch matches:", err);
+      setMatches([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMatches = async () => {
-      try {
-        setLoading(true);
-        const data = await getData("/matche?status=suggested&limit=3");
-
-        if (data?.payload?.records?.length > 0) {
-          setMatches(data?.payload?.records);
-        } else {
-          setMatches([]);
-        }
-      } catch (err) {
-        console.error("Failed to fetch matches:", err);
-        setMatches([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMatches();
   }, []);
 
@@ -58,6 +57,7 @@ const TopMatches = ({ matchClass, setRenderPage }) => {
           matchdata={matches}
           borderBtn={true}
           setRenderPage={setRenderPage}
+          fetchMatches={fetchMatches}
         />
       ) : (
         <NoDataFound message="No Matches Available" className="my-6" />

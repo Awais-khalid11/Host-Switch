@@ -41,10 +41,9 @@ const Views = ({ setClose }) => {
             className="cursor-pointer"
             onClick={() => setClose(false)}
           />
-          Incoming Leads
+          Incoming Lead
         </h2>
         <div className="flex flex-col sm:flex-row items-center gap-2.5">
-
           <Button
             variant="greenbtn"
             className="w-[157px]"
@@ -53,7 +52,7 @@ const Views = ({ setClose }) => {
           >
             Send Proposal
           </Button>
-          
+
           <Link
             className="!w-[157px] rounded-[8px] flex items-center justify-center h-[48px] text-[#4D72FF] text-[12px] font-medium border border-[#4D72FF] px-5"
             prefixImg={BluemsgSVG}
@@ -72,7 +71,7 @@ const Views = ({ setClose }) => {
           >
             Decline Lead
           </Button>
-             {showModal && (
+          {showModal && (
             <Modal
               modalTitle="Please tell us why are you declining this Host property?"
               modalText="Your feedback helps us improve future matches."

@@ -19,7 +19,7 @@ import { HostdeclinePNG, RequestPNG, SndmsgPNG } from "../../../constants/Imgs";
 import HostProposalView from "../HostProposals/HostProposalView/HostProposalView";
 import { putData } from "../../../api/apiClient";
 
-const Match = ({ matchdata, borderBtn, setRenderPage }) => {
+const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
   const location = useLocation();
 
   const [showSendMessageModal, setShowSendMessageModal] = useState(null);
@@ -44,6 +44,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
       setUpdateStatus(false);
     }
   }
+
   return (
     <div>
       {matchdata.map((item, index) => (
@@ -58,8 +59,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
             >
               <source
                 src={`${import.meta.env.VITE_IMG_URL}${
-                  item?.pm_user?.company_profile?.expectation_preference?.files
-                    ?.video[0]?.url
+                  item?.pm_user?.company_profile?.expectation_preference?.video
                 }`}
                 type="video/mp4"
               />
@@ -69,8 +69,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
               <div className="flex gap-2.5 items-center mb-3">
                 <img
                   src={`${import.meta.env.VITE_IMG_URL}${
-                    item?.pm_user?.company_profile?.expectation_preference
-                      ?.files?.logo[0]?.url
+                    item?.pm_user?.company_profile?.company_logo
                   }`}
                   alt="img"
                   className="w-[50px] h-[50px] rounded-full"
@@ -192,7 +191,10 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
               modalTitle="Request Sent Successfully"
               modalText="Your request has been sent to this Property Manager. They’ve been notified and will respond with a customized proposal shortly."
               modalImg={Thumbsup}
-              onClose={() => setShowRequestModal(null)}
+              onClose={() => {
+                setShowRequestModal(null);
+                fetchMatches();
+              }}
               useBgImage={true}
               height="189px"
               width="582px"
@@ -242,7 +244,10 @@ const Match = ({ matchdata, borderBtn, setRenderPage }) => {
             >
               <HostDeclineModal
                 id={declineId}
-                onClose={() => setShowDeclineModal(null)}
+                onClose={() => {
+                  setShowDeclineModal(null);
+                  fetchMatches();
+                }}
               />
             </Modal>
           )}

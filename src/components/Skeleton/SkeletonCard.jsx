@@ -20,6 +20,7 @@ const Skeleton = ({
             </div>
           </div>
         );
+
       case "table":
         return (
           <div className="w-full border border-gray-200 rounded-lg overflow-hidden">
@@ -58,6 +59,29 @@ const Skeleton = ({
                   i % 2 === 0 ? "w-5/6" : "w-3/4"
                 }`}
               ></div>
+            ))}
+          </div>
+        );
+
+      case "chat":
+        return (
+          <div className="space-y-4">
+            {Array.from({ length: rows }).map((_, i) => (
+              <div
+                key={i}
+                className={`flex ${
+                  i % 2 === 0 ? "justify-start" : "justify-end"
+                }`}
+              >
+                <div
+                  className={`max-w-xs p-3 rounded-2xl bg-gray-300 ${
+                    i % 2 === 0 ? "rounded-tl-none" : "rounded-tr-none"
+                  }`}
+                >
+                  <div className="h-3 bg-gray-200 rounded w-24 mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-16"></div>
+                </div>
+              </div>
             ))}
           </div>
         );

@@ -132,7 +132,6 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
           );
         })}
 
-        {/* Send Message Modal */}
         {showModal && (
           <Modal
             modalTitle="Send a Message to Host"
