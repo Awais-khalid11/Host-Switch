@@ -16,7 +16,13 @@ const FileUpload = ({
 
   useEffect(() => {
     if (value && value.length > 0) {
-      setFile(value[0] || null);
+      // Check if it's a server file (has path property) or a File object
+      const firstFile = value[0];
+      if (firstFile && (firstFile.path || firstFile instanceof File)) {
+        setFile(firstFile);
+      }
+    } else {
+      setFile(null);
     }
   }, [value]);
 
@@ -51,6 +57,60 @@ const FileUpload = ({
     setIsDragging(false);
   };
 
+  const renderFilePreview = () => {
+    if (!file) return null;
+
+    // Handle server files (with path property)
+    if (file.path) {
+      const isImage = file.path.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+      if (isImage) {
+        return (
+          <img
+            src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
+            alt="uploaded"
+            className="w-16 h-16 object-cover rounded"
+            onError={(e) => {
+              e.currentTarget.src = "/placeholder-image.jpg";
+            }}
+          />
+        );
+      } else {
+        return (
+          <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
+            {file.originalname || "File"}
+          </div>
+        );
+      }
+    }
+
+    // Handle new File objects
+    if (file instanceof File) {
+      if (file.type?.startsWith("image/")) {
+        return (
+          <img
+            src={URL.createObjectURL(file)}
+            alt="preview"
+            className="w-16 h-16 object-cover rounded"
+          />
+        );
+      } else if (file.type === "application/pdf") {
+        return (
+          <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded">
+            📄
+          </div>
+        );
+      } else {
+        return (
+          <div className="w-32 h-28 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
+            {file.name}
+          </div>
+        );
+      }
+    }
+
+    return null;
+  };
+
   return (
     <div className="w-full mb-5">
       <label
@@ -66,6 +126,8 @@ const FileUpload = ({
         ref={fileInputRef}
         onChange={handleFileChange}
         className="hidden"
+        multiple
+        accept="image/*,video/*,.pdf,.doc,.docx"
       />
 
       {btn ? (
@@ -91,21 +153,7 @@ const FileUpload = ({
           }`}
         >
           {file ? (
-            file.type.startsWith("image/") ? (
-              <img
-                src={URL.createObjectURL(file)}
-                alt="preview"
-                className="w-16 h-16 object-cover rounded"
-              />
-            ) : file.type === "application/pdf" ? (
-              <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded">
-                📄
-              </div>
-            ) : (
-              <div className="w-32 h-28 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
-                {file.name}
-              </div>
-            )
+            renderFilePreview()
           ) : (
             <>
               <img src={UploadPNG} alt="uploadImg" className="mb-2" />

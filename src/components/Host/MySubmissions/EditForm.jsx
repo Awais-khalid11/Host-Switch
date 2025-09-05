@@ -188,7 +188,7 @@ const EditForm = () => {
       setValue("hostingTypes", data.hostingTypes ? [data.hostingTypes] : []);
       setValue("cleanTypes", data.cleanTypes ? [data.cleanTypes] : []);
       setValue("scope_service", data.scope_service || []);
-      setValue("accountManager", data.Manager || "");
+      setValue("accountManager", data.account_manager || "");
       setValue("message", data.anything_else || "");
       setValue("split_percentage", data.split_percentage || "");
       setValue("current_pm_company_name", data.current_pm_company_name || "");
@@ -236,7 +236,8 @@ const EditForm = () => {
 
       // Handle existing files
       if (data.files && data.files.length > 0) {
-        setExistingFiles(data.files);
+        setExistingFiles(data.files); // your local state (if you need it elsewhere)
+        setValue("files", data.files); // 👈 add this line to sync with react-hook-form
       }
     } catch (error) {
       console.error("Failed to fetch property data:", error);
@@ -269,8 +270,8 @@ const EditForm = () => {
           acc[`scope_service[${index}]`] = item;
           return acc;
         }, {}),
-        accountManager: data.accountManager,
-        anything_else: data.message,
+        account_manager: data.accountManager,
+        account_manager: data.accountManager === "yes",
         split_percentage: data.split_percentage,
 
         current_pm_company_name: data.current_pm_company_name,
@@ -355,7 +356,7 @@ const EditForm = () => {
         updatedData.cleanTypes ? [updatedData.cleanTypes] : []
       );
       setValue("scope_service", updatedData.scope_service || []);
-      setValue("accountManager", updatedData.accountManager || "");
+      setValue("accountManager", updatedData.account_manager || "");
       setValue("message", updatedData.anything_else || "");
       setValue("split_percentage", updatedData.split_percentage || "");
       setValue(
@@ -702,6 +703,7 @@ const EditForm = () => {
         </div>
 
         {/* Files Upload */}
+        {/* Files Upload */}
         <Controller
           name="files"
           control={control}
@@ -709,13 +711,47 @@ const EditForm = () => {
             const handleFileChange = (selectedFiles) => {
               field.onChange(selectedFiles);
             };
+
             return (
               <div>
+                {/* Upload files - this now handles both new and existing files */}
                 <FileUpload
                   label="Upload Photos & Videos"
                   value={field.value}
                   onChange={handleFileChange}
                 />
+
+                {/* Show additional existing files if there are multiple */}
+                {existingFiles.length > 1 && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      All Uploaded Files ({existingFiles.length})
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {existingFiles.map((file, index) => (
+                        <div key={index} className="relative">
+                          {file.path?.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            <img
+                              src={`${import.meta.env.VITE_IMG_URL}${
+                                file.path
+                              }`}
+                              alt={`file-${index}`}
+                              className="w-20 h-20 object-cover rounded border"
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder-image.jpg";
+                              }}
+                            />
+                          ) : (
+                            <div className="w-20 h-20 flex items-center justify-center border rounded text-xs text-center p-1">
+                              {file.originalname || "File"}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {errors.files && (
                   <p className="text-red-500 text-sm -mt-5 mb-2">
                     {errors.files.message}
