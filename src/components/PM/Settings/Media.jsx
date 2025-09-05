@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../../Button/Button";
 import FileUpload from "../../UploadFile/UploadFile";
+import { getData } from "../../../api/apiClient";
 
 const Media = () => {
+  // const fetchProfile = async () => {
+  //   try {
+  //     const res = await getData("/auth/property-manager/profile");
+  //     console.log(res);
+  //   } catch (err) {
+  //     console.error("Failed to fetch profile:", err);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchProfile();
+  // }, []);
   return (
     <div className="bg-white border border-[#E9EAEB] rounded-[12px] py-4 px-5">
       <div className="flex items-center gap-2.5 mb-3">

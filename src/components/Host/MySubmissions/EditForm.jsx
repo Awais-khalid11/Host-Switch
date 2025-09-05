@@ -270,7 +270,6 @@ const EditForm = () => {
           acc[`scope_service[${index}]`] = item;
           return acc;
         }, {}),
-        account_manager: data.accountManager,
         account_manager: data.accountManager === "yes",
         split_percentage: data.split_percentage,
 

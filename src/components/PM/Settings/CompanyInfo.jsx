@@ -12,26 +12,25 @@ const CompanyInfo = () => {
     companyType: "",
     googleReviewLink: "",
   });
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await getData("/auth/property-manager/profile");
-        if (res?.payload) {
-          setFormValues({
-            businessName: res.payload?.business_name || "",
-            businessAddress: res.payload?.business_address || "",
-            // companyBio: res.payload?.bio || "",
-            companyType: res.payload?.business_type || "",
-            googleReviewLink:
-              res.payload?.expectation_preference?.yelp_google_reviews_link ||
-              "",
-          });
-        }
-      } catch (err) {
-        console.error("Failed to fetch profile:", err);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const fetchProfile = async () => {
+    try {
+      const res = await getData("/auth/property-manager/profile");
+      if (res?.payload) {
+        setFormValues({
+          businessName: res.payload?.business_name || "",
+          businessAddress: res.payload?.business_address || "",
+          // companyBio: res.payload?.bio || "",
+          companyType: res.payload?.business_type || "",
+          googleReviewLink:
+            res.payload?.expectation_preference?.yelp_google_reviews_link || "",
+        });
       }
-    };
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
+  };
+  useEffect(() => {
     fetchProfile();
   }, []);
 
@@ -43,17 +42,16 @@ const CompanyInfo = () => {
   };
 
   const handleSubmit = async (e) => {
+    setUpdateLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
 
-    // ✅ Flat keys for company info
     formData.append("business_name", formValues.businessName);
     formData.append("business_address", formValues.businessAddress);
     // formData.append("bio", formValues.companyBio);
     formData.append("business_type", formValues.companyType);
 
-    // ✅ Expectation namespace only for review link
     formData.append(
       "expectation_preference[yelp_google_reviews_link]",
       formValues.googleReviewLink
@@ -64,21 +62,12 @@ const CompanyInfo = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Company Info updated successfully!");
-
-      // 🔄 Re-fetch to show updated data
-      const res = await getData("/auth/property-manager/profile");
-      if (res?.payload) {
-        setFormValues({
-          businessName: res.payload?.business_name || "",
-          businessAddress: res.payload?.business_address || "",
-          // companyBio: res.payload?.bio || "",
-          companyType: res.payload?.business_type || "",
-          googleReviewLink: res.payload?.yelp_google_reviews_link || "",
-        });
-      }
+      fetchProfile();
     } catch (err) {
       console.error("Update failed:", err);
       toast.error("Failed to update Company Info.");
+    } finally {
+      setUpdateLoading(false);
     }
   };
 
@@ -146,6 +135,7 @@ const CompanyInfo = () => {
           <Button
             variant="defaultBtn"
             type="submit"
+            loading={updateLoading}
             className="bg-[#4D72FF] text-white font-normal h-[44px] md:w-[195px] w-full"
           >
             Update Company Info
