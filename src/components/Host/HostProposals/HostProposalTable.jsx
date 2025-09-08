@@ -75,12 +75,12 @@ const HostProposalTable = () => {
           // reviews = "No Reviews",
           company_logo,
         } = row;
-        console.log(company_logo);
+        console.log(`${import.meta.env.VITE_IMG_URL}${company_logo}`);
         return (
           <div className="flex items-center gap-3">
             {company_logo ? (
               <img
-                src={`${import.meta.env.VITE_IMG_URL}/${company_logo}`}
+                src={`${import.meta.env.VITE_IMG_URL}${company_logo}`}
                 alt={first_name}
                 onError={(e) => (e.currentTarget.src = company_logo)}
                 className="w-[38px] h-[38px] rounded-full object-cover border border-gray-200"
