@@ -13,6 +13,7 @@ const InvoicePaymentSettings = () => {
     same_day: false,
     three_days_after: false,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -42,9 +43,9 @@ const InvoicePaymentSettings = () => {
     fetchSettings();
   }, []);
 
-  // 🔹 Save settings
   const handleSave = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = [
       { key: "stripe_integration_key", value: stripeKey },
@@ -66,6 +67,8 @@ const InvoicePaymentSettings = () => {
     } catch (err) {
       console.error("Update failed:", err);
       toast.error("Failed to update settings");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -140,10 +143,13 @@ const InvoicePaymentSettings = () => {
         <div className="flex justify-end">
           <Button
             type="submit"
-            variant=" defaultBtn"
-            className="bg-[#4D72FF] text-white font-normal h-[44px] md:w-[152px] w-full"
+            disabled={loading}
+            variant="defaultBtn"
+            className={`bg-[#4D72FF] text-white font-normal h-[44px] md:w-[152px] w-full ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            Update
+            {loading ? "Updating..." : "Update"}
           </Button>
         </div>
       </form>

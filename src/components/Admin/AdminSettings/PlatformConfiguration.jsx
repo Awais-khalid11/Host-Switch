@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../InputField/InputField";
 import Button from "../../Button/Button";
 import { useForm, Controller } from "react-hook-form";
@@ -16,12 +16,13 @@ const schema = z.object({
 });
 
 const PlatformConfiguration = () => {
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -59,6 +60,7 @@ const PlatformConfiguration = () => {
   }, [reset]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const payload = [
         { key: "platform_name", value: data.name },
@@ -74,6 +76,8 @@ const PlatformConfiguration = () => {
     } catch (error) {
       console.error("API Error:", error);
       toast.error(error.message || "Failed to update settings");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -168,8 +172,9 @@ const PlatformConfiguration = () => {
             type="submit"
             variant="defaultBtn"
             className="bg-[#4D72FF] text-white font-normal h-[44px] md:w-[152px] w-full"
+            disabled={loading}
           >
-            Update
+            {loading ? "Updating..." : "Update"}
           </Button>
         </div>
       </form>

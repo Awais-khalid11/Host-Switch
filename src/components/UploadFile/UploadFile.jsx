@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { UploadPNG } from "../../constants/Imgs";
 
 const FileUpload = ({
-  label = "Upload a File",
+  label = "Upload Files",
   id,
   nodetail,
   defaultFileName = "",
@@ -11,18 +11,14 @@ const FileUpload = ({
   onChange = () => {},
 }) => {
   const fileInputRef = useRef(null);
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     if (value && value.length > 0) {
-      // Check if it's a server file (has path property) or a File object
-      const firstFile = value[0];
-      if (firstFile && (firstFile.path || firstFile instanceof File)) {
-        setFile(firstFile);
-      }
+      setFiles(value);
     } else {
-      setFile(null);
+      setFiles([]);
     }
   }, [value]);
 
@@ -31,20 +27,23 @@ const FileUpload = ({
   };
 
   const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    if (files.length > 0) {
-      setFile(files[0]);
-      onChange(files);
+    const newFiles = Array.from(event.target.files);
+    if (newFiles.length > 0) {
+      const updatedFiles = [...files, ...newFiles];
+      setFiles(updatedFiles);
+      onChange(updatedFiles);
     }
+    event.target.value = "";
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     setIsDragging(false);
-    const files = Array.from(event.dataTransfer.files);
-    if (files.length > 0) {
-      setFile(files[0]);
-      onChange(files);
+    const newFiles = Array.from(event.dataTransfer.files);
+    if (newFiles.length > 0) {
+      const updatedFiles = [...files, ...newFiles];
+      setFiles(updatedFiles);
+      onChange(updatedFiles);
     }
   };
 
@@ -57,58 +56,96 @@ const FileUpload = ({
     setIsDragging(false);
   };
 
-  const renderFilePreview = () => {
-    if (!file) return null;
+  const removeFile = (indexToRemove) => {
+    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
+    setFiles(updatedFiles);
+    onChange(updatedFiles);
+  };
 
-    // Handle server files (with path property)
-    if (file.path) {
-      const isImage = file.path.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-      if (isImage) {
-        return (
-          <img
-            src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
-            alt="uploaded"
-            className="w-16 h-16 object-cover rounded"
-            onError={(e) => {
-              e.currentTarget.src = "/placeholder-image.jpg";
-            }}
-          />
-        );
-      } else {
-        return (
-          <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
-            {file.originalname || "File"}
-          </div>
-        );
-      }
-    }
+  const renderFilePreviews = () => {
+    if (files.length === 0) return null;
 
-    // Handle new File objects
-    if (file instanceof File) {
-      if (file.type?.startsWith("image/")) {
-        return (
-          <img
-            src={URL.createObjectURL(file)}
-            alt="preview"
-            className="w-16 h-16 object-cover rounded"
-          />
-        );
-      } else if (file.type === "application/pdf") {
-        return (
-          <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded">
-            📄
-          </div>
-        );
-      } else {
-        return (
-          <div className="w-32 h-28 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
-            {file.name}
-          </div>
-        );
-      }
-    }
+    return (
+      <div className="flex flex-wrap gap-2 mt-3 justify-center">
+        {files.map((file, index) => {
+          if (file.path) {
+            const isImage = file.path.match(/\.(jpg|jpeg|png|gif|webp)$/i);
+            return (
+              <div key={`server-${index}`} className="relative">
+                {isImage ? (
+                  <img
+                    src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
+                    alt="uploaded"
+                    className="w-16 h-16 object-cover rounded border"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder-image.jpg";
+                    }}
+                  />
+                ) : (
+                  <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
+                    {file.originalname || "File"}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFile(index);
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                >
+                  ×
+                </button>
+              </div>
+            );
+          }
 
-    return null;
+          if (file instanceof File) {
+            if (file.type?.startsWith("image/")) {
+              return (
+                <div key={`new-${index}`} className="relative">
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="preview"
+                    className="w-16 h-16 object-cover rounded border"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(index);
+                    }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            } else {
+              return (
+                <div key={`new-${index}`} className="relative">
+                  <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs text-center p-1">
+                    {file.name}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(index);
+                    }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            }
+          }
+
+          return null;
+        })}
+      </div>
+    );
   };
 
   return (
@@ -141,6 +178,7 @@ const FileUpload = ({
           <p className="text-[11px] text-[#2F3542] mt-1 ml-1">
             Attach a photo, video, or document (PDF, JPG, MP4, DOCX)
           </p>
+          {renderFilePreviews()}
         </>
       ) : (
         <div
@@ -148,12 +186,22 @@ const FileUpload = ({
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
-          className={`w-full h-[147px] rounded-lg bg-white cursor-pointer flex flex-col justify-center items-center p-5 border-2 border-dashed transition-all duration-200 ${
+          className={`w-full min-h-[147px] rounded-lg bg-white cursor-pointer flex flex-col justify-center items-center p-5 border-2 border-dashed transition-all duration-200 ${
             isDragging ? "border-blue-500 bg-blue-50" : "border-[#D5D7DA]"
           }`}
         >
-          {file ? (
-            renderFilePreview()
+          {files.length > 0 ? (
+            <div className="w-full">
+              <p className="text-sm text-center mb-3">
+                <strong className="text-[#5B5B5B]">
+                  {files.length} file(s) selected
+                </strong>
+              </p>
+              {renderFilePreviews()}
+              {/* <p className="text-xs text-center mt-3 text-blue-500">
+                Click to add more files
+              </p> */}
+            </div>
           ) : (
             <>
               <img src={UploadPNG} alt="uploadImg" className="mb-2" />
@@ -164,7 +212,7 @@ const FileUpload = ({
               </p>
               {!nodetail && (
                 <p className="text-[11px] text-[#2F3542] ml-1">
-                  Drag and drop a file or Click to Upload
+                  Drag and drop files or Click to Upload
                 </p>
               )}
             </>

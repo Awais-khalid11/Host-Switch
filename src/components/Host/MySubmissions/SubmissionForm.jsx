@@ -12,7 +12,7 @@ import MultiCheckboxDropdown from "../../Auths/Onboarding/Portfolio/MultiCheckbo
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../../api/apiClient"; // Adjust path as needed
+import { postData } from "../../../api/apiClient";
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
@@ -52,10 +52,10 @@ const schema = z.object({
   reason_switching: z.array(z.string()).min(1, "Select at least one"),
   type: z.array(z.string()).min(1, "Select at least one"),
   rented_out: z.array(z.string()).min(1, "Select at least one"),
-  hostingTypes: z.array(z.string()).min(1, "Select at least one"), // Added missing field
-  cleanTypes: z.array(z.string()).min(1, "Select at least one"), // Added missing field
+  hostingTypes: z.array(z.string()).min(1, "Select at least one"),
+  cleanTypes: z.array(z.string()).min(1, "Select at least one"),
   desc: z.string().optional(),
-  message: z.string().optional(), // Additional message field
+  message: z.string().optional(),
 
   current_pm_company_name: z.string().min(1, "Company Name is required"),
   pm_charge_percentage: z.array(z.string()).min(1, "Select at least one"),
@@ -307,7 +307,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Rent & Link */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <Controller
             name="rented_out"
@@ -358,7 +357,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Property / Hosting / Cleaning */}
         <div>
           <Controller
             name="type"
@@ -417,8 +415,8 @@ const SubmissionForm = () => {
                   placeholder="Select Scope of services"
                   selectedValues={field.value}
                   setSelectedValues={(values) => field.onChange(values)}
-                  dropdownKey="scope_service" // Changed to match field name
-                  isOpen={openDropdown === "scope_service"} // Changed to match field name
+                  dropdownKey="scope_service"
+                  isOpen={openDropdown === "scope_service"}
                   setOpenDropdown={setOpenDropdown}
                   isMulti={true}
                 />
@@ -489,7 +487,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Account Manager */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Do You Currently Have a Property Manager?
@@ -525,7 +522,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Files Upload */}
         <Controller
           name="files"
           control={control}
@@ -550,7 +546,6 @@ const SubmissionForm = () => {
           }}
         />
 
-        {/* Reason for Switching */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">Reason for Switching</h4>
           <Controller
@@ -589,7 +584,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Split Percentage & PM Top Priority */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-4">
           <Controller
             name="split_percentage"
@@ -652,7 +646,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Current PM Company Name */}
         <div>
           <Controller
             name="current_pm_company_name"
@@ -679,7 +672,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* PM Charge Percentage */}
         <div>
           <Controller
             name="pm_charge_percentage"
@@ -708,7 +700,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Yearly Revenue */}
         <Controller
           name="yearly_revenue"
           control={control}
@@ -732,7 +723,6 @@ const SubmissionForm = () => {
           )}
         />
 
-        {/* Full Service vs Co-Host */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">
             Are you seeking Full PM or Co-Host?
@@ -768,7 +758,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Co-hosting consideration */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">Would You Consider Co-hosting?</h3>
           <Controller
@@ -810,7 +799,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Absolute Must Haves */}
         <Controller
           name="absolute_must_have"
           control={control}
@@ -851,7 +839,6 @@ const SubmissionForm = () => {
           }}
         />
 
-        {/* Involvement Level */}
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h3 className="text-sm font-bold mb-5">
             Involvement in Day-to-Day Decisions?
@@ -895,7 +882,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Renovations in Last 3 Years */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">
             Renovations in Last 3 Years
@@ -936,7 +922,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Condition of Property */}
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-3">Condition of Property</h2>
 
@@ -981,7 +966,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Kitchen Appliances */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Kitchen Appliances</h2>
             <Controller
@@ -1022,7 +1006,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Bathroom Fixtures */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Bathroom Fixtures</h2>
             <Controller
@@ -1063,7 +1046,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Furniture */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Furniture</h2>
             <Controller
@@ -1104,7 +1086,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Paint/Interior */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Paint/Interior</h2>
             <Controller
@@ -1145,7 +1126,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Smart Devices */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Smart Devices</h2>
             <Controller
@@ -1186,7 +1166,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Outdoor Amenities */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Outdoor Amenities</h2>
             <Controller
@@ -1227,7 +1206,6 @@ const SubmissionForm = () => {
             />
           </div>
 
-          {/* Others */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Others</h2>
             <Controller
@@ -1269,7 +1247,6 @@ const SubmissionForm = () => {
           </div>
         </div>
 
-        {/* Upgrade Suggestions, Investment, Photography */}
         <div className="flex flex-wrap md:flex-nowrap items-start justify-between mb-6 gap-4">
           <Controller
             name="suggestion"
@@ -1401,7 +1378,6 @@ const SubmissionForm = () => {
           />
         </div>
 
-        {/* Additional Message */}
         <Controller
           name="message"
           control={control}
@@ -1415,7 +1391,6 @@ const SubmissionForm = () => {
           )}
         />
 
-        {/* Description */}
         <Controller
           name="desc"
           control={control}
@@ -1429,7 +1404,6 @@ const SubmissionForm = () => {
           )}
         />
 
-        {/* Submit Button */}
         <div className="flex justify-end gap-2.5">
           <Button
             type="submit"

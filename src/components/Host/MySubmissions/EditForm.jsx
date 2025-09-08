@@ -170,7 +170,6 @@ const EditForm = () => {
     },
   });
 
-  // Fetch property data
   const fetchPropertyData = async () => {
     try {
       if (!id) return;
@@ -179,7 +178,6 @@ const EditForm = () => {
       const data = response.payload;
       setPropertyData(data);
 
-      // Set form values based on API response
       setValue("address", data.address || "");
       setValue("unit_apt", data.unit_apt || "");
       setValue("link", data.link || "");
@@ -196,7 +194,6 @@ const EditForm = () => {
       setValue("co_hosting", data.co_hosting || "");
       setValue("involvement_level", data.involvement_level || "");
 
-      // Set condition values
       if (data.condition) {
         setValue("condition.Flooring", data.condition.Flooring || "");
         setValue(
@@ -234,10 +231,20 @@ const EditForm = () => {
         data.pm_top_priority ? [data.pm_top_priority] : []
       );
 
-      // Handle existing files
-      if (data.files && data.files.length > 0) {
-        setExistingFiles(data.files); // your local state (if you need it elsewhere)
-        setValue("files", data.files); // 👈 add this line to sync with react-hook-form
+      if (data.gallery && data.gallery.length > 0) {
+        // Transform gallery array to match expected format
+        const transformedFiles = data.gallery.map((filename, index) => ({
+          path: filename,
+          originalname: filename,
+          // If you need other properties, add them here
+        }));
+
+        setExistingFiles(transformedFiles);
+        setValue("files", transformedFiles);
+      } else if (data.files && data.files.length > 0) {
+        // Keep this as fallback if API sometimes returns 'files' instead
+        setExistingFiles(data.files);
+        setValue("files", data.files);
       }
     } catch (error) {
       console.error("Failed to fetch property data:", error);
@@ -315,14 +322,25 @@ const EditForm = () => {
 
       const formData = new FormData();
 
+      // First, add all non-file fields to formData
       Object.keys(payload).forEach((key) => {
         formData.append(key, payload[key]);
       });
 
+      // Handle files - only append new files, not existing file objects
       if (data.files && data.files.length > 0) {
-        Array.from(data.files).forEach((file) => {
-          formData.append("files", file);
+        data.files.forEach((file) => {
+          // Only append if it's a File object (new upload), not an existing file object
+          if (file instanceof File) {
+            formData.append("files", file);
+          }
         });
+      }
+
+      // Debug: Log what's being sent
+      console.log("FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
       }
 
       const response = await putData(`/property/${id}`, formData, {
@@ -333,89 +351,9 @@ const EditForm = () => {
 
       console.log("API Success:", response);
 
-      // Update the local state with the updated data
-      setPropertyData(response.payload);
-
-      // Update form values with the response data
+      // Update the form with the new data
       const updatedData = response.payload;
-      setValue("address", updatedData.address || "");
-      setValue("unit_apt", updatedData.unit_apt || "");
-      setValue("link", updatedData.link || "");
-      setValue(
-        "rented_out",
-        updatedData.rented_out ? [updatedData.rented_out] : []
-      );
-      setValue("type", updatedData.type ? [updatedData.type] : []);
-      setValue(
-        "hostingTypes",
-        updatedData.hostingTypes ? [updatedData.hostingTypes] : []
-      );
-      setValue(
-        "cleanTypes",
-        updatedData.cleanTypes ? [updatedData.cleanTypes] : []
-      );
-      setValue("scope_service", updatedData.scope_service || []);
-      setValue("accountManager", updatedData.account_manager || "");
-      setValue("message", updatedData.anything_else || "");
-      setValue("split_percentage", updatedData.split_percentage || "");
-      setValue(
-        "current_pm_company_name",
-        updatedData.current_pm_company_name || ""
-      );
-      setValue("seeking_pm_host", updatedData.seeking_pm_host || "");
-      setValue("co_hosting", updatedData.co_hosting || "");
-      setValue("involvement_level", updatedData.involvement_level || "");
-
-      // Set condition values
-      if (updatedData.condition) {
-        setValue("condition.Flooring", updatedData.condition.Flooring || "");
-        setValue(
-          "condition.KitchenAppliances",
-          updatedData.condition.KitchenAppliances || ""
-        );
-        setValue(
-          "condition.BathroomFixtures",
-          updatedData.condition.BathroomFixtures || ""
-        );
-        setValue("condition.Furniture", updatedData.condition.Furniture || "");
-        setValue(
-          "condition.PaintInterior",
-          updatedData.condition.PaintInterior || ""
-        );
-        setValue(
-          "condition.SmartDevices",
-          updatedData.condition.SmartDevices || ""
-        );
-        setValue(
-          "condition.OutdoorAmenities",
-          updatedData.condition.OutdoorAmenities || ""
-        );
-        setValue("condition.Others", updatedData.condition.Others || "");
-      }
-
-      setValue("suggestion", updatedData.suggestion || "");
-      setValue("open_investing", updatedData.open_investing || "");
-      setValue("photography", updatedData.photography || "");
-      setValue("absolute_must_have", updatedData.absolute_must_have || []);
-      setValue("renovations", updatedData.renovations || []);
-      setValue(
-        "pm_charge_percentage",
-        updatedData.pm_charge_percentage
-          ? [updatedData.pm_charge_percentage]
-          : []
-      );
-      setValue("yearly_revenue", updatedData.yearly_revenue || "");
-      setValue("desc", updatedData.desc || "");
-      setValue("reason_switching", updatedData.reason_switching || []);
-      setValue(
-        "pm_top_priority",
-        updatedData.pm_top_priority ? [updatedData.pm_top_priority] : []
-      );
-
-      // Handle existing files
-      if (updatedData.files && updatedData.files.length > 0) {
-        setExistingFiles(updatedData.files);
-      }
+      // ... rest of your update logic
 
       toast.success("Property updated successfully!");
     } catch (error) {
@@ -483,7 +421,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Rent & Link */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
           <Controller
             name="rented_out"
@@ -534,7 +471,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Property / Hosting / Cleaning */}
         <div>
           <Controller
             name="type"
@@ -593,8 +529,8 @@ const EditForm = () => {
                   placeholder="Select Scope of services"
                   selectedValues={field.value}
                   setSelectedValues={(values) => field.onChange(values)}
-                  dropdownKey="scope_service" // Changed to match field name
-                  isOpen={openDropdown === "scope_service"} // Changed to match field name
+                  dropdownKey="scope_service"
+                  isOpen={openDropdown === "scope_service"}
                   setOpenDropdown={setOpenDropdown}
                   isMulti={true}
                 />
@@ -665,7 +601,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Account Manager */}
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-5">
           <h3 className="text-sm font-bold">
             Do You Currently Have a Property Manager?
@@ -701,8 +636,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Files Upload */}
-        {/* Files Upload */}
         <Controller
           name="files"
           control={control}
@@ -713,15 +646,13 @@ const EditForm = () => {
 
             return (
               <div>
-                {/* Upload files - this now handles both new and existing files */}
                 <FileUpload
                   label="Upload Photos & Videos"
                   value={field.value}
                   onChange={handleFileChange}
                 />
 
-                {/* Show additional existing files if there are multiple */}
-                {existingFiles.length > 1 && (
+                {/* {existingFiles.length > 1 && (
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       All Uploaded Files ({existingFiles.length})
@@ -749,7 +680,7 @@ const EditForm = () => {
                       ))}
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {errors.files && (
                   <p className="text-red-500 text-sm -mt-5 mb-2">
@@ -761,7 +692,6 @@ const EditForm = () => {
           }}
         />
 
-        {/* Reason for Switching */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">Reason for Switching</h4>
           <Controller
@@ -800,7 +730,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Split Percentage & PM Top Priority */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-4">
           <Controller
             name="split_percentage"
@@ -863,7 +792,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Current PM Company Name */}
         <div>
           <Controller
             name="current_pm_company_name"
@@ -890,7 +818,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* PM Charge Percentage */}
         <div>
           <Controller
             name="pm_charge_percentage"
@@ -919,7 +846,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Yearly Revenue */}
         <Controller
           name="yearly_revenue"
           control={control}
@@ -943,7 +869,6 @@ const EditForm = () => {
           )}
         />
 
-        {/* Full Service vs Co-Host */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">
             Are you seeking Full PM or Co-Host?
@@ -979,7 +904,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Co-hosting consideration */}
         <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
           <h3 className="text-sm font-bold">Would You Consider Co-hosting?</h3>
           <Controller
@@ -1021,7 +945,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Absolute Must Haves */}
         <Controller
           name="absolute_must_have"
           control={control}
@@ -1062,7 +985,6 @@ const EditForm = () => {
           }}
         />
 
-        {/* Involvement Level */}
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h3 className="text-sm font-bold mb-5">
             Involvement in Day-to-Day Decisions?
@@ -1106,7 +1028,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Renovations in Last 3 Years */}
         <div className="border border-[#2525251A] p-4 rounded-[8px] mb-6">
           <h4 className="font-bold text-sm mb-4">
             Renovations in Last 3 Years
@@ -1147,11 +1068,9 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Condition of Property */}
         <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
           <h2 className="text-sm font-bold mb-3">Condition of Property</h2>
 
-          {/* Flooring */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Flooring</h2>
             <Controller
@@ -1192,7 +1111,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Kitchen Appliances */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Kitchen Appliances</h2>
             <Controller
@@ -1233,7 +1151,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Bathroom Fixtures */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Bathroom Fixtures</h2>
             <Controller
@@ -1274,7 +1191,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Furniture */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Furniture</h2>
             <Controller
@@ -1315,7 +1231,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Paint/Interior */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Paint/Interior</h2>
             <Controller
@@ -1356,7 +1271,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Smart Devices */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Smart Devices</h2>
             <Controller
@@ -1397,7 +1311,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Outdoor Amenities */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Outdoor Amenities</h2>
             <Controller
@@ -1438,7 +1351,6 @@ const EditForm = () => {
             />
           </div>
 
-          {/* Others */}
           <div className="flex items-center gap-10 mb-5">
             <h2 className="text-sm font-bold w-[200px]">Others</h2>
             <Controller
@@ -1480,7 +1392,6 @@ const EditForm = () => {
           </div>
         </div>
 
-        {/* Upgrade Suggestions, Investment, Photography */}
         <div className="flex flex-wrap md:flex-nowrap items-start justify-between mb-6 gap-4">
           <Controller
             name="suggestion"
@@ -1612,7 +1523,6 @@ const EditForm = () => {
           />
         </div>
 
-        {/* Additional Message */}
         <Controller
           name="message"
           control={control}
@@ -1626,7 +1536,6 @@ const EditForm = () => {
           )}
         />
 
-        {/* Description */}
         <Controller
           name="desc"
           control={control}
@@ -1640,7 +1549,6 @@ const EditForm = () => {
           )}
         />
 
-        {/* Submit Button */}
         <div className="flex justify-end gap-2.5">
           <Button
             type="submit"
