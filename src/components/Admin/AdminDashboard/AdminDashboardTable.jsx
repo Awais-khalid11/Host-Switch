@@ -1,75 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../Table/Table";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import Button from "../../Button/Button";
 import { AllSVG, ClockSVG, FilterSVG } from "../../../constants/Icons";
-import { useNavigate } from "react-router-dom";
+import { getData } from "../../../api/apiClient";
 
 const AdminDashboardTable = () => {
-  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [activityLogs, setActivityLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const allData = [
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Accepted",
-      status: "Paid",
-      score: "90%",
-      commission: "Paid",
-    },
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Awaiting",
-      status: "Unaid",
-      score: "90%",
-      commission: "Paid",
-    },
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Rejected",
-      status: "Paid",
-      score: "90%",
-      commission: "Paid",
-    },
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Accepted",
-      status: "Unpaid",
-      score: "90%",
-      commission: "Paid",
-    },
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Accepted",
-      status: "Paid",
-      score: "90%",
-      commission: "Paid",
-    },
-    {
-      hosts: "Sarah Thompson",
-      pms: "Sarah Thompson",
-      property: "123 Palm Ave, Miami",
-      proposals: "Accepted",
-      status: "Paid",
-      score: "90%",
-      commission: "Paid",
-    },
-  ];
+  const fetchActivityLogs = async () => {
+    try {
+      setLoading(true);
+      const endpoint = filterStatus
+        ? `/admin/dashboard/summary?status=${filterStatus}`
+        : `/admin/dashboard/summary`;
 
-  const filteredData = filterStatus
-    ? allData.filter((item) => item.proposals === filterStatus)
-    : allData;
+      const data = await getData(endpoint);
+
+      if (data?.payload?.recentActivityLogs?.records) {
+        setActivityLogs(data.payload.recentActivityLogs.records);
+      } else {
+        setActivityLogs([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch activity logs:", err);
+      setActivityLogs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivityLogs();
+  }, [filterStatus]);
+
+  const allData = activityLogs.map((item) => ({
+    hosts: item?.property_owner?.name ?? "N/A",
+    pms: item?.user?.name ?? "N/A",
+    property: item?.property?.address ?? "N/A",
+    proposals: item?.status
+      ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+      : "N/A",
+    status: item?.invoice_status ?? "Unpaid",
+    score: item?.match_score ?? "—",
+    commission: item?.revenue_expectation
+      ? `$${item.revenue_expectation}`
+      : "—",
+  }));
 
   const columns = [
     { header: "Hosts", accessor: "hosts", showSort: true },
@@ -81,11 +61,10 @@ const AdminDashboardTable = () => {
       showSort: true,
       cell: ({ getValue }) => {
         const proposals = getValue();
-
         const proposalsClass =
-          proposals === "Accepted"
+          proposals.toLowerCase() === "accepted"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
-            : proposals === "Awaiting"
+            : proposals.toLowerCase() === "pending"
             ? "bg-[#FFAF3F1A] border border-[#FFAF3F] text-[#FFAF3F]"
             : "bg-[#CE1B1B1A] border border-[#CE1B1B] text-[#CE1B1B]";
 
@@ -105,12 +84,10 @@ const AdminDashboardTable = () => {
       showSort: true,
       cell: ({ getValue }) => {
         const status = getValue();
-
         const statusClass =
           status === "Paid"
             ? "bg-[#ECFDF3] border border-[#ABEFC6] text-[#067647]"
             : "bg-[#FFAF3F1A] border border-[#FFAF3F] text-[#FFAF3F]";
-
         return (
           <div
             className={`px-3 py-1 text-xs font-medium rounded-full inline-block ${statusClass}`}
@@ -128,7 +105,7 @@ const AdminDashboardTable = () => {
       <div className="rounded-xl bg-white overflow-hidden">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 mb-3.5">
           <h2 className="md:text-xl text-base text-[#181D27] font-bold">
-            Recent Activity Logs
+            {filterStatus === "" ? "All" : filterStatus} Activity Logs
           </h2>
 
           <FilterDropdown
@@ -137,23 +114,28 @@ const AdminDashboardTable = () => {
                 Filter
               </Button>
             }
-            onSelect={(val) => setFilterStatus(val)} // NEW
+            onSelect={(val) => setFilterStatus(val)}
             options={[
               { label: "All", value: "", icon: <img src={AllSVG} alt="All" /> },
               {
                 label: "Awaiting",
-                value: "Awaiting",
+                value: "pending",
                 icon: <img src={ClockSVG} alt="Awaiting" />,
               },
               {
                 label: "Accepted",
-                value: "Accepted",
+                value: "accepted",
                 icon: <img src={ClockSVG} alt="Accepted" />,
               },
               {
                 label: "Rejected",
-                value: "Rejected",
+                value: "declined",
                 icon: <img src={ClockSVG} alt="Rejected" />,
+              },
+              {
+                label: "Withdrawn",
+                value: "withdrawn",
+                icon: <img src={ClockSVG} alt="Withdrawn" />,
               },
             ]}
           />
@@ -162,10 +144,9 @@ const AdminDashboardTable = () => {
         <div className="rounded-[12px] border border-[#001B4429] pb-2.5">
           <Table
             columns={columns}
-            data={filteredData} // UPDATED to use filteredData
-            //   showActions
-            //   actions={rowActions}
+            data={allData}
             search={search}
+            loading={loading}
           />
         </div>
       </div>
