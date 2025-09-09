@@ -7,6 +7,7 @@ import { getData, postData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
 import useRoleStore from "../../../store/useRoleIdStore";
 import Skeleton from "../../Skeleton/SkeletonCard";
+import socket from "../../../utils/socket";
 
 const MessageBox = ({ onBack }) => {
   const [message, setMessage] = useState("");
@@ -15,14 +16,49 @@ const MessageBox = ({ onBack }) => {
   const [messages, setMessages] = useState([]);
   const { user } = useRoleStore();
   const fileInputRef = useRef();
+  const [conversationId, setConversationId] = useState();
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to socket messageBox:", socket.id);
+    });
+
+    socket.on("emitNewMessage", (message) => {
+      const formattedMessage = {
+        id: message.id,
+        content: message.content,
+        sent_at: message.sent_at,
+        sender_id: message.sender_id,
+        attachments: message.attachments || [],
+        sender: { image: message?.sender_image },
+      };
+
+      setMessages((prev) => [...prev, formattedMessage]);
+      console.log("New Message:", message);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+
+    socket.connect();
+
+    return () => {
+      socket.off("connect");
+      socket.off("emitNewMessage");
+      socket.off("connect_error");
+      socket.disconnect();
+    };
+  }, [conversationId]);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         setLoading(true);
-        const data = await getData(`/chat/1/messages`);
+        const data = await getData(`/chat/messages/chatsupport`);
         if (data?.payload?.records?.length > 0) {
-          setMessages(data.payload.records);
+          setMessages(data?.payload?.records);
+          setConversationId(data?.payload?.conversationId);
         } else {
           setMessages([]);
         }
@@ -51,7 +87,7 @@ const MessageBox = ({ onBack }) => {
       const formData = new FormData();
       if (message) formData.append("content", message);
       if (file) formData.append("attachments", file);
-
+      formData.append("conversationId", conversationId);
       const response = await postData("chat", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -61,11 +97,14 @@ const MessageBox = ({ onBack }) => {
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now(),
+          id: response?.payload?.id || Date.now(),
           content: message,
-          file_url: file ? URL.createObjectURL(file) : null,
-          sender_id: user?.id,
           sent_at: new Date().toISOString(),
+          sender_id: user?.id,
+          attachments: file
+            ? [{ file_name: file.name, file_type: file.type }]
+            : [],
+          sender: { image: user?.image },
         },
       ]);
 
@@ -123,26 +162,37 @@ const MessageBox = ({ onBack }) => {
                   >
                     {msg.content && <p>{msg.content}</p>}
 
-                    {msg.file_url && (
-                      <>
-                        {msg.file_url.match(/\.(jpeg|jpg|png|gif)$/) ? (
-                          <img
-                            src={msg.file_url}
-                            alt="attachment"
-                            className="max-w-[150px] rounded mt-2"
-                          />
-                        ) : (
-                          <a
-                            href={msg.file_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-blue-600 underline mt-2"
-                          >
-                            <img src={PdffilePNG} alt="file" className="w-6" />
-                            Download File
-                          </a>
-                        )}
-                      </>
+                    {msg.attachments?.length > 0 && (
+                      <div className="mt-2 space-y-2">
+                        {msg.attachments.map((file) => {
+                          const fileUrl = `${import.meta.env.VITE_IMG_URL}/${
+                            file.file_name
+                          }`;
+
+                          if (file.file_type.startsWith("image/")) {
+                            return (
+                              <img
+                                key={file.id}
+                                src={fileUrl}
+                                alt={file.file_name}
+                                className="max-w-[150px] rounded"
+                              />
+                            );
+                          }
+
+                          return (
+                            <a
+                              key={file.id}
+                              href={fileUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-blue-600 underline"
+                            >
+                              📎 {file.file_name}
+                            </a>
+                          );
+                        })}
+                      </div>
                     )}
                   </div>
 

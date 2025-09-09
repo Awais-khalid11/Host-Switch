@@ -5,11 +5,13 @@ import { getData } from "../../../api/apiClient";
 import NoDataFound from "../../NoDataFound";
 import Skeleton from "../../Skeleton/SkeletonCard";
 import useRoleStore from "../../../store/useRoleIdStore";
+import { useNavigate } from "react-router-dom";
 
 const DashboardMessages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useRoleStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecentConversations = async () => {
@@ -64,13 +66,14 @@ const DashboardMessages = () => {
           return (
             <div
               key={conv.id || index}
-              className="flex items-center gap-4 last-of-type:mb-0 mb-5"
+              onClick={() => navigate("/host/hostmessages")}
+              className="flex items-center gap-4 last-of-type:mb-0 mb-5 cursor-pointer"
             >
               <img
                 src={participantImg}
                 alt={conv.name || "User"}
                 className="h-10 w-10 rounded-full object-cover"
-                onError={(e) => (e.currentTarget.src = UserPNG)} // fallback if URL fails
+                onError={(e) => (e.currentTarget.src = UserPNG)}
               />
               <div>
                 <h4 className="text-[14px] font-medium text-[#181818]">
