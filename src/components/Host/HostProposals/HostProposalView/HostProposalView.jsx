@@ -88,6 +88,7 @@ const HostProposalView = ({ setClose = null }) => {
                 prefixImg={GreentickSVG}
                 onClick={() => updateProposal("accepted")}
                 loading={updateStatus}
+                disabled={status === "accepted"}
               >
                 {status === "accepted" ? "Hired" : "Mark As Hired"}
               </Button>
@@ -104,17 +105,19 @@ const HostProposalView = ({ setClose = null }) => {
                 Send a Message
               </Button>
 
-              <Button
-                variant="borderbtn"
-                className="border-[#C30000] text-[#C30000] text-[12px] max-w-[157px]"
-                prefixImg={RedcrossSVG}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowModal(true);
-                }}
-              >
-                Decline Match
-              </Button>
+              {status === "suggested" && (
+                <Button
+                  variant="borderbtn"
+                  className="border-[#C30000] text-[#C30000] text-[12px] max-w-[157px]"
+                  prefixImg={RedcrossSVG}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
+                >
+                  Decline Match
+                </Button>
+              )}
               {showModal && (
                 <Modal
                   modalTitle="Send Proposal Request"
@@ -132,7 +135,7 @@ const HostProposalView = ({ setClose = null }) => {
                   ModalbgClass={HostdeclinePNG}
                   iconPosition="relative -right-[4px]"
                 >
-                  <HostDeclineModal />
+                  <HostDeclineModal id={id} />
                 </Modal>
               )}
             </div>

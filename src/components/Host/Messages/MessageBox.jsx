@@ -84,101 +84,102 @@ const MessageBox = ({ onBack }) => {
       >
         <IoArrowBackOutline size={20} />
       </button>
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+        {loading ? (
+          <Skeleton variant="chat" rows={5} />
+        ) : messages.length > 0 ? (
+          messages.map((msg) => {
+            const isOwnMessage = msg.sender_id === user?.id;
+            return (
+              <div
+                key={msg.id}
+                className={`flex items-start gap-3 ${
+                  isOwnMessage ? "justify-end" : ""
+                }`}
+              >
+                {!isOwnMessage && (
+                  <div className="relative [flex:0_0_52px]">
+                    <img
+                      src={
+                        msg.sender?.image
+                          ? `${import.meta.env.VITE_IMG_URL}/${
+                              msg.sender?.image
+                            }`
+                          : UserPNG
+                      }
+                      alt={msg.sender?.name || "User"}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </div>
+                )}
 
-      {loading ? (
-        <Skeleton variant="chat" rows={5} />
-      ) : messages.length > 0 ? (
-        messages.map((msg) => {
-          const isOwnMessage = msg.sender_id === user?.id;
-          return (
-            <div
-              key={msg.id}
-              className={`flex items-start gap-3 ${
-                isOwnMessage ? "justify-end" : ""
-              }`}
-            >
-              {!isOwnMessage && (
-                <div className="relative [flex:0_0_52px]">
-                  <img
-                    src={
-                      msg.sender?.image
-                        ? `${import.meta.env.VITE_IMG_URL}/${msg.sender?.image}`
-                        : UserPNG
-                    }
-                    alt={msg.sender?.name || "User"}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
+                <div>
+                  <div
+                    className={`p-3 text-sm max-w-xs ${
+                      isOwnMessage
+                        ? "bg-[#B1B1B1] text-white rounded-l-[8px] rounded-b-[8px]"
+                        : "bg-white text-black rounded-r-[8px] rounded-b-[8px]"
+                    }`}
+                  >
+                    {msg.content && <p>{msg.content}</p>}
+
+                    {msg.file_url && (
+                      <>
+                        {msg.file_url.match(/\.(jpeg|jpg|png|gif)$/) ? (
+                          <img
+                            src={msg.file_url}
+                            alt="attachment"
+                            className="max-w-[150px] rounded mt-2"
+                          />
+                        ) : (
+                          <a
+                            href={msg.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-blue-600 underline mt-2"
+                          >
+                            <img src={PdffilePNG} alt="file" className="w-6" />
+                            Download File
+                          </a>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Time */}
+                  <h5 className="text-[12px] font-normal mt-1 text-gray-500">
+                    {new Date(msg.sent_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </h5>
                 </div>
-              )}
 
-              <div>
-                <div
-                  className={`p-3 text-sm max-w-xs ${
-                    isOwnMessage
-                      ? "bg-[#B1B1B1] text-white rounded-l-[8px] rounded-b-[8px]"
-                      : "bg-white text-black rounded-r-[8px] rounded-b-[8px]"
-                  }`}
-                >
-                  {msg.content && <p>{msg.content}</p>}
-
-                  {msg.file_url && (
-                    <>
-                      {msg.file_url.match(/\.(jpeg|jpg|png|gif)$/) ? (
-                        <img
-                          src={msg.file_url}
-                          alt="attachment"
-                          className="max-w-[150px] rounded mt-2"
-                        />
-                      ) : (
-                        <a
-                          href={msg.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-blue-600 underline mt-2"
-                        >
-                          <img src={PdffilePNG} alt="file" className="w-6" />
-                          Download File
-                        </a>
-                      )}
-                    </>
-                  )}
-                </div>
-
-                {/* Time */}
-                <h5 className="text-[12px] font-normal mt-1 text-gray-500">
-                  {new Date(msg.sent_at).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </h5>
+                {isOwnMessage && (
+                  <div className="relative [flex:0_0_52px]">
+                    <img
+                      src={
+                        user?.image
+                          ? `${import.meta.env.VITE_IMG_URL}/${user?.image}`
+                          : UserPNG
+                      }
+                      alt="You"
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
-
-              {isOwnMessage && (
-                <div className="relative [flex:0_0_52px]">
-                  <img
-                    src={
-                      user?.image
-                        ? `${import.meta.env.VITE_IMG_URL}/${user?.image}`
-                        : UserPNG
-                    }
-                    alt="You"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })
-      ) : (
-        <NoDataFound
-          message="No conversation yet"
-          subMessage="Write a message to start chatting."
-        />
-      )}
-
+            );
+          })
+        ) : (
+          <NoDataFound
+            message="No conversation yet"
+            subMessage="Write a message to start chatting."
+          />
+        )}
+      </div>
       <div className="h-px bg-gray-300 my-1 mx-4" />
 
-      {/* Input */}
       <div className="flex items-center gap-3 p-4 bg-[#F5F5F5] rounded-b-xl">
         <button
           className="text-gray-500 hover:text-black"
@@ -209,7 +210,6 @@ const MessageBox = ({ onBack }) => {
         </button>
       </div>
 
-      {/* File preview */}
       {file && (
         <div className="px-4 pb-2 text-sm text-gray-600">
           <span> {file.name}</span>

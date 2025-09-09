@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoIosSend } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -8,11 +8,26 @@ import NoDataFound from "../NoDataFound";
 import Skeleton from "../Skeleton/SkeletonCard";
 import { postData } from "../../api/apiClient";
 
-const MessageBox = ({ onBack, messages = [], loading, conversationId }) => {
+const MessageBox = ({
+  onBack,
+  messages = [],
+  loading,
+  conversationId,
+  onMessageSent,
+}) => {
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef();
   const { user } = useRoleStore();
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -34,7 +49,18 @@ const MessageBox = ({ onBack, messages = [], loading, conversationId }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("Message sent:", response);
+      const newMessage = {
+        id: response?.payload?.id || Date.now(),
+        content: message,
+        sent_at: new Date().toISOString(),
+        sender_id: user?.id,
+        attachments: file
+          ? [{ file_name: file.name, file_type: file.type }]
+          : [],
+        sender: { image: user?.image },
+      };
+
+      onMessageSent(newMessage);
 
       setMessage("");
       setFile(null);
@@ -151,10 +177,11 @@ const MessageBox = ({ onBack, messages = [], loading, conversationId }) => {
           })
         ) : (
           <NoDataFound
-            message="No conversations yet"
-            subMessage="Select a user from the list to start chatting."
+            message="No Messages Found"
+            subMessage="Start conversation by sending new message"
           />
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {!loading && (
@@ -176,6 +203,12 @@ const MessageBox = ({ onBack, messages = [], loading, conversationId }) => {
 
             <input
               value={message}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSubmit();
+                }
+              }}
               onChange={(e) => setMessage(e.target.value)}
               type="text"
               placeholder="Send a message"

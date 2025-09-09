@@ -8,3 +8,7 @@ export function formatDate(dateString) {
     day: "numeric",
   });
 }
+
+export const getToken = () => {
+  return localStorage.getItem("token");
+};

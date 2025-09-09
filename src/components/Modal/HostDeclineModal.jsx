@@ -15,6 +15,8 @@ const HostDeclineModal = ({ onClose, id }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [otherReason, setOtherReason] = useState("");
   const [updateStatus, setUpdateStatus] = useState(false);
+  const [error, setError] = useState("");
+
   const toggleOption = (option) => {
     setSelectedOptions((prev) =>
       prev.includes(option)
@@ -24,6 +26,17 @@ const HostDeclineModal = ({ onClose, id }) => {
   };
 
   async function handleSubmit() {
+    if (selectedOptions.length === 0) {
+      setError("Please select at least one reason.");
+      return;
+    }
+
+    if (selectedOptions.includes("Other") && otherReason.trim() === "") {
+      setError("Please provide details for 'Other'.");
+      return;
+    }
+
+    setError("");
     setUpdateStatus(true);
     try {
       const payload = {
@@ -61,18 +74,22 @@ const HostDeclineModal = ({ onClose, id }) => {
         ))}
       </div>
 
-      <TextArea
-        type="text"
-        placeholder={"Enter message..."}
-        label={"Any Other reason for decline ?"}
-        rows={2}
-        labelClass="text-white"
-        placeClass="!text-[#25252580] bg-white"
-        value={otherReason}
-        onChange={(e) => setOtherReason(e.target.value)}
-      />
+      {selectedOptions.includes("Other") && (
+        <TextArea
+          type="text"
+          placeholder={"Enter message..."}
+          label={"Any Other reason for decline ?"}
+          rows={2}
+          labelClass="text-white"
+          placeClass="!text-[#25252580] bg-white"
+          value={otherReason}
+          onChange={(e) => setOtherReason(e.target.value)}
+        />
+      )}
 
-      <div className="flex justify-end">
+      {error && <p className="text-white text-sm mt-1">{error}</p>}
+
+      <div className="flex justify-end mt-2">
         <Button
           variant="whitebtn"
           className="px-6 py-4 text-black !w-[200px] h-[45px]"
