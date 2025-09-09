@@ -232,17 +232,14 @@ const EditForm = () => {
       );
 
       if (data.gallery && data.gallery.length > 0) {
-        // Transform gallery array to match expected format
         const transformedFiles = data.gallery.map((filename, index) => ({
           path: filename,
           originalname: filename,
-          // If you need other properties, add them here
         }));
 
         setExistingFiles(transformedFiles);
         setValue("files", transformedFiles);
       } else if (data.files && data.files.length > 0) {
-        // Keep this as fallback if API sometimes returns 'files' instead
         setExistingFiles(data.files);
         setValue("files", data.files);
       }
@@ -322,22 +319,18 @@ const EditForm = () => {
 
       const formData = new FormData();
 
-      // First, add all non-file fields to formData
       Object.keys(payload).forEach((key) => {
         formData.append(key, payload[key]);
       });
 
-      // Handle files - only append new files, not existing file objects
       if (data.files && data.files.length > 0) {
         data.files.forEach((file) => {
-          // Only append if it's a File object (new upload), not an existing file object
           if (file instanceof File) {
             formData.append("files", file);
           }
         });
       }
 
-      // Debug: Log what's being sent
       console.log("FormData contents:");
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
@@ -351,9 +344,7 @@ const EditForm = () => {
 
       console.log("API Success:", response);
 
-      // Update the form with the new data
       const updatedData = response.payload;
-      // ... rest of your update logic
 
       toast.success("Property updated successfully!");
     } catch (error) {
