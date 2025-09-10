@@ -140,6 +140,7 @@ const MainRouter = () => {
             <Route path="admindashboard" element={<AdminDashboardPage />} />
             <Route path="adminhostsleads" element={<AdminHostsLeadsPage />} />
             <Route path="adminpmcompanies" element={<AdminPMCompaniesPage />} />
+            <Route path="adminpmcompanies/:id" element={<PmVerified />} />
             <Route path="admininvoices" element={<AdminInvoicesPage />} />
             <Route path="adminsettings" element={<AdminSettingsPage />} />
             <Route

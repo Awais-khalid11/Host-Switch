@@ -27,7 +27,7 @@ const PMCompaniesCards = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await getData("/user/?role_id=3"); // later we make this dynamic
+        const res = await getData("/user/?role_id=3");
         if (res?.success) {
           setCompanies(res.payload.records || []);
         }
@@ -64,15 +64,9 @@ const PMCompaniesCards = () => {
     Unverified: "text-[#CE1B1B] border-[#CE1B1B] bg-[#CE1B1B1A]",
   };
 
-  // ✅ Show skeletons instead of text
   if (loading) {
-    return (
-      <div className="flex w-full flex-wrap gap-4">
-        <Skeleton count={6} variant="card" hasImage rows={3} hasButtons />
-      </div>
-    );
+    return <Skeleton count={6} hasImage rows={3} />;
   }
-
   return verify ? (
     verify
   ) : (
@@ -182,15 +176,7 @@ const PMCompaniesCards = () => {
                 variant="borderbtn"
                 prefixImg={BlueeyeSVG}
                 onClick={() => {
-                  if (isVerified) {
-                    setVerify(
-                      <PmVerified setClose={setVerify} userId={user.id} />
-                    ); // Pass user.id
-                  } else {
-                    setVerify(
-                      <PmUnverified setClose={setVerify} userId={user.id} />
-                    ); // Also update PmUnverified if needed
-                  }
+                  navigate(`/admin/adminpmcompanies/${user.id}`);
                 }}
               >
                 View Profile

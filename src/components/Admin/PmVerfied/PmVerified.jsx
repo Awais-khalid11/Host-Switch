@@ -1,24 +1,26 @@
-import React from 'react'
-import Button from '../../Button/Button'
-import { BackarrowSVG, ReddelSVG, SlashSVG } from '../../../constants/Icons'
-import VerifiedSam from './VerifiedSam'
-import Property from './Property/Property'
-import Portfolio from './Portfolio/Portfolio'
-import Opertaions from './Operations/Opertaions'
-import Reviews from './Reviews/Reviews'
-import Uploaded from './Uploaded/Uploaded'
-import Brand from './Brand'
+import React from "react";
+import Button from "../../Button/Button";
+import { BackarrowSVG, ReddelSVG, SlashSVG } from "../../../constants/Icons";
+import VerifiedSam from "./VerifiedSam";
+import Property from "./Property/Property";
+import Portfolio from "./Portfolio/Portfolio";
+import Opertaions from "./Operations/Opertaions";
+import Reviews from "./Reviews/Reviews";
+import Uploaded from "./Uploaded/Uploaded";
+import Brand from "./Brand";
+import { useNavigate } from "react-router-dom";
 
-const PmVerified = ({setClose}) => {
+const PmVerified = () => {
+  const navigate = useNavigate();
   return (
     <div>
-       <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
+      <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
         <h2 className="font-bold text-2xl flex items-center gap-2 md:mb-0 mb-2.5">
           <img
             src={BackarrowSVG}
             alt="img"
             className="cursor-pointer"
-            onClick={()=>setClose(false)}
+            onClick={() => navigate(-1)}
           />
           PM Company Detail
         </h2>
@@ -32,16 +34,16 @@ const PmVerified = ({setClose}) => {
           </Button>
         </div>
       </div>
-      <VerifiedSam/>
-      <Property/>
-      <Portfolio/>
-      <Opertaions/>
-      <Reviews/>
-      <Uploaded text={"Uploaded Documents"}/>
-      <Uploaded text={"Uploaded Contract"}/>
-      <Brand/>
+      <VerifiedSam />
+      <Property />
+      <Portfolio />
+      <Opertaions />
+      <Reviews />
+      <Uploaded text={"Uploaded Documents"} />
+      <Uploaded text={"Uploaded Contract"} />
+      <Brand />
     </div>
-  )
-}
+  );
+};
 
-export default PmVerified
+export default PmVerified;
