@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IoIosSend } from "react-icons/io";
+import { IoIosCloseCircleOutline, IoIosSend } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -61,7 +61,16 @@ const AdminMessageBox = ({
         sent_at: new Date().toISOString(),
         sender_id: user?.id,
         attachments: file
-          ? [{ file_name: file.name, file_type: file.type }]
+          ? [
+              {
+                id: Date.now(),
+                file_name: file.name,
+                file_type: file.type,
+                previewUrl: file.type.startsWith("image/")
+                  ? URL.createObjectURL(file)
+                  : null,
+              },
+            ]
           : [],
         sender: { image: user?.image },
       };
@@ -164,14 +173,16 @@ const AdminMessageBox = ({
                       {msg.attachments?.length > 0 && (
                         <div className="mt-2 space-y-2">
                           {msg.attachments.map((file) => {
-                            const fileUrl = `${import.meta.env.VITE_IMG_URL}/${
-                              file.file_name
-                            }`;
+                            const fileUrl =
+                              file.previewUrl ||
+                              `${import.meta.env.VITE_IMG_URL}/${
+                                file.file_name
+                              }`;
 
                             if (file.file_type.startsWith("image/")) {
                               return (
                                 <img
-                                  key={file.id}
+                                  key={file.id || file.file_name}
                                   src={fileUrl}
                                   alt={file.file_name}
                                   className="max-w-[150px] rounded"
@@ -181,7 +192,7 @@ const AdminMessageBox = ({
 
                             return (
                               <a
-                                key={file.id}
+                                key={file.id || file.file_name}
                                 href={fileUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -271,9 +282,9 @@ const AdminMessageBox = ({
                 <span>📎 {file.name}</span>
                 <button
                   onClick={() => setFile(null)}
-                  className="ml-2 text-red-500 text-xs"
+                  className="ml-2 text-red-500 text-xs cursor-pointer"
                 >
-                  remove
+                  <IoIosCloseCircleOutline size={22} />
                 </button>
               </div>
             )}

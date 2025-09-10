@@ -46,7 +46,7 @@ const Notification = () => {
     try {
       await postData(`/userMeta`, payloadArray);
 
-      toast.success(`${key} set to ${newValue ? "true" : "false"}`);
+      toast.success("Settings update successfully");
     } catch (err) {
       console.error("Update failed:", err);
       toast.error("Failed to update preference");
