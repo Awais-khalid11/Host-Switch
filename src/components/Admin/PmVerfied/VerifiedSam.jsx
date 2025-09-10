@@ -1,60 +1,123 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { UserPNG } from "../../../constants/Imgs";
-import { AccepthostSVG, CalenderSVG, CallSVG, LocationSVG, Send2SVG, SmsSVG, StatusSVG } from "../../../constants/Icons";
+import {
+  AccepthostSVG,
+  CallSVG,
+  LocationSVG,
+  Send2SVG,
+  SmsSVG,
+  StatusSVG,
+} from "../../../constants/Icons";
 import SemiCircleProgress from "../../Host/MatchScore";
+import { getData } from "../../../api/apiClient";
+import Skeleton from "../../Skeleton/SkeletonCard";
 
 const VerifiedSam = () => {
+  const { id } = useParams();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getData(`/user/${id}`);
+        if (res?.success) {
+          setUserData(res.payload);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
+
+  if (loading) {
+    return <Skeleton count={1} hasImage rows={3} />;
+  }
+
+  if (!userData) {
+    return <p className="text-center text-red-500">User not found</p>;
+  }
+
+  const profile = userData?.profile;
+  const overview = userData?.company_overview;
+  const isVerified = userData?.status === "ACTIVE";
   return (
     <div className="border border-[#E4E5E8] p-5 rounded-[12px] mb-5 flex items-center justify-between">
-     <div className="md:w-[60%] w-full">
-       <div className="flex items-center gap-2 mb-5">
-        <img
-          src={UserPNG}
-          alt="img"
-          className="rounded-full h-[58px] w-[58px]"
-        />
-        <div>
-          <h4 className="text-xl font-bold">Sam S.</h4>
-          <h5 className="font-normal text-sm text-[#727272]">Property Owner</h5>
+      <div className="md:w-[60%] w-full">
+        <div className="flex items-center gap-2 mb-5">
+          <img
+            src={
+              overview?.company_logo
+                ? `${import.meta.env.VITE_IMG_URL}${overview.company_logo}`
+                : UserPNG
+            }
+            alt="Company Logo"
+            className="rounded-full h-[58px] w-[58px]"
+          />
+          <div>
+            <h4 className="text-xl font-bold">
+              {overview?.business_name || userData.name}
+            </h4>
+            <h5 className="font-normal text-sm text-[#727272]">
+              {overview?.business_type || "Property Manager"}
+            </h5>
+          </div>
+        </div>
+
+        {/* Info Section */}
+        <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
+          {/* Left Column */}
+          <div className="md:mb-0 mb-2.5">
+            <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+              <img src={SmsSVG} alt="Email" />
+              {profile?.emial || userData.email}
+            </h3>
+            <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+              <img src={CallSVG} alt="Phone" />
+              {profile?.phone || userData.phone || "N/A"}
+            </h3>
+            <h3 className="flex items-center gap-1 text-sm font-normal">
+              <img src={LocationSVG} alt="Location" />
+              {profile?.business_address || "No Address"}
+            </h3>
+          </div>
+
+          <div>
+            <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+              <img src={Send2SVG} alt="Proposal Sent" />
+              <span className="font-semibold">Proposal sent:</span>{" "}
+              {profile?.proposal_sent ?? "-"}
+            </h3>
+            <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
+              <img src={AccepthostSVG} alt="Proposal Accepted" />
+              <span className="font-semibold">Accepted by Hosts:</span>{" "}
+              {profile?.proposal_accepted ?? "-"}
+            </h3>
+            <h3 className="flex items-center gap-1 text-sm font-bold mb-2.5">
+              <img src={StatusSVG} alt="Status" />
+              Status:
+              <span
+                className={`${
+                  isVerified
+                    ? "bg-[#ECFDF3] text-[#067647] border-[#067647]"
+                    : "bg-[#FFF0F0] text-[#CE1B1B] border-[#CE1B1B]"
+                } font-normal border rounded-2xl px-2 py-0.5 ml-1`}
+              >
+                {isVerified ? "Verified" : "Unverified"}
+              </span>
+            </h3>
+          </div>
         </div>
       </div>
-      <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
-        <div className="md:mb-0 mb-2.5">
-          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
-            <img src={SmsSVG} alt="img" />
-            sarah.t@email.com
-          </h3>
-          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
-            <img src={CallSVG} alt="img" />
-            11 033 456 889
-          </h3>
-          <h3 className="flex items-center gap-1 text-sm font-normal">
-            <img src={LocationSVG} alt="img" />
-            123 Palm Ave, Miami
-          </h3>
-        </div>
-        <div>
-          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
-            <img src={Send2SVG} alt="img" />
-            <span className="font-semibold">Proposal sent:</span>   -
-          </h3>
-          <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
-            <img src={AccepthostSVG} alt="img" />
-            <span className="font-semibold">Accepted by Hosts: </span>   -
-          </h3>
-          <h3 className="flex items-center gap-1 text-sm font-bold mb-2.5">
-            <img src={StatusSVG} alt="img" />
-            Status:
-            <span className="bg-[#ECFDF3] font-normal text-[#067647] border border-[#067647] rounded-2xl px-2 py-0.5">
-              Verified 
-            </span>
-          </h3>
-        </div>
+
+      <div className="md:w-[34%] w-full flex justify-center">
+        <SemiCircleProgress score={profile?.match_score || 0} />
       </div>
-     </div>
-     <div className="md:w-[34%] w-full flex justify-center">
-      <SemiCircleProgress/>
-     </div>
     </div>
   );
 };
