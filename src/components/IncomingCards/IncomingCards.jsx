@@ -18,6 +18,7 @@ import { HostdeclinePNG, SndmsgPNG, UserPNG } from "../../constants/Imgs";
 const IncomingCards = ({ incomingData, setCardDetail }) => {
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [id, setId] = useState();
 
   const dropdownActions = [
     {
@@ -124,7 +125,10 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
                 variant="borderbtn"
                 prefixImg={BluemsgSVG}
                 className="text-sm"
-                onClick={() => setShowModal(true)}
+                onClick={() => {
+                  setId(item?.user?.id);
+                  setShowModal(true);
+                }}
               >
                 Send Message
               </Button>
@@ -148,7 +152,7 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
             textClass="!mx-0 text-start"
             ModalbgClass={SndmsgPNG}
           >
-            <SendMessageModal />
+            <SendMessageModal id={id} />
           </Modal>
         )}
       </div>

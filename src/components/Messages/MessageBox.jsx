@@ -84,6 +84,7 @@ const MessageBox = ({
         ) : messages.length > 0 ? (
           messages.map((msg) => {
             const isOwnMessage = msg.sender_id === user?.id;
+
             return (
               <div
                 key={msg.id}

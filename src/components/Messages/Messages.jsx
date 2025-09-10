@@ -104,8 +104,8 @@ const Messages = () => {
         {!conversationId && (
           <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
             <NoDataFound
-              message="No conversations yet"
-              subMessage="Select a user from the list to start chatting."
+              message="Start a chat"
+              subMessage="Select a user to begin messaging."
             />
           </div>
         )}

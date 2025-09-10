@@ -17,6 +17,7 @@ const MessageBox = ({ onBack }) => {
   const { user } = useRoleStore();
   const fileInputRef = useRef();
   const [conversationId, setConversationId] = useState();
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -87,7 +88,12 @@ const MessageBox = ({ onBack }) => {
       const formData = new FormData();
       if (message) formData.append("content", message);
       if (file) formData.append("attachments", file);
-      formData.append("conversationId", conversationId);
+
+      if (conversationId) {
+        formData.append("conversationId", conversationId);
+      } else {
+        formData.append("userIds[0]", 1);
+      }
       const response = await postData("chat", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -114,6 +120,14 @@ const MessageBox = ({ onBack }) => {
       console.error("Message send failed:", error);
     }
   };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
@@ -227,6 +241,7 @@ const MessageBox = ({ onBack }) => {
             subMessage="Write a message to start chatting."
           />
         )}
+        <div ref={messagesEndRef} />
       </div>
       <div className="h-px bg-gray-300 my-1 mx-4" />
 
