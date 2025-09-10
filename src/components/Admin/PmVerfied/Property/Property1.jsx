@@ -1,18 +1,22 @@
 import React from "react";
 import Overview from "../Overview";
 
-const propertyName = [
-  { title: "Company Name:", text: "UrbanStay Property Management" },
-  { title: "DBA / Operating Name:", text: "UrbanStay" },
-  { title: "Business Entity Type:", text: "LLC" },
-  { title: "Website:", text: "www.urbanstay.com" },
-  { title: "Owner Involvement:", text: "Actively Involved" },
-  { title: "Local Presence:", text: "Yes" },
-];
+const Property1 = ({ companyOverview }) => {
+  if (!companyOverview) return null;
 
-const Property1 = () => {
+  const propertyName = [
+    { title: "Company Name:", text: companyOverview.business_name },
+    { title: "Business Entity Type:", text: companyOverview.business_type },
+    { title: "Website:", text: companyOverview.website },
+    { title: "Owner Involvement:", text: companyOverview.owner_involvement },
+    {
+      title: "Local Presence:",
+      text: companyOverview.local_presence ? "Yes" : "No",
+    },
+  ];
+
   return (
-    <div >
+    <div>
       <h2 className="text-xl font-semibold mb-3">Company Overview</h2>
       <Overview companyData={propertyName} />
     </div>

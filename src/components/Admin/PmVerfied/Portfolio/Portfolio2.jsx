@@ -1,21 +1,29 @@
-import React from 'react'
-import Overview from '../Overview'
+import React from "react";
+import Overview from "../Overview";
 
-const priceInfo = [
-     { title: "Commission Charged:", text: "20%" },
-     { title: "Onboarding Fees:", text: "Yes ( $250)" },
-     { title: "Charges for Linens/Restocking:", text: "Yes" },
-     { title: "Maintenance Markup:", text: "No" },
-     { title: "Financial Projection Provided:", text: "Yes" },
-]
+const Portfolio2 = ({ pricing }) => {
+  if (!pricing) return null;
 
-const Portfolio2 = () => {
+  const priceInfo = [
+    { title: "Commission Charged:", text: pricing.commission || "N/A" },
+    { title: "Onboarding Fees:", text: pricing.onboarding_fees || "N/A" },
+    {
+      title: "Charges for Linens/Restocking:",
+      text: pricing.linens_restocking || "N/A",
+    },
+    { title: "Maintenance Markup:", text: pricing.maintenance_markup || "N/A" },
+    {
+      title: "Financial Projection Provided:",
+      text: pricing.financial_projection ? "Yes" : "No",
+    },
+  ];
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-3">Pricing & Fees</h2>
-      <Overview companyData={priceInfo} className={"h-[220px]"}/>
+      <Overview companyData={priceInfo} />
     </div>
-  )
-}
+  );
+};
 
-export default Portfolio2
+export default Portfolio2;
