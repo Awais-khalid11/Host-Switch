@@ -1,43 +1,41 @@
-// import React from 'react'
-
-// const OperationService = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default OperationService
-
-
 import React from "react";
 import {
-    ClaimsSVG,
-    CleanSVG,
   HandSVG,
   OwnerSVG,
   PriceSVG,
   TaxSVG,
-} from "../../../../constants/Icons"; 
+  CleanSVG,
+  ClaimsSVG,
+} from "../../../../constants/Icons";
 
-const services = [
-  { icon: HandSVG, title: "24/7 Guest Management" },
-  { icon: CleanSVG, title: "Cleaning & Turnover" },
-  { icon: PriceSVG, title: "Pricing & Revenue" },
-  { icon: HandSVG, title: "Emergency Repairs" },
-  { icon: HandSVG, title: "Multi-Platform Sync" },
-  { icon: HandSVG, title: "Damage Claims" },
-  { icon: HandSVG, title: "Cleaning Coordination" },
-  { icon: TaxSVG, title: "Tax Filing Support" },
-  { icon: HandSVG, title: "Listing Creation" },
-  { icon: OwnerSVG, title: "Owner Portal Access" },
-];
+const serviceIcons = {
+  "Guest communication": HandSVG,
+  "24/7 Guest Support": HandSVG,
+  "Booking Management": HandSVG,
+  Cleaning: CleanSVG,
+  "Pricing & Revenue": PriceSVG,
+  "Emergency Repairs": HandSVG,
+  "Multi-Platform Sync": HandSVG,
+  "Damage Claims": ClaimsSVG,
+  "Cleaning Coordination": CleanSVG,
+  "Tax Filing Support": TaxSVG,
+  "Listing Creation": HandSVG,
+  "Owner Portal Access": OwnerSVG,
+};
 
-const OperationService = () => {
+const OperationService = ({ scopeService }) => {
+  if (!scopeService || !scopeService.length) {
+    return (
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Operations & Services</h2>
+        <p className="text-gray-500">No services information available</p>
+      </div>
+    );
+  }
+
   const serviceRows = [];
-  for (let i = 0; i < services.length; i += 2) {
-    serviceRows.push(services.slice(i, i + 2));
+  for (let i = 0; i < scopeService.length; i += 2) {
+    serviceRows.push(scopeService.slice(i, i + 2));
   }
 
   return (
@@ -48,14 +46,16 @@ const OperationService = () => {
           key={index}
           className="flex justify-between mb-5 items-start gap-2.5"
         >
-          {row.map((item, i) => (
+          {row.map((service, i) => (
             <div key={i} className="flex items-center gap-3 w-[213px]">
               <span className="border border-[#D9D9D9] rounded-full w-[35px] h-[35px] flex justify-center items-center">
-                <img src={item.icon} alt={item.title} className="w-5" />
+                <img
+                  src={serviceIcons[service] || HandSVG}
+                  alt={service}
+                  className="w-5"
+                />
               </span>
-              <h4 className="text-sm font-normal text-black">
-                {item.title}
-              </h4>
+              <h4 className="text-sm font-normal text-black">{service}</h4>
             </div>
           ))}
         </div>

@@ -1,24 +1,33 @@
-import React from 'react'
-import Overview from '../Overview'
+import React from "react";
+import Overview from "../Overview";
 
-const reviewInfo = [
-    {title: "Avg Review Rating:", text: "4.7/5"},
-    {title: "Airbnb Listings:", text: "32"},
-    {title: "Superhost Status:", text: "Yes"},
-    {title: "Superhost Status:", text: "Airbnb, Vrbo, Direct Website"},
-    {title: "% Direct Bookings:", text: "25%"},
-    {title: "Occupancy Rate (12 months):", text: "81%"},
-    {title: "Owner Retention Rate:", text: "92%"},
-    {title: "Cancellations (6 months):", text: "2"},
-]
+const Review2 = ({ data }) => {
+  const reviewInfo = [
+    { title: "Avg Review Rating:", text: data?.avg_review_rating || "N/A" },
+    { title: "Airbnb Listings:", text: data?.airbnb_listing || "N/A" },
+    { title: "Superhost Status:", text: data?.superhost_status || "N/A" },
+    { title: "Booking Platforms:", text: data?.booking_platform || "N/A" },
+    {
+      title: "% Direct Bookings:",
+      text: data?.percentage_direct_booking || "N/A",
+    },
+    {
+      title: "Occupancy Rate (12 months):",
+      text: data?.occupancy_rate || "N/A",
+    },
+    {
+      title: "Owner Retention Rate:",
+      text: data?.owner_retention_rate || "N/A",
+    },
+    { title: "Cancellations (6 months):", text: data?.cancellation || "N/A" },
+  ];
 
-const Review2 = () => {
   return (
-    <div >
+    <div>
       <h2 className="text-xl font-semibold mb-3">Performance & Reviews</h2>
       <Overview companyData={reviewInfo} />
     </div>
-  )
-}
+  );
+};
 
-export default Review2
+export default Review2;

@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "../../Button/Button";
 import { BackarrowSVG, ReddelSVG, SlashSVG } from "../../../constants/Icons";
 import VerifiedSam from "./VerifiedSam";
@@ -39,9 +38,10 @@ const PmVerified = () => {
       <Portfolio />
       <Opertaions />
       <Reviews />
-      <Uploaded text={"Uploaded Documents"} />
-      <Uploaded text={"Uploaded Contract"} />
-      <Brand />
+      <Uploaded text="Uploaded Documents" type="statement" />
+      <Uploaded text="Uploaded Contract" type="contract" />
+
+      {/* <Brand /> */}
     </div>
   );
 };

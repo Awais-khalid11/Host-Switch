@@ -5,7 +5,7 @@ import { getData } from "../../../../api/apiClient";
 import { useParams } from "react-router-dom";
 
 const Property = () => {
-  const { id } = useParams(); // dynamic id from route
+  const { id } = useParams();
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
