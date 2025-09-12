@@ -18,7 +18,7 @@ const VerifiedSam = ({ userData }) => {
 
   const profile = userData?.profile;
   const overview = userData?.company_overview;
-  const isVerified = userData?.status === "ACTIVE";
+  const isVerified = userData?.is_verified === true;
   return (
     <div className="border border-[#E4E5E8] p-5 rounded-[12px] mb-5 flex items-center justify-between">
       <div className="md:w-[60%] w-full">
