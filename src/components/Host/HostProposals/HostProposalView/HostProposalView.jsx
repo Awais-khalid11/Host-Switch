@@ -20,7 +20,7 @@ import HostDeclineModal from "../../../Modal/HostDeclineModal";
 import SendMessageModal from "../../../Modal/SendMessageModal";
 import { HostdeclinePNG, RequestPNG } from "../../../../constants/Imgs";
 import HostFeedback from "../HostFeedback/HostFeedback";
-import { getData, putData } from "../../../../api/apiClient";
+import { getData, postData, putData } from "../../../../api/apiClient";
 import Skeleton from "../../../Skeleton/SkeletonCard";
 
 const HostProposalView = ({ setClose = null }) => {
@@ -32,6 +32,7 @@ const HostProposalView = ({ setClose = null }) => {
   const [data, setData] = useState([]);
   const { status } = data;
   const [updateStatus, setUpdateStatus] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const fetchProposals = async () => {
     setLoading(true);
@@ -63,12 +64,30 @@ const HostProposalView = ({ setClose = null }) => {
   useEffect(() => {
     fetchProposals();
   }, []);
+
+  const onSubmit = async (id) => {
+    setSending(true);
+    try {
+      const formData = new FormData();
+      formData.append("content", "Hi");
+      formData.append("userIds[0]", id);
+
+      await postData("chat", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate(ROUTES.HOSTMESSAGES);
+    } catch (error) {
+      console.error("Message send failed:", error);
+    } finally {
+      setSending(false);
+    }
+  };
   return feedback ? (
     feedback
   ) : (
     <div>
       {loading ? (
-        <Skeleton variant="card" count={1} hasImage rows={3} />
+        <Skeleton variant="card" count={2} hasImage rows={3} />
       ) : (
         <>
           <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
@@ -96,11 +115,12 @@ const HostProposalView = ({ setClose = null }) => {
                 variant="borderbtn"
                 className="border-[#4D72FF] text-[#4D72FF] text-[12px] max-w-[157px]"
                 prefixImg={BluemsgSVG}
+                loading={sending}
                 //  onClick={(e) => {
                 //   e.preventDefault();
                 //   setShowModal(true);
                 // }}
-                onClick={() => navigate(ROUTES.HOSTMESSAGES)}
+                onClick={() => onSubmit(data?.manager?.id)}
               >
                 Send a Message
               </Button>

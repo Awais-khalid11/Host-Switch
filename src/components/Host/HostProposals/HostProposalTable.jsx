@@ -15,7 +15,7 @@ import {
 } from "../../../constants/Icons";
 import Button from "../../Button/Button";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
-import { getData, putData } from "../../../api/apiClient";
+import { getData, postData, putData } from "../../../api/apiClient";
 import { ROUTES } from "../../../constants/Routes";
 import { formatDate } from "../../../utils";
 
@@ -61,6 +61,7 @@ const HostProposalTable = () => {
     revenue: doc?.revenue_expectation || "N/A",
     date: formatDate(doc?.created_at) || "N/A",
     original: doc,
+    userId: doc?.user?.id,
   }));
 
   const columns = [
@@ -130,9 +131,25 @@ const HostProposalTable = () => {
     { header: "Date Received", accessor: "date", showSort: true },
   ];
 
+  const onSubmit = async (id) => {
+    try {
+      const formData = new FormData();
+      formData.append("content", "Hi");
+      formData.append("userIds[0]", id);
+
+      await postData("chat", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate(ROUTES.HOSTMESSAGES);
+    } catch (error) {
+      console.error("Message send failed:", error);
+    }
+  };
+
   const rowActions = (rowData) => {
     const actions = [];
     const rowId = rowData?.id;
+    const userId = rowData?.userId;
 
     if (rowData.status === "pending") {
       actions.push(
@@ -165,7 +182,7 @@ const HostProposalTable = () => {
         {
           label: "Message PM",
           icon: <img src={MsgsSVG} alt="message" className="w-4 h-4" />,
-          onClick: () => navigate(ROUTES.PAY),
+          onClick: () => onSubmit(userId),
         }
       );
     } else if (rowData.status === "declined") {
@@ -191,7 +208,7 @@ const HostProposalTable = () => {
       <div className="rounded-xl bg-white overflow-visible relative">
         <div className="px-5 pt-[13px] flex items-center justify-between gap-2.5 flex-wrap lg:flex-nowrap">
           <h2 className="md:text-xl text-lg text-[#181D27] font-bold md:mb-3.5">
-            New Proposals
+            New Proposal
           </h2>
           <FilterDropdown
             button={

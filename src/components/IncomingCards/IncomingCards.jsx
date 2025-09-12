@@ -14,28 +14,33 @@ import Modal from "../Modal/Modal";
 import HostDeclineModal from "../Modal/HostDeclineModal";
 import SendMessageModal from "../Modal/SendMessageModal";
 import { HostdeclinePNG, SndmsgPNG, UserPNG } from "../../constants/Imgs";
+import { useNavigate } from "react-router-dom";
 
-const IncomingCards = ({ incomingData, setCardDetail }) => {
+const IncomingCards = ({ incomingData }) => {
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
+  const [proposalId, setProposalId] = useState();
+  const navigate = useNavigate();
 
-  const dropdownActions = [
+  const dropdownActions = (item) => [
     {
       label: "View",
       icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
-      onClick: () => setCardDetail("view"),
+      onClick: () => navigate(`/pm/incomingleads/${item.id}`),
     },
     {
       label: "Decline",
       icon: <img src={CircleSVG} alt="decline" className="w-4 h-4" />,
-      onClick: () => setShowDeclineModal(true),
+      onClick: () => {
+        setProposalId(item?.id);
+        setShowDeclineModal(true);
+      },
     },
   ];
 
   return (
     <>
-      {/* Decline Modal */}
       {showDeclineModal && (
         <Modal
           modalTitle="Decline Lead"
@@ -53,11 +58,13 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
           ModalbgClass={HostdeclinePNG}
           iconPosition="relative -right-[4px]"
         >
-          <HostDeclineModal />
+          <HostDeclineModal
+            id={proposalId}
+            onClose={() => setShowDeclineModal(false)}
+          />
         </Modal>
       )}
 
-      {/* Cards */}
       <div className="flex items-center justify-between flex-wrap lg:gap-4">
         {incomingData.map((item, index) => {
           const fullAddress = [
@@ -76,7 +83,6 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
               key={index}
               className="border border-[#001B4429] rounded-[12px] p-5 h-[252px] mb-2.5 md:w-[49%] lg:w-[32%] w-full relative"
             >
-              {/* Top Section */}
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-2.5 mb-3.5">
                   <img
@@ -100,10 +106,9 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
                     </p>
                   </div>
                 </div>
-                <DropdownActions actions={dropdownActions} />
+                <DropdownActions actions={dropdownActions(item)} />
               </div>
 
-              {/* Property Info */}
               <div className="mb-4">
                 <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
                   <img src={LocationSVG} alt="location" />
@@ -152,7 +157,7 @@ const IncomingCards = ({ incomingData, setCardDetail }) => {
             textClass="!mx-0 text-start"
             ModalbgClass={SndmsgPNG}
           >
-            <SendMessageModal id={id} />
+            <SendMessageModal id={id} onCancel={() => setShowModal(false)} />
           </Modal>
         )}
       </div>

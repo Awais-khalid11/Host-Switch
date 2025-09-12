@@ -15,7 +15,7 @@ const LeadCards = ({ setCardDetail }) => {
     const fetchLeads = async () => {
       try {
         setLoading(true);
-        const res = await getData("/leads/incoming");
+        const res = await getData("/property");
 
         if (res?.payload?.records) {
           setLeads(res.payload.records);

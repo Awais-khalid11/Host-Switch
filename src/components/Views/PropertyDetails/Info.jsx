@@ -1,8 +1,7 @@
 import React from "react";
 
 const Info = ({ data }) => {
-  const property = data?.property || {};
-
+  const property = data?.property || data || {};
   const infoData = [
     {
       title: "Property Address:",

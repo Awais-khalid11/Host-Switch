@@ -10,12 +10,11 @@ import {
 import { formatDate } from "../../../../utils";
 
 const AwaitingSam = ({ data }) => {
-  const user = data?.property?.user || {};
+  const user = data?.host || {};
   const property = data?.property || {};
   const userImage = user.image
     ? `${import.meta.env.VITE_IMG_URL}${user.image}`
     : UserPNG;
-
   return (
     <div className="border border-[#E4E5E8] p-5 rounded-[12px] mb-5">
       <div className="flex items-center gap-2 mb-5">
@@ -36,9 +35,9 @@ const AwaitingSam = ({ data }) => {
           <InfoRow icon={CallSVG} text={user?.number} />
           <InfoRow
             icon={LocationSVG}
-            text={`${property?.address || ""}, ${property?.city || ""}, ${
-              property?.country || ""
-            }`}
+            text={[property?.address, property?.city, property?.country]
+              .filter(Boolean)
+              .join(", ")}
           />
         </div>
 

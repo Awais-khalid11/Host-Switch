@@ -8,35 +8,42 @@ import {
   StatusSVG,
 } from "../../constants/Icons";
 
-const Sam = () => {
+const Sam = ({ data }) => {
+  const user = data?.user || {};
+  const userImage = user.image
+    ? `${import.meta.env.VITE_IMG_URL}${user.image}`
+    : UserPNG;
   return (
     <div className="border border-[#E4E5E8] p-5 rounded-[12px] mb-5">
       <div className="flex items-center gap-2 mb-5">
         <img
-          src={UserPNG}
-          alt="img"
+          src={userImage}
+          alt={user?.name || "user"}
           className="rounded-full h-[58px] w-[58px]"
         />
         <div>
-          <h4 className="text-xl font-bold">Sam S.</h4>
-          <h5 className="font-normal text-sm text-[#727272]">Property Owner</h5>
+          <h4 className="text-xl font-bold">{user?.name || "Unknown User"}</h4>
+          <h5 className="text-sm text-[#727272]">Property Owner</h5>
         </div>
       </div>
       <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
         <div className="md:mb-0 mb-2.5">
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={SmsSVG} alt="img" />
-            sarah.t@email.com
+            {user?.email}
           </h3>
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={CallSVG} alt="img" />
-            11 033 456 889
+            {user?.number}
           </h3>
-          <h3 className="flex items-center  gap-1 text-sm font-normal">
-            <img src={LocationSVG} alt="img" />
-            123 Palm Ave, Miami (Map Radius with 1km circle )
-          </h3>
+          {user?.address && (
+            <h3 className="flex items-center  gap-1 text-sm font-normal">
+              <img src={LocationSVG} alt="img" />
+              {user?.address}
+            </h3>
+          )}
         </div>
+        {/* Todo */}
         <div>
           <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
             <img src={CalenderSVG} alt="img" />

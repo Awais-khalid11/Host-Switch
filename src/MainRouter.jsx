@@ -56,6 +56,7 @@ import PrivateRoute from "./PrivateRoute";
 import NotFound from "./pages/NotFound";
 import PmSignUp from "./components/PmSignUp/PmSignUp";
 import HostEdit from "./components/Host/MySubmissions/HostEdit";
+import SendForm from "./components/SendProposal/SendForm";
 const MainRouter = () => {
   return (
     <>
@@ -83,7 +84,9 @@ const MainRouter = () => {
           <Route path="/pm" element={<MainLayout property="PM" />}>
             <Route index element={<Navigate to="/pm/dashboard" />} />
             <Route path="dashboard" element={<PMDashboardPage />} />
+            <Route path="send-proposal/:id" element={<SendProposal />} />
             <Route path="incomingleads" element={<IncomingLeadsPage />} />
+            <Route path="incomingleads/:id" element={<Views />} />
             <Route path="proposals" element={<ProposalsPage />} />
             <Route path="invoices" element={<InvoicesPage />} />
             <Route path="messages" element={<MessagesPage />} />

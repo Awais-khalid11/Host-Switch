@@ -3,7 +3,7 @@ import NoDataFound from "../../NoDataFound";
 
 const PropertyMedia = ({ data }) => {
   const property = data?.property || {};
-  const images = property?.gallery?.images || [];
+  const images = property?.gallery || data?.gallery || [];
   // const videos = property?.gallery?.videos || [];
 
   return (
@@ -13,7 +13,7 @@ const PropertyMedia = ({ data }) => {
           images.map((img, index) => (
             <img
               key={index}
-              src={img}
+              src={`${import.meta.env.VITE_IMG_URL}${img}`}
               alt={`property-img-${index}`}
               className="rounded-[10px] w-full md:w-[24%] md:h-[192px] object-cover"
             />
