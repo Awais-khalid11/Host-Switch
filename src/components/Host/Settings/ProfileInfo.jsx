@@ -70,12 +70,22 @@ const ProfileInfo = () => {
       }
 
       const formDataObj = new FormData();
-      formDataObj.append("name", formData.name);
-      formDataObj.append(
-        "birth_date",
-        formData.dob ? formData.dob.toISOString().split("T")[0] : ""
-      );
-      formDataObj.append("gender", formData.gender);
+
+      if (formData.name) {
+        formDataObj.append("name", formData.name);
+      }
+
+      if (formData.dob) {
+        formDataObj.append(
+          "birth_date",
+          formData.dob.toISOString().split("T")[0]
+        );
+      }
+
+      if (formData.gender) {
+        formDataObj.append("gender", formData.gender);
+      }
+
       if (formData.image) {
         formDataObj.append("image", formData.image);
       }

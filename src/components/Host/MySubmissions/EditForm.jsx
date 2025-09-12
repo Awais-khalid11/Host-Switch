@@ -356,9 +356,7 @@ const EditForm = () => {
   };
 
   if (isFetching) {
-    return (
-      <SkeletonCard variant="card" count={1} hasImage hasButtons rows={5} />
-    );
+    return <SkeletonCard variant="card" count={4} rows={5} />;
   }
 
   return (
