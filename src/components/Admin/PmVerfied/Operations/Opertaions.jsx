@@ -1,51 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { getData } from "../../../../api/apiClient";
-import { useParams } from "react-router-dom";
+import React from "react";
 import OperationService from "./OperationService";
 import Overview from "../Overview";
-import Skeleton from "../../../Skeleton/SkeletonCard"; // ✅ adjust path if needed
+import NoDataFound from "../../../NoDataFound";
 
-const Operations = () => {
-  const { id } = useParams();
-  const [operationsData, setOperationsData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchOperations = async () => {
-      try {
-        setLoading(true);
-        const res = await getData(`/user/${id}`);
-        if (res?.success) {
-          setOperationsData(res.payload);
-        }
-      } catch (error) {
-        console.error("Error fetching operations data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOperations();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="border border-[#E4E5E8] p-5 rounded-[12px] md:flex-nowrap flex-wrap flex justify-between gap-5 mb-5">
-        {/* Left Skeleton */}
-        <div className="md:w-1/2 w-full">
-          <Skeleton variant="card" rows={6} count={1} />
-        </div>
-        {/* Right Skeleton (Video placeholder) */}
-        <div className="md:w-1/2 w-full">
-          <div className="rounded-[12px] min-w-[422px] w-full min-h-[451px] bg-gray-300 animate-pulse"></div>
-        </div>
-      </div>
-    );
-  }
-
+const Operations = ({ operationsData }) => {
   if (!operationsData) {
-    return (
-      <p className="text-center text-gray-500">No operations data found.</p>
-    );
+    return <NoDataFound message="No Operations Information" />;
   }
 
   const operations = operationsData.operation_services;

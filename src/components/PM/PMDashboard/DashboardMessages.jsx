@@ -39,6 +39,14 @@ const DashboardMessages = () => {
     fetchRecentConversations();
   }, [user?.role_id]);
 
+  function handleNavigation() {
+    if (user?.role_id === 2) {
+      navigate("/host/hostmessages");
+    } else {
+      navigate("/pm/messages");
+    }
+  }
+
   return (
     <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px] overflow-y-auto">
       <div className="flex justify-between items-center lg:mb-6 mb-2">
@@ -66,7 +74,7 @@ const DashboardMessages = () => {
           return (
             <div
               key={conv.id || index}
-              onClick={() => navigate("/host/hostmessages")}
+              onClick={handleNavigation}
               className="flex items-center gap-4 last-of-type:mb-0 mb-5 cursor-pointer"
             >
               <img

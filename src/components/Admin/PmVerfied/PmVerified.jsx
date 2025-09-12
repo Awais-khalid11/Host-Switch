@@ -7,10 +7,33 @@ import Opertaions from "./Operations/Opertaions";
 import Reviews from "./Reviews/Reviews";
 import Uploaded from "./Uploaded/Uploaded";
 import Brand from "./Brand";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getData } from "../../../api/apiClient";
+import Skeleton from "../../Skeleton/SkeletonCard";
 
 const PmVerified = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await getData(`/user/${id}`);
+        if (res?.success) {
+          setData(res.payload);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetail();
+  }, []);
   return (
     <div>
       <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
@@ -33,13 +56,27 @@ const PmVerified = () => {
           </Button>
         </div>
       </div>
-      <VerifiedSam />
-      <Property />
-      <Portfolio />
-      <Opertaions />
-      <Reviews />
-      <Uploaded text="Uploaded Documents" type="statement" />
-      <Uploaded text="Uploaded Contract" type="contract" />
+      {loading ? (
+        <Skeleton variant="card" rows={6} count={4} hasImage />
+      ) : (
+        <>
+          <VerifiedSam userData={data} />
+          <Property userData={data} />
+          <Portfolio portfolioData={data} />
+          <Opertaions operationsData={data} />
+          <Reviews reviewData={data} />
+          <Uploaded
+            text="Uploaded Documents"
+            type="statement"
+            docs={data?.document}
+          />
+          <Uploaded
+            text="Uploaded Contract"
+            type="contract"
+            docs={data?.document}
+          />
+        </>
+      )}
 
       {/* <Brand /> */}
     </div>

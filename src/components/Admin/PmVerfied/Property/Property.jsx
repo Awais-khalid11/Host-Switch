@@ -1,47 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Property1 from "./Property1";
 import Property2 from "./Property2";
-import { getData } from "../../../../api/apiClient";
-import { useParams } from "react-router-dom";
-import Skeleton from "../../../Skeleton/SkeletonCard"; // adjust path if needed
+import NoDataFound from "../../../NoDataFound";
 
-const Property = () => {
-  const { id } = useParams();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPropertyData = async () => {
-      try {
-        setLoading(true);
-        const res = await getData(`/user/${id}`);
-        if (res?.success) {
-          setUserData(res.payload);
-        }
-      } catch (error) {
-        console.error("Error fetching property data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPropertyData();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col md:flex-row gap-5">
-        <div className="md:w-1/2 w-full">
-          <Skeleton variant="card" rows={4} count={1} />
-        </div>
-        <div className="md:w-1/2 w-full">
-          <Skeleton variant="card" rows={4} count={1} />
-        </div>
-      </div>
-    );
-  }
-
+const Property = ({ userData }) => {
   if (!userData) {
-    return <p className="text-center text-gray-500">No property data found.</p>;
+    return <NoDataFound message="No Property Information" />;
   }
 
   return (

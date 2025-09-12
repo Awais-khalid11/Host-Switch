@@ -54,7 +54,7 @@ const PMIconNotification = () => {
         <Skeleton />
       ) : (
         <BelliconNotification
-          tabs={["Unread", "all notifications"]}
+          tabs={["all notifications"]}
           notificationData={notifications}
           filterOptions={[
             { label: "All" },

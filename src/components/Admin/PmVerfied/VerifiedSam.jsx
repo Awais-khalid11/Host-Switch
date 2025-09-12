@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { UserPNG } from "../../../constants/Imgs";
 import {
   AccepthostSVG,
@@ -10,37 +9,11 @@ import {
   StatusSVG,
 } from "../../../constants/Icons";
 import SemiCircleProgress from "../../Host/MatchScore";
-import { getData } from "../../../api/apiClient";
-import Skeleton from "../../Skeleton/SkeletonCard";
+import NoDataFound from "../../NoDataFound";
 
-const VerifiedSam = () => {
-  const { id } = useParams();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await getData(`/user/${id}`);
-        if (res?.success) {
-          setUserData(res.payload);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [id]);
-
-  if (loading) {
-    return <Skeleton count={1} hasImage rows={3} />;
-  }
-
+const VerifiedSam = ({ userData }) => {
   if (!userData) {
-    return <p className="text-center text-red-500">User not found</p>;
+    return <NoDataFound message="No User Information" />;
   }
 
   const profile = userData?.profile;
@@ -69,9 +42,7 @@ const VerifiedSam = () => {
           </div>
         </div>
 
-        {/* Info Section */}
         <div className="max-w-[639px] md:flex-nowrap flex-wrap flex justify-between md:flex-row flex-col">
-          {/* Left Column */}
           <div className="md:mb-0 mb-2.5">
             <h3 className="flex items-center gap-1 text-sm font-normal mb-2.5">
               <img src={SmsSVG} alt="Email" />

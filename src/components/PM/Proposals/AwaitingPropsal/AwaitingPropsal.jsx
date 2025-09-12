@@ -76,7 +76,7 @@ const AwaitingPropsal = ({ setClose, id, status }) => {
           {/* //TODO */}
           {/* <HostExpectations /> */}
           {/* <CurrentPM /> */}
-          <Documents />
+          <Documents data={data} />
         </>
       )}
     </div>

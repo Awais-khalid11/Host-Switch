@@ -70,7 +70,7 @@ const AdminIconNotification = () => {
         <Skeleton />
       ) : (
         <BelliconNotification
-          tabs={["Unread", "All Notifications"]}
+          tabs={["All Notifications"]}
           notificationData={notifications}
           filterOptions={[
             { label: "All" },
