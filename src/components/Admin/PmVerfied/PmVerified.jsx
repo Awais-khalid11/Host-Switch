@@ -1,15 +1,14 @@
 import Button from "../../Button/Button";
-import { BackarrowSVG, ReddelSVG, SlashSVG } from "../../../constants/Icons";
+import { BackarrowSVG, SlashSVG } from "../../../constants/Icons";
 import VerifiedSam from "./VerifiedSam";
 import Property from "./Property/Property";
 import Portfolio from "./Portfolio/Portfolio";
 import Opertaions from "./Operations/Opertaions";
 import Reviews from "./Reviews/Reviews";
 import Uploaded from "./Uploaded/Uploaded";
-import Brand from "./Brand";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getData } from "../../../api/apiClient";
+import { getData, postData, putData } from "../../../api/apiClient"; // ✅ postData added
 import Skeleton from "../../Skeleton/SkeletonCard";
 
 const PmVerified = () => {
@@ -17,23 +16,53 @@ const PmVerified = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+
+  const fetchDetail = async () => {
+    try {
+      setLoading(true);
+      const res = await getData(`/user/${id}`);
+      if (res?.success) {
+        setData(res.payload);
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const res = await getData(`/user/${id}`);
-        if (res?.success) {
-          setData(res.payload);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDetail();
-  }, []);
+  }, [id]);
+
+  const toggleVerification = async () => {
+    if (!data) return;
+
+    try {
+      setUpdating(true);
+      const newStatus = !data.is_verified;
+
+      const res = await putData(`/user/${id}`, {
+        is_verified: newStatus,
+      });
+
+      if (res?.success) {
+        setData((prev) => ({
+          ...prev,
+          is_verified: newStatus,
+        }));
+      }
+      fetchDetail();
+    } catch (error) {
+      console.error("Error updating verification:", error);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const isVerified = data?.is_verified;
+
   return (
     <div>
       <div className="flex md:flex-nowrap flex-wrap items-center justify-between mb-5">
@@ -49,13 +78,20 @@ const PmVerified = () => {
         <div>
           <Button
             variant="borderbtn"
-            className="border-[#FF0000] text-[12px] text-[#FF0000] max-w-[157px]"
-            prefixImg={SlashSVG}
+            className={`text-[12px] max-w-[157px] ${
+              isVerified
+                ? "border-green-600 text-green-600"
+                : "border-red-600 text-red-600"
+            }`}
+            prefixImg={!isVerified && SlashSVG}
+            disabled={updating}
+            onClick={toggleVerification}
           >
-            Flag PM
+            {updating ? "Updating..." : isVerified ? "Verified PM" : "Flag PM"}
           </Button>
         </div>
       </div>
+
       {loading ? (
         <Skeleton variant="card" rows={6} count={4} hasImage />
       ) : (
@@ -77,8 +113,6 @@ const PmVerified = () => {
           />
         </>
       )}
-
-      {/* <Brand /> */}
     </div>
   );
 };
