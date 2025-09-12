@@ -5,16 +5,19 @@ const Portfolio2 = ({ pricing }) => {
   if (!pricing) return null;
 
   const priceInfo = [
-    { title: "Commission Charged:", text: pricing.commission || "N/A" },
-    { title: "Onboarding Fees:", text: pricing.onboarding_fees || "N/A" },
+    { title: "Commission Charged:", text: pricing.commission_charged || "N/A" },
+    { title: "Onboarding Fees:", text: pricing.onboarding_fee ? "Yes" : "No" },
     {
       title: "Charges for Linens/Restocking:",
-      text: pricing.linens_restocking || "N/A",
+      text: pricing.charges_linens ? "Yes" : "No",
     },
-    { title: "Maintenance Markup:", text: pricing.maintenance_markup || "N/A" },
+    {
+      title: "Maintenance Markup:",
+      text: pricing.mark_maintenance ? "Yes" : "No",
+    },
     {
       title: "Financial Projection Provided:",
-      text: pricing.financial_projection ? "Yes" : "No",
+      text: pricing.financial_projection_onboarding ? "Yes" : "No",
     },
   ];
 

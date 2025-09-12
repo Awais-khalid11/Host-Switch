@@ -1,29 +1,40 @@
 import React from "react";
 import Overview from "../Overview";
+import { useZipCodeConverter } from "../../../../store/useZipCodeConverter";
 
 const Property2 = ({ marketsCoverage }) => {
   if (!marketsCoverage) return null;
-
+  const primaryMarketLocation = useZipCodeConverter(
+    marketsCoverage?.primary_market
+  );
+  const secondaryMarketLocation = useZipCodeConverter(
+    marketsCoverage?.secondary_market
+  );
   const propertyInfo = [
     {
       title: "Primary Market(s):",
-      text: marketsCoverage.primary_market || "N/A",
+      text: primaryMarketLocation,
     },
     {
       title: "Secondary Markets:",
-      text: marketsCoverage.secondary_markets || "N/A",
+      text: secondaryMarketLocation,
     },
     {
       title: "Max Distance Willing to Service:",
-      text: marketsCoverage.max_distance || "N/A",
+      text: marketsCoverage.max_distance_willing || "N/A",
     },
     {
       title: "Licensed in All Markets:",
-      text: marketsCoverage.licensed_in_all_markets ? "Yes" : "No",
+      text: marketsCoverage.licensed_market ? "Yes" : "No",
     },
     {
       title: "Handles Permitting:",
-      text: marketsCoverage.handles_permitting ? "Yes" : "No",
+      text:
+        marketsCoverage.handle_permitting === null
+          ? "N/A"
+          : marketsCoverage.handle_permitting
+          ? "Yes"
+          : "No",
     },
   ];
 

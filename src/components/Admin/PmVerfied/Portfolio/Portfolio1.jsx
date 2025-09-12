@@ -7,7 +7,7 @@ const Portfolio1 = ({ portfolio }) => {
   const portfolioInfo = [
     {
       title: "Active STR Properties:",
-      text: portfolio.active_properties || "N/A",
+      text: portfolio.active_str_properties || "N/A",
     },
     {
       title: "Max Onboarding Capacity (30 days):",
@@ -15,15 +15,24 @@ const Portfolio1 = ({ portfolio }) => {
     },
     {
       title: "Property Types Managed:",
-      text: portfolio.property_types || "N/A",
+      text: portfolio.property_types_managed?.join(", ") || "N/A",
     },
-    { title: "Avg Size Managed:", text: portfolio.avg_size || "N/A" },
+    {
+      title: "Avg Size Managed:",
+      text: portfolio.ave_size_managed || "N/A",
+    },
     {
       title: "Minimum Property Requirements:",
-      text: portfolio.min_requirements || "N/A",
+      text: portfolio.property_requirement || "N/A",
     },
-    { title: "Service Type:", text: portfolio.service_type || "N/A" },
-    { title: "Agreement Type:", text: portfolio.agreement_type || "N/A" },
+    {
+      title: "Service Type:",
+      text: portfolio.service_type?.join(", ") || "N/A",
+    },
+    {
+      title: "Agreement Type:",
+      text: portfolio.agreement_type?.join(", ") || "N/A",
+    },
   ];
 
   return (

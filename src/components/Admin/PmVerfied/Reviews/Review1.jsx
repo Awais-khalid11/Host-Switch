@@ -1,23 +1,38 @@
-import React from 'react'
-import Overview from '../Overview'
+import React from "react";
+import Overview from "../Overview";
 
-const reviewInfo = [
-    {title: "PMS:", text: "Guesty"},
-    {title: "Pricing Tool:", text: "PriceLabs"},
-    {title: "Owner Portal:", text: "Yes"},
-    {title: "Guest Comm:", text: "Hybrid (Human + Automated)"},
-    {title: "Smart Home Tools:", text: "NoiseAware, Smart Thermostat"},
-    {title: "Maintenance Tickets:", text: "Full-Service + Co-hosting"},
-    {title: "Agreement Type:", text: "Yes (via Breezeway)"},
-]
+const Review1 = ({ data }) => {
+  const reviewInfo = [
+    { title: "PMS:", text: data?.pms?.join(", ") || "N/A" },
+    { title: "Pricing Tool:", text: data?.pricing_tool?.join(", ") || "N/A" },
+    {
+      title: "Owner Portal:",
+      text: data?.owner_reporting_portal ? "Yes" : "No",
+    },
+    {
+      title: "Guest Comm:",
+      text: data?.guest_communication?.join(", ") || "N/A",
+    },
+    {
+      title: "Smart Home Tools:",
+      text: data?.smart_home_tools?.join(", ") || "N/A",
+    },
+    {
+      title: "Maintenance Tickets:",
+      text: data?.maintenance_ticket ? "Yes" : "No",
+    },
+    {
+      title: "Agreement Type:",
+      text: data?.agreement_type?.join(", ") || "N/A",
+    },
+  ];
 
-const Review1 = () => {
   return (
-     <div>
+    <div>
       <h2 className="text-xl font-semibold mb-3">Tech Stack & Tools</h2>
-      <Overview companyData={reviewInfo} className="h-[250px]"/>
+      <Overview companyData={reviewInfo} />
     </div>
-  )
-}
+  );
+};
 
-export default Review1
+export default Review1;
