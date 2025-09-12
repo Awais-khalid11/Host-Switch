@@ -137,7 +137,11 @@ const HostLeadsCards = () => {
                         statusColor[user.status] || "bg-gray-200 text-gray-600"
                       }`}
                     >
-                      {String(user.status)}
+                      {user.status === true
+                        ? "Active"
+                        : user.status === false
+                        ? "Inactive"
+                        : String(user.status)}
                     </div>
                   </div>
                 </div>

@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../constants/Routes";
 import { HostdeclinePNG, RequestPNG, SndmsgPNG } from "../../../constants/Imgs";
 import HostProposalView from "../HostProposals/HostProposalView/HostProposalView";
-import { putData } from "../../../api/apiClient";
+import { postData, putData } from "../../../api/apiClient";
 
 const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
   const location = useLocation();
@@ -30,6 +30,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
   const navigate = useNavigate();
   const isMyMatchPage = location.pathname.includes("mymatch");
   const [updateStatus, setUpdateStatus] = useState(false);
+  const [pmId, setPmId] = useState();
   async function requestProposal(id) {
     setUpdateStatus(true);
     try {
@@ -44,6 +45,20 @@ const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
       setUpdateStatus(false);
     }
   }
+
+  const onSubmit = async (id) => {
+    try {
+      const formData = new FormData();
+      formData.append("content", "Hi");
+      formData.append("userIds[0]", id);
+      await postData("chat", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate(ROUTES.HOSTMESSAGES);
+    } catch (error) {
+      console.error("Message send failed:", error);
+    }
+  };
 
   return (
     <div>
@@ -141,6 +156,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
                       }
                     } else if (isMyMatchPage) {
                       setShowSendMessageModal(index);
+                      setPmId(item?.pm_user_id);
                     }
                   }}
                 >
@@ -155,6 +171,7 @@ const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
                     e.preventDefault();
                     if (isMyMatchPage) {
                       navigate(ROUTES.HOSTMESSAGES);
+                      onSubmit(item?.pm_user_id);
                     } else {
                       setShowSendMessageModal(index);
                     }
@@ -221,7 +238,10 @@ const Match = ({ matchdata, borderBtn, setRenderPage, fetchMatches }) => {
               textClass="!mx-0 text-start"
               ModalbgClass={SndmsgPNG}
             >
-              <SendMessageModal />
+              <SendMessageModal
+                onCancel={() => setShowSendMessageModal(null)}
+                id={pmId}
+              />
             </Modal>
           )}
 
