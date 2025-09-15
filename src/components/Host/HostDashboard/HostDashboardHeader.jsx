@@ -70,7 +70,12 @@ const HostDashboardHeader = () => {
 
         <div className="mb-5">
           {loading ? (
-            <Skeleton variant="card" count={1} hasImage rows={3} />
+            <Skeleton
+              variant="dashboard-cards"
+              count={3}
+              gridCols={4}
+              className="my-6"
+            />
           ) : hostcards.length > 0 ? (
             <DashboardCards data={hostcards} />
           ) : (

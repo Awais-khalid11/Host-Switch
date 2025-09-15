@@ -82,7 +82,12 @@ const PMDashboard = () => {
         <h2 className="font-bold text-2xl">Overview</h2>
         <div className="my-3">
           {loading ? (
-            <Skeleton variant="card" count={1} hasImage rows={3} />
+            <Skeleton
+              variant="dashboard-cards"
+              count={4}
+              gridCols={4}
+              className="my-6"
+            />
           ) : cardsInfo.length > 0 ? (
             <DashboardCards data={cardsInfo} />
           ) : (
