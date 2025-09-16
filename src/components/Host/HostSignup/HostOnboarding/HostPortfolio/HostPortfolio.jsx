@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import HostOnboardingStepper from "../HostOnboardingStepper";
 import HostPortfolioForm from "./HostPortfolioForm";
 import { PropertyPNG } from "../../../../../constants/Imgs";
 import { LogoSVG } from "../../../../../constants/Icons";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../../../constants/Routes";
+import useRoleStore from "../../../../../store/useRoleIdStore";
 
 const HostPortfolio = () => {
+  const { property } = useRoleStore();
   return (
     <div className="flex md:flex-row flex-col items-center bg-white justify-between md:p-5 md:!pr-10 gap-[30px] p-2.5">
       <div className="hidden md:block w-1/2">
@@ -24,7 +26,9 @@ const HostPortfolio = () => {
         />
         <HostOnboardingStepper />
         <h2 className="lg:text-[30px] md:text-[25px] text-[22px] font-bold mb-4 text-center">
-          Property Information
+          {property === "Multiple Properties/ Portfolio"
+            ? "Portfolio Overview"
+            : "Property Information"}
         </h2>
 
         <HostPortfolioForm />
@@ -34,7 +38,7 @@ const HostPortfolio = () => {
             className="text-sm text-black font-bold cursor-pointer ml-2"
             to={ROUTES.LOGIN}
           >
-             Login
+            Login
           </Link>
         </h4>
       </div>

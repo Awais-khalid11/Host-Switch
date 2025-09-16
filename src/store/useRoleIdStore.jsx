@@ -7,9 +7,10 @@ const useRoleStore = create(
     (set) => ({
       roleId: null,
       user: null,
+      property: null,
       setRoleId: (role) => set({ roleId: role }),
       removeRoleId: () => set({ roleId: null }),
-
+      setProperty: (property) => set({ property: property }),
       setUser: (user) => set({ user: user }),
     }),
     {

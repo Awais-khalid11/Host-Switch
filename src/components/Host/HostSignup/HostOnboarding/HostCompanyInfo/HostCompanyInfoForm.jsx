@@ -40,7 +40,7 @@ const schema = z
 const HostCompanyInfoForm = () => {
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState(null);
-  const { roleId, removeRoleId } = useRoleStore();
+  const { roleId, removeRoleId, setProperty } = useRoleStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -65,7 +65,11 @@ const HostCompanyInfoForm = () => {
   const onSubmit = async (formData) => {
     try {
       setIsLoading(true);
-
+      const mapSelection = (value) => {
+        if (value === "Single Property") return "single";
+        if (value === "Multiple Properties/ Portfolio") return "multiple";
+        return null;
+      };
       const payload = {
         name: formData.name,
         number: formData.number,
@@ -73,7 +77,7 @@ const HostCompanyInfoForm = () => {
         password: formData.password,
         role_id: roleId,
         designation: formData.designation,
-        number_of_properties: formData.cleaningHandledBy[0],
+        number_of_properties: mapSelection(formData.cleaningHandledBy?.[0]),
       };
 
       const response = await postData("/auth/register", payload);
@@ -81,12 +85,11 @@ const HostCompanyInfoForm = () => {
       if (response?.payload?.accessToken) {
         localStorage.setItem("token", response.payload.accessToken);
       }
-
+      setProperty(payload?.number_of_properties);
       toast.success("Signup successful!");
 
       removeRoleId();
       navigate(ROUTES.HOSTPORTFOLIO);
-    } catch (error) {
     } finally {
       setIsLoading(false);
     }
