@@ -59,7 +59,12 @@ const AdminDashboardCards = () => {
       <h2 className="text-2xl font-bold mb-5">Overview</h2>
       <div className="mb-5">
         {loading ? (
-          <Skeleton variant="card" count={1} hasImage rows={3} />
+          <Skeleton
+            variant="dashboard-cards"
+            count={4}
+            gridCols={4}
+            className="my-6"
+          />
         ) : adminCards.length > 0 ? (
           <DashboardCards data={adminCards} />
         ) : (

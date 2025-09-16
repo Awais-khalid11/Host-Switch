@@ -65,7 +65,7 @@ const PMCompaniesCards = () => {
   };
 
   if (loading) {
-    return <Skeleton count={6} hasImage rows={3} />;
+    return <Skeleton variant="host-leads" count={6} />;
   }
   return verify ? (
     verify

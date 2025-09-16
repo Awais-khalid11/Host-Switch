@@ -7,6 +7,7 @@ const Skeleton = ({
   hasImage = false,
   hasButtons = false,
   className = "",
+  gridCols = 4,
 }) => {
   const renderSkeleton = () => {
     switch (variant) {
@@ -86,6 +87,133 @@ const Skeleton = ({
           </div>
         );
 
+      case "dashboard-cards":
+        return (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${gridCols} gap-4`}
+          >
+            {Array.from({ length: count }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-gray-50 rounded-2xl p-4 flex items-center space-x-4"
+              >
+                <div className="w-12 h-12 bg-blue-200 rounded-xl flex-shrink-0"></div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="h-3 bg-gray-300 rounded w-20 mb-2"></div>
+
+                  <div className="h-6 bg-gray-400 rounded w-8"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+
+      case "host-leads":
+        return (
+          <div className="flex w-full flex-wrap gap-4">
+            {Array.from({ length: count }).map((_, i) => (
+              <div
+                key={i}
+                className="border border-gray-300 rounded-xl md:max-w-[32%] w-full p-4"
+              >
+                <div className="flex items-center justify-between border-b border-b-[#25252526] pb-3">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-[46px] h-[46px] bg-gray-300 rounded-full flex-shrink-0"></div>
+                    <div>
+                      <div className="h-4 bg-gray-300 rounded w-24 mb-1"></div>
+                      <div className="h-3 bg-gray-300 rounded w-32"></div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-end items-end">
+                    <div className="h-3 bg-gray-300 rounded w-16 mb-1"></div>
+                    <div className="h-6 bg-green-200 rounded-full w-16"></div>
+                  </div>
+                </div>
+
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                      <div className="h-3 bg-gray-300 rounded w-16"></div>
+                    </div>
+                    <div className="h-3 bg-gray-300 rounded w-20"></div>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                      <div className="h-3 bg-gray-300 rounded w-20"></div>
+                    </div>
+                    <div className="h-3 bg-gray-300 rounded w-16"></div>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                      <div className="h-3 bg-gray-300 rounded w-24"></div>
+                    </div>
+                    <div className="h-3 bg-gray-300 rounded w-12"></div>
+                  </div>
+
+                  <div className="flex justify-between mb-5">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                      <div className="h-3 bg-gray-300 rounded w-20"></div>
+                    </div>
+                    <div className="h-3 bg-gray-300 rounded w-24"></div>
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <div className="h-10 bg-gray-300 rounded w-full"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      case "host-owner":
+        return (
+          <div className="flex w-full flex-wrap gap-4">
+            {Array.from({ length: count }).map((_, i) => (
+              <div
+                key={i}
+                className="border border-gray-300 rounded-xl md:max-w-[32%] w-full p-4 bg-white"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-[46px] h-[46px] bg-gray-300 rounded-full"></div>
+                    <div>
+                      <div className="h-4 bg-gray-300 rounded w-32 mb-1"></div>
+                      <div className="h-3 bg-gray-300 rounded w-20"></div>
+                    </div>
+                  </div>
+                  <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-start gap-2">
+                    <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                    <div className="h-3 bg-gray-300 rounded w-48"></div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                    <div className="h-3 bg-gray-300 rounded w-32"></div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                    <div className="h-3 bg-gray-300 rounded w-40"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="h-10 bg-gray-300 rounded w-full"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+
       case "card":
       default:
         return (
@@ -122,6 +250,12 @@ const Skeleton = ({
         );
     }
   };
+
+  if (variant === "dashboard-cards") {
+    return (
+      <div className={`animate-pulse ${className}`}>{renderSkeleton()}</div>
+    );
+  }
 
   return (
     <div className={`animate-pulse ${className}`}>

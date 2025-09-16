@@ -14,7 +14,7 @@ import {
   MsgsSVG,
   PaySVG,
   SmsSVG,
-} from "../../../Constants/Icons";
+} from "../../../constants/Icons";
 import PaidInvoice from "../../PaidInvoice/PaidInvoice";
 import InvoiceView from "../../InvoiceView/InvoiceView";
 import Pay from "../../Pay/Pay";

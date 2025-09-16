@@ -34,7 +34,7 @@ const DashboardIncoming = ({ setCardDetail }) => {
   return (
     <div>
       {loading ? (
-        <Skeleton variant="card" count={3} />
+        <Skeleton variant="host-owner" count={3} />
       ) : leads.length > 0 ? (
         <IncomingCards incomingData={leads} setCardDetail={setCardDetail} />
       ) : (

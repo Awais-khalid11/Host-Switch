@@ -53,7 +53,7 @@ const LeadCards = ({ setCardDetail }) => {
       </div>
 
       {loading ? (
-        <Skeleton variant="card" count={4} />
+        <Skeleton variant="host-owner" count={6} />
       ) : leads.length > 0 ? (
         <IncomingCards incomingData={leads} setCardDetail={setCardDetail} />
       ) : (

@@ -65,7 +65,7 @@ const IncomingCards = ({ incomingData }) => {
         </Modal>
       )}
 
-      <div className="flex items-center justify-between flex-wrap lg:gap-4">
+      <div className="flex items-center justify-between   flex-wrap lg:gap-4">
         {incomingData.map((item, index) => {
           const fullAddress = [
             item.address,
@@ -79,64 +79,87 @@ const IncomingCards = ({ incomingData }) => {
             .join(", ");
 
           return (
-            <div
-              key={index}
-              className="border border-[#001B4429] rounded-[12px] p-5 h-[252px] mb-2.5 md:w-[49%] lg:w-[32%] w-full relative"
-            >
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-2.5 mb-3.5">
-                  <img
-                    src={
-                      item.user?.image
-                        ? `${import.meta.env.VITE_IMG_URL}${item.user.image}`
-                        : UserPNG
-                    }
-                    alt="user"
-                    className="h-[54px] w-[54px] rounded-full object-cover border border-gray-300"
-                    onError={(e) => {
-                      e.currentTarget.src = UserPNG;
-                    }}
-                  />
-                  <div>
-                    <h4 className="text-base font-medium text-[#1B252B]">
-                      {item.user?.name || "Property Host"}
-                    </h4>
-                    <p className="text-[12px] font-normal text-[#727272]">
-                      {item.user?.role || "Owner"}
-                    </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {incomingData.map((item, index) => {
+                const fullAddress = [
+                  item.address,
+                  item.unit_apt,
+                  item.city,
+                  item.state,
+                  item.zip_code,
+                  item.country,
+                ]
+                  .filter(Boolean)
+                  .join(", ");
+
+                return (
+                  <div
+                    key={index}
+                    className="border border-[#001B4429] rounded-[12px] p-5 h-full flex flex-col justify-between"
+                  >
+                    {/* Top Section */}
+                    <div>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={
+                              item.user?.image
+                                ? `${import.meta.env.VITE_IMG_URL}${
+                                    item.user.image
+                                  }`
+                                : UserPNG
+                            }
+                            alt="user"
+                            className="h-[54px] w-[54px] rounded-full object-cover border border-gray-300"
+                            onError={(e) => {
+                              e.currentTarget.src = UserPNG;
+                            }}
+                          />
+                          <div>
+                            <h4 className="text-base font-medium text-[#1B252B]">
+                              {item.user?.name || "Property Host"}
+                            </h4>
+                            <p className="text-[12px] font-normal text-[#727272]">
+                              {item.user?.role || "Owner"}
+                            </p>
+                          </div>
+                        </div>
+                        <DropdownActions actions={dropdownActions(item)} />
+                      </div>
+
+                      <div>
+                        <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
+                          <img src={LocationSVG} alt="location" />
+                          {fullAddress || "No address provided"}
+                        </h5>
+                        <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
+                          <img src={BuildSVG} alt="type" />
+                          {item.type || "N/A"}
+                        </h5>
+                        <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5">
+                          <img src={HomeSVG} alt="renovations" />
+                          {item.renovations?.length
+                            ? item.renovations.join(", ")
+                            : "No renovations listed"}
+                        </h5>
+                      </div>
+                    </div>
+
+                    {/* Button pinned at bottom */}
+                    <Button
+                      variant="borderbtn"
+                      prefixImg={BluemsgSVG}
+                      className="text-sm mt-4"
+                      onClick={() => {
+                        setId(item?.user?.id);
+                        setShowModal(true);
+                      }}
+                    >
+                      Send Message
+                    </Button>
                   </div>
-                </div>
-                <DropdownActions actions={dropdownActions(item)} />
-              </div>
-
-              <div className="mb-4">
-                <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
-                  <img src={LocationSVG} alt="location" />
-                  {fullAddress || "No address provided"}
-                </h5>
-                <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5 mb-2">
-                  <img src={BuildSVG} alt="type" />
-                  {item.type || "N/A"}
-                </h5>
-                <h5 className="md:text-sm text-[12px] font-normal flex items-center gap-2.5">
-                  <img src={HomeSVG} alt="renovations" />
-                  {item.renovations?.length
-                    ? item.renovations.join(", ")
-                    : "No renovations listed"}
-                </h5>
-              </div>
-
-              <Button
-                variant="borderbtn"
-                prefixImg={BluemsgSVG}
-                className="text-sm"
-                onClick={() => {
-                  setId(item?.user?.id);
-                  setShowModal(true);
-                }}
-              >
-                Send Message
-              </Button>
+                );
+              })}
             </div>
           );
         })}

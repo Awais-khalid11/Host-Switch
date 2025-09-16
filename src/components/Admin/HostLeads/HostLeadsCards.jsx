@@ -96,7 +96,7 @@ const HostLeadsCards = () => {
       </div>
 
       {loading ? (
-        <Skeleton variant="card" count={4} />
+        <Skeleton variant="host-leads" count={6} />
       ) : filteredData.length > 0 ? (
         <div className="flex w-full flex-wrap gap-4">
           {filteredData.map((user, index) => {
