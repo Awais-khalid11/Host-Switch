@@ -62,8 +62,8 @@ const RoleSelection = () => {
             }`}
           >
             <p className="text-[16px] font-medium">
-              I want to access the{" "}
-              <span className="font-bold">PM Dashboard</span>
+              I am a{" "}
+              <span className="font-bold">Property Managment Company</span>
             </p>
           </div>
 
@@ -76,8 +76,10 @@ const RoleSelection = () => {
             }`}
           >
             <p className="text-[16px] font-medium">
-              I want to access the{" "}
-              <span className="font-bold">Host Dashboard</span>
+              I am a{" "}
+              <span className="font-bold">
+                Homeowner Seeking Property Managment
+              </span>
             </p>
           </div>
 

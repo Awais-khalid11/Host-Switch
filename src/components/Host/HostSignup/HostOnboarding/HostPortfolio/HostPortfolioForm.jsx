@@ -612,7 +612,12 @@ const HostPortfolioForm = () => {
                     <MultiCheckboxDropdown
                       label="How Often Is Your Property Rented Out?"
                       placeholder="How Often Is Your Property Rented Out?"
-                      options={["Full-time", "Seasonal", "Occasionally"]}
+                      options={[
+                        "Full-time",
+                        "Seasonal",
+                        "Occasionally",
+                        "Not currently a rental",
+                      ]}
                       selectedValues={field.value}
                       setSelectedValues={field.onChange}
                       dropdownKey="rent"

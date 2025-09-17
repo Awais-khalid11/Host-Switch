@@ -46,10 +46,25 @@ const HostExpectationForm = () => {
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [currentPMCompany, setCurrentPMCompany] = useState("");
   const [revenueExpectation, setRevenueExpectation] = useState("");
+
+  // New states for multiple property flow
+  const [involvementLevel, setInvolvementLevel] = useState("");
+  const [propertyCondition, setPropertyCondition] = useState("");
+  const [selectedUpgrades, setSelectedUpgrades] = useState([]);
+  const [openToPMUpgrades, setOpenToPMUpgrades] = useState("");
+  const [willingToInvest, setWillingToInvest] = useState("");
+  const [furniturePhotoReady, setFurniturePhotoReady] = useState("");
+  const [pmContractFiles, setPmContractFiles] = useState([]);
+  const [listingFiles, setListingFiles] = useState([]);
+  const [revenueFiles, setRevenueFiles] = useState([]);
+  const [propertyPhotos, setPropertyPhotos] = useState([]);
+  const [additionalNote, setAdditionalNote] = useState("");
+
   const { getFinalPayload, portfolioData, updateExpectation } = useHostForm();
   const [desc, setDesc] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { property } = useRoleStore();
+
   const {
     control,
     handleSubmit,
@@ -79,70 +94,114 @@ const HostExpectationForm = () => {
       condition: false,
     },
   });
+
+  const upgradeOptions = [
+    "Flooring",
+    "Kitchen appliances",
+    "Bathroom fixtures",
+    "Furniture",
+    "Paint",
+    "Smart devices",
+  ];
+
+  const handleUpgradeToggle = (upgrade) => {
+    setSelectedUpgrades((prev) => {
+      if (prev.includes(upgrade)) {
+        return prev.filter((item) => item !== upgrade);
+      } else if (prev.length < 3) {
+        return [...prev, upgrade];
+      }
+      return prev;
+    });
+  };
+
   const submitHandle = async (data) => {
     setIsLoading(true);
 
-    const renovations = [];
-    if (flooring) renovations.push("Flooring");
-    if (kappliances) renovations.push("Kitchen appliances");
-    if (bfixtures) renovations.push("Bathroom fixtures");
-    if (furniture) renovations.push("Furniture");
-    if (interior) renovations.push("Paint / Interior");
-    if (smart) renovations.push("Smart devices");
-    if (amenities) renovations.push("Outdoor amenities");
-    if (last) renovations.push("Others");
+    if (property === "multiple") {
+      // Handle multiple property submission
+      const payload = {
+        priorities: propertyTypes,
+        service_type: ticket,
+        co_hosting_consideration: cohosting,
+        involvement_level: involvementLevel,
+        property_condition: propertyCondition,
+        recent_upgrades: selectedUpgrades,
+        open_to_pm_upgrades: openToPMUpgrades,
+        willing_to_invest: willingToInvest,
+        furniture_photo_ready: furniturePhotoReady,
+        pm_contract_files: pmContractFiles,
+        listing_files: listingFiles,
+        revenue_files: revenueFiles,
+        property_photos: propertyPhotos,
+        additional_note: additionalNote,
+        terms_accepted: data.condition,
+      };
 
-    const absoluteMustHave = [];
-    if (agreed) absoluteMustHave.push("Local PM Company");
-    if (use)
-      absoluteMustHave.push("I use my property personally 25%+ per year");
-    if (account) absoluteMustHave.push("Dedicated account manager");
-    if (require)
-      absoluteMustHave.push(
-        "I require personal approval for every property-related purchase"
-      );
+      updateExpectation(payload);
+    } else {
+      // Original single property logic
+      const renovations = [];
+      if (flooring) renovations.push("Flooring");
+      if (kappliances) renovations.push("Kitchen appliances");
+      if (bfixtures) renovations.push("Bathroom fixtures");
+      if (furniture) renovations.push("Furniture");
+      if (interior) renovations.push("Paint / Interior");
+      if (smart) renovations.push("Smart devices");
+      if (amenities) renovations.push("Outdoor amenities");
+      if (last) renovations.push("Others");
 
-    const payload = {
-      current_pm_company_name: currentPMCompany,
-      seeking_pm_host: ticket,
-      co_hosting: cohosting,
-      involvement_level: day,
-      "condition[Flooring]": floor,
-      "condition[KitchenAppliances]": appliances,
-      "condition[BathroomFixtures]": fixtures,
-      "condition[Furniture]": furniture,
-      "condition[PaintInterior]": paint,
-      "condition[SmartDevices]": devices,
-      "condition[OutdoorAmenities]": outdoor,
-      "condition[Others]": others,
-      suggestion: onboardingFees,
-      open_investing: restockingCharges,
-      photography: markupMaintenance,
-      account,
-      require,
-      use,
-      ...absoluteMustHave.reduce((acc, item, index) => {
-        acc[`absolute_must_have[${index}]`] = item;
-        return acc;
-      }, {}),
-      ...renovations.reduce((acc, renovation, index) => {
-        acc[`renovations[${index}]`] = renovation;
-        return acc;
-      }, {}),
-      pm_charge_percentage: pmTypes[0],
-      type: propertyTypes[0],
-      yearly_revenue: revenueExpectation,
-      files: data.files,
-      desc,
-    };
+      const absoluteMustHave = [];
+      if (agreed) absoluteMustHave.push("Local PM Company");
+      if (use)
+        absoluteMustHave.push("I use my property personally 25%+ per year");
+      if (account) absoluteMustHave.push("Dedicated account manager");
+      if (require)
+        absoluteMustHave.push(
+          "I require personal approval for every property-related purchase"
+        );
 
-    updateExpectation(payload);
+      const payload = {
+        current_pm_company_name: currentPMCompany,
+        seeking_pm_host: ticket,
+        co_hosting: cohosting,
+        involvement_level: day,
+        "condition[Flooring]": floor,
+        "condition[KitchenAppliances]": appliances,
+        "condition[BathroomFixtures]": fixtures,
+        "condition[Furniture]": furniture,
+        "condition[PaintInterior]": paint,
+        "condition[SmartDevices]": devices,
+        "condition[OutdoorAmenities]": outdoor,
+        "condition[Others]": others,
+        suggestion: onboardingFees,
+        open_investing: restockingCharges,
+        photography: markupMaintenance,
+        account,
+        require,
+        use,
+        ...absoluteMustHave.reduce((acc, item, index) => {
+          acc[`absolute_must_have[${index}]`] = item;
+          return acc;
+        }, {}),
+        ...renovations.reduce((acc, renovation, index) => {
+          acc[`renovations[${index}]`] = renovation;
+          return acc;
+        }, {}),
+        pm_charge_percentage: pmTypes[0],
+        type: propertyTypes[0],
+        yearly_revenue: revenueExpectation,
+        files: data.files,
+        desc,
+      };
+
+      updateExpectation(payload);
+    }
 
     const finalPayload = getFinalPayload();
     try {
       const res = await postData("/property", finalPayload);
       console.log("API Success:", res);
-
       navigate(ROUTES.HOSTDASHBOARD);
     } catch (error) {
       console.error(" API Error:", error);
@@ -150,6 +209,7 @@ const HostExpectationForm = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit(submitHandle)} className="md:px-0 px-2.5">
@@ -177,7 +237,7 @@ const HostExpectationForm = () => {
               isMulti={true}
               className="mb-5"
             />
-            <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
+            {/* <div className="flex md:flex-nowrap flex-wrap items-center md:gap-5 gap-2.5 mb-5">
               <h3 className="text-sm font-bold">Willing to consider?</h3>
               <div className="flex items-center gap-5">
                 <RadioField
@@ -197,7 +257,254 @@ const HostExpectationForm = () => {
                   onChange={(e) => setTicket(e.target.value)}
                 />
               </div>
+            </div> */}
+            {/* Co-hosting Section */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">
+                Willing to Consider Co-hosting?
+              </h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="cohostingYes"
+                  name="cohosting"
+                  value="Yes"
+                  label="Yes"
+                  checked={cohosting === "Yes"}
+                  onChange={(e) => setCohosting(e.target.value)}
+                />
+                <RadioField
+                  id="cohostingNo"
+                  name="cohosting"
+                  value="No"
+                  label="No"
+                  checked={cohosting === "No"}
+                  onChange={(e) => setCohosting(e.target.value)}
+                />
+                <RadioField
+                  id="cohostingNotSure"
+                  name="cohosting"
+                  value="Not Sure"
+                  label="Not Sure"
+                  checked={cohosting === "Not Sure"}
+                  onChange={(e) => setCohosting(e.target.value)}
+                />
+              </div>
             </div>
+
+            {/* Involvement Level Section */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">Involvement Level</h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="involvementFull"
+                  name="involvementLevel"
+                  value="Fully Involved"
+                  label="Fully Involved"
+                  checked={involvementLevel === "Fully Involved"}
+                  onChange={(e) => setInvolvementLevel(e.target.value)}
+                />
+                <RadioField
+                  id="involvementLight"
+                  name="involvementLevel"
+                  value="Light Involvement"
+                  label="Light Involvement"
+                  checked={involvementLevel === "Light Involvement"}
+                  onChange={(e) => setInvolvementLevel(e.target.value)}
+                />
+                <RadioField
+                  id="involvementNone"
+                  name="involvementLevel"
+                  value="No Day-to-Day Involvement"
+                  label="No Day-to-Day Involvement"
+                  checked={involvementLevel === "No Day-to-Day Involvement"}
+                  onChange={(e) => setInvolvementLevel(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Property Condition Section */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">Property condition</h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="conditionExcellent"
+                  name="propertyCondition"
+                  value="Excellent"
+                  label="Excellent"
+                  checked={propertyCondition === "Excellent"}
+                  onChange={(e) => setPropertyCondition(e.target.value)}
+                />
+                <RadioField
+                  id="conditionGood"
+                  name="propertyCondition"
+                  value="Good"
+                  label="Good"
+                  checked={propertyCondition === "Good"}
+                  onChange={(e) => setPropertyCondition(e.target.value)}
+                />
+                <RadioField
+                  id="conditionFair"
+                  name="propertyCondition"
+                  value="Fair"
+                  label="Fair"
+                  checked={propertyCondition === "Fair"}
+                  onChange={(e) => setPropertyCondition(e.target.value)}
+                />
+                <RadioField
+                  id="conditionPoor"
+                  name="propertyCondition"
+                  value="Poor"
+                  label="Poor"
+                  checked={propertyCondition === "Poor"}
+                  onChange={(e) => setPropertyCondition(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Upgrades in last 3 years - Dropdown */}
+            <MultiCheckboxDropdown
+              label="Upgrades in last 3 years"
+              placeholder="Select up to 3 that matter most to you."
+              options={upgradeOptions}
+              selectedValues={selectedUpgrades}
+              setSelectedValues={setSelectedUpgrades}
+              dropdownKey="upgrades"
+              isOpen={openDropdown === "upgrades"}
+              setOpenDropdown={setOpenDropdown}
+              isMulti={true}
+              maxSelections={3}
+              className="mb-5"
+            />
+
+            {/* Open to PM upgrade suggestions */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">
+                Open to PM upgrade suggestions?
+              </h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="pmUpgradesYes"
+                  name="openToPMUpgrades"
+                  value="Yes"
+                  label="Yes"
+                  checked={openToPMUpgrades === "Yes"}
+                  onChange={(e) => setOpenToPMUpgrades(e.target.value)}
+                />
+                <RadioField
+                  id="pmUpgradesPossibly"
+                  name="openToPMUpgrades"
+                  value="Possibly"
+                  label="Possibly"
+                  checked={openToPMUpgrades === "Possibly"}
+                  onChange={(e) => setOpenToPMUpgrades(e.target.value)}
+                />
+                <RadioField
+                  id="pmUpgradesNo"
+                  name="openToPMUpgrades"
+                  value="No"
+                  label="No"
+                  checked={openToPMUpgrades === "No"}
+                  onChange={(e) => setOpenToPMUpgrades(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Willing to invest if income increases */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">
+                Willing to invest if income increases?
+              </h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="investYes"
+                  name="willingToInvest"
+                  value="Yes"
+                  label="Yes"
+                  checked={willingToInvest === "Yes"}
+                  onChange={(e) => setWillingToInvest(e.target.value)}
+                />
+                <RadioField
+                  id="investMaybe"
+                  name="willingToInvest"
+                  value="Maybe"
+                  label="Maybe"
+                  checked={willingToInvest === "Maybe"}
+                  onChange={(e) => setWillingToInvest(e.target.value)}
+                />
+                <RadioField
+                  id="investNo"
+                  name="willingToInvest"
+                  value="No"
+                  label="No"
+                  checked={willingToInvest === "No"}
+                  onChange={(e) => setWillingToInvest(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Furniture photo-ready */}
+            <div className="flex md:flex-nowrap flex-wrap items-start flex-col md:gap-5 gap-2.5 mb-5">
+              <h3 className="text-sm font-bold">Furniture photo-ready?</h3>
+              <div className="flex items-center gap-5">
+                <RadioField
+                  id="furnitureYes"
+                  name="furniturePhotoReady"
+                  value="Yes"
+                  label="Yes"
+                  checked={furniturePhotoReady === "Yes"}
+                  onChange={(e) => setFurniturePhotoReady(e.target.value)}
+                />
+                <RadioField
+                  id="furnitureSomewhat"
+                  name="furniturePhotoReady"
+                  value="Somewhat"
+                  label="Somewhat"
+                  checked={furniturePhotoReady === "Somewhat"}
+                  onChange={(e) => setFurniturePhotoReady(e.target.value)}
+                />
+                <RadioField
+                  id="furnitureNo"
+                  name="furniturePhotoReady"
+                  value="No"
+                  label="No"
+                  checked={furniturePhotoReady === "No"}
+                  onChange={(e) => setFurniturePhotoReady(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* File Upload Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <FileUpload
+                label="Upload PM Contract(s)"
+                value={pmContractFiles}
+                onChange={setPmContractFiles}
+              />
+              <FileUpload
+                label="Upload Listing Links or Portfolio"
+                value={listingFiles}
+                onChange={setListingFiles}
+              />
+              <FileUpload
+                label="Upload Revenue Reports"
+                value={revenueFiles}
+                onChange={setRevenueFiles}
+              />
+              <FileUpload
+                label="Upload Property Photos"
+                value={propertyPhotos}
+                onChange={setPropertyPhotos}
+              />
+            </div>
+
+            {/* Additional Note */}
+            <TextArea
+              type="text"
+              placeholder="Type here..."
+              label="Additional Note"
+              value={additionalNote}
+              onChange={(e) => setAdditionalNote(e.target.value)}
+            />
           </>
         ) : (
           <>
@@ -241,7 +548,7 @@ const HostExpectationForm = () => {
               <MultiCheckboxDropdown
                 label="What % does your current PM charge?"
                 placeholder="How Often Is Your Property Rented Out?"
-                options={["<10%", "10–15%", ">15%"]}
+                options={["10%", "15%", "20%", "25%", "30%", "35%", "40%"]}
                 selectedValues={pmTypes}
                 setSelectedValues={setPMTypes}
                 dropdownKey="charge"
@@ -817,8 +1124,8 @@ const HostExpectationForm = () => {
                   <RadioField
                     id="restockingMay"
                     name="restockingCharges"
-                    value="May be"
-                    label="May be "
+                    value="Maybe"
+                    label="Maybe "
                     checked={restockingCharges === "May be"}
                     onChange={(e) => setRestockingCharges(e.target.value)}
                   />

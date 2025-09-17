@@ -34,7 +34,9 @@ const ScopeBox = ({ setScopeServices }) => {
 
   return (
     <div className="border border-[#2525251A] rounded-[8px] p-4 mb-4">
-      <h4 className="text-sm font-bold mb-4">Scope of Services</h4>
+      <h4 className="text-sm font-bold mb-4">
+        Scope of services required in new Managment Under cleaners
+      </h4>
       <div className="flex md:flex-nowrap flex-wrap items-center gap-5 mb-3.5">
         <CheckBox
           label="Guest communication"

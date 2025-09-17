@@ -38,7 +38,7 @@ const HostScopeBox = ({ control, name = "reasons_switching" }) => {
       label: "Poor maintenance / upkeep",
       value: "Poor maintenance / upkeep",
     },
-    { id: "others", label: "Others", value: "Others" },
+    { id: "other", label: "Other", value: "Other" },
   ];
 
   return (
