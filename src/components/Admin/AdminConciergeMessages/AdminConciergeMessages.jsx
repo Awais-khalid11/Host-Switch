@@ -107,10 +107,7 @@ const AdminConciergeMessages = () => {
         )}
         {!conversationId && (
           <div className="flex flex-col h-[510px] bg-[#F5F5F5] rounded-xl overflow-hidden">
-            <NoDataFound
-              message="Start a chat"
-              subMessage="Select a user to begin messaging."
-            />
+            <NoDataFound message="Start a chat" />
           </div>
         )}
       </div>

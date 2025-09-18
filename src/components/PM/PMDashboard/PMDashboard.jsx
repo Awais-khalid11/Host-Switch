@@ -11,7 +11,7 @@ import {
 } from "../../../constants/Icons";
 import Views from "../../Views/Views";
 import SendProposal from "../../SendProposal/SendProposal";
-import { getData } from "../../../api/apiClient";
+import { getData, postData } from "../../../api/apiClient";
 import Skeleton from "../../Skeleton/SkeletonCard";
 import NoDataFound from "../../NoDataFound";
 
@@ -19,6 +19,15 @@ const PMDashboard = () => {
   const [cardDetail, setCardDetail] = useState(null);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const sessionId = localStorage.getItem("sessionId");
+
+  const paymentStatus = async () => {
+    try {
+      await getData("payment/status");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -50,6 +59,22 @@ const PMDashboard = () => {
 
     fetchSummary();
   }, []);
+  useEffect(() => {
+    if (!sessionId) return;
+    const sessionUpdate = async () => {
+      try {
+        const params = {
+          sessionId,
+        };
+        await postData("payment/confirm", params);
+        paymentStatus();
+      } catch (err) {
+        console.error("Failed to fetch PM dashboard summary:", err);
+      }
+    };
+
+    sessionUpdate();
+  }, [sessionId]);
 
   const cardsInfo = stats
     ? [

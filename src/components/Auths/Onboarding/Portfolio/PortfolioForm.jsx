@@ -506,7 +506,7 @@ const PortfolioForm = () => {
         />
         <div className="flex md:gap-4 gap-2">
           <Link
-            className="mb-5 w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
+            className="w-[30%] bg-[#2525251A] rounded-[8px] text-[#2525254d] flex items-center justify-center font-black"
             to={ROUTES.COMPANYINFO}
           >
             Back
@@ -514,7 +514,7 @@ const PortfolioForm = () => {
           <button
             type="submit"
             className="mb
--5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
+-5 md:w-[70%] w-full md:py-[16px] cursor-pointer py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
           >
             Next
           </button>

@@ -49,13 +49,13 @@ const BelliconNotification = ({
           options={filterOptions}
         />
       </div>
-      {notificationData.length > 0 ? (
+      {notificationData[0]?.items.length > 0 ? (
         <NotificationLists
           activeTab={activeTab}
           notifications={notificationData}
         />
       ) : (
-        <NoDataFound message="No notifications available " />
+        <NoDataFound message="No Notifications Found " />
       )}
     </>
   );

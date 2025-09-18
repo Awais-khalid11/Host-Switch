@@ -48,6 +48,7 @@ const PMIconNotification = () => {
 
     fetchNotifications();
   }, []);
+  console.log(notifications);
   return (
     <div>
       {isLoading ? (

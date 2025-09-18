@@ -48,7 +48,7 @@ const DashboardMessages = () => {
   }
 
   return (
-    <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px] overflow-y-auto">
+    <div className="border border-[#001B4429] p-4 rounded-[12px] h-[323px]">
       <div className="flex justify-between items-center lg:mb-6 mb-2">
         <h3 className="text-xl font-semibold text-[#181818]">
           Recent Messages
@@ -95,11 +95,7 @@ const DashboardMessages = () => {
           );
         })
       ) : (
-        <NoDataFound
-          message="No Messages"
-          subMessage="You don't have any recent conversations yet."
-          className="my-6"
-        />
+        <NoDataFound message="No Messages Found" className="my-6" />
       )}
     </div>
   );

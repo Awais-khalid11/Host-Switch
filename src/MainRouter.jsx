@@ -57,6 +57,7 @@ import NotFound from "./pages/NotFound";
 import PmSignUp from "./components/PmSignUp/PmSignUp";
 import HostEdit from "./components/Host/MySubmissions/HostEdit";
 import SendForm from "./components/SendProposal/SendForm";
+import VerifyPayment from "./pages/VerifyPayment";
 const MainRouter = () => {
   return (
     <>
@@ -78,6 +79,7 @@ const MainRouter = () => {
         <Route path="/hostportfolio" element={<HostPortfolio />} />
         <Route path="/pmsignup" element={<PmSignUp />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/verify-payment" element={<VerifyPayment />} />
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           {/* PM Routes */}

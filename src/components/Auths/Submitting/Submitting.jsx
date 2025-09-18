@@ -24,7 +24,7 @@ const Submitting = () => {
           setFade(true);
         } else {
           clearInterval(interval);
-          navigate("/login");
+          navigate("/pm/dashboard");
         }
       }, 200);
     }, 2000);

@@ -98,10 +98,7 @@ const TrainerMessages = ({ onSelectUser }) => {
             })}
           </>
         ) : (
-          <NoDataFound
-            message="No Conversations Available"
-            className="my-6 mx-4"
-          />
+          <NoDataFound message="No Conversations Found" className="my-6 mx-4" />
         )}
       </div>
     </div>

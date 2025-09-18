@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import Button from "../../../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import InputField from "../../../InputField/InputField";
-import SelectField from "../../../SelectField/SelectField";
 import FileUpload from "../../../UploadFile/UploadFile";
 import TextArea from "../../../TextArea/TextArea";
 import RadioField from "../../RadioField/RadioField";
 import { ROUTES } from "../../../../constants/Routes";
 import MultiCheckboxDropdown from "../Portfolio/MultiCheckboxDropdown";
 import usePMForm from "../../../../store/usePMForm";
-import { putData } from "../../../../api/apiClient";
+import { postData, putData } from "../../../../api/apiClient";
 import { toast } from "react-toastify";
+import { Controller, useForm } from "react-hook-form";
+import useRoleStore from "../../../../store/useRoleIdStore";
 
 const ExpectationForm = () => {
   const navigate = useNavigate();
   const { updateExpectation, getFinalPayload } = usePMForm();
-
   const [reviewRating, setReviewRating] = useState("");
   const [listingProfile, setListingProfile] = useState("");
   const [superhostPremierHost, setSuperhostPremierHost] = useState("");
@@ -38,15 +37,17 @@ const ExpectationForm = () => {
   const [yelpGoogleReviewsLink, setYelpGoogleReviewsLink] = useState("");
   const [teamSize, setTeamSize] = useState("");
   const [serviceLevelGuarantees, setServiceLevelGuarantees] = useState("");
-  const [sampleMgmtContract, setSampleMgmtContract] = useState(null);
-  const [logo, setLogo] = useState(null);
-  const [welcomeVideo, setWelcomeVideo] = useState(null);
-  const [sampleOwnerStatement, setSampleOwnerStatement] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const { setRoleId, setUser } = useRoleStore();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
+    setSubmitting(true);
     const formData = new FormData();
 
     formData.append("expectation_preference[review_rating]", reviewRating);
@@ -79,8 +80,10 @@ const ExpectationForm = () => {
       requireFurniture
     );
 
-    if (sampleMgmtContract) {
-      formData.append("sample_contract", sampleMgmtContract);
+    if (data.files && data.files.length > 0) {
+      Array.from(data.files).forEach((file) => {
+        formData.append("sample_contract", file);
+      });
     }
 
     formData.append("expectation_preference[company_stand]", companyStand);
@@ -99,13 +102,22 @@ const ExpectationForm = () => {
       "expectation_preference[property_improvement_services]",
       propertyImprovementServices
     );
-
-    if (logo) {
-      formData.append("company_logo", logo);
+    if (data.logo && data.logo.length > 0) {
+      Array.from(data.logo).forEach((file) => {
+        formData.append("company_logo", file);
+      });
     }
 
-    if (welcomeVideo) {
-      formData.append("video", welcomeVideo);
+    if (data.video && data.video.length > 0) {
+      Array.from(data.video).forEach((file) => {
+        formData.append("video", file);
+      });
+    }
+
+    if (data.sample && data.sample.length > 0) {
+      Array.from(data.sample).forEach((file) => {
+        formData.append("sample_owner_statement", file);
+      });
     }
 
     formData.append(
@@ -121,10 +133,6 @@ const ExpectationForm = () => {
       "expectation_preference[service_level_guarantees]",
       serviceLevelGuarantees
     );
-
-    if (sampleOwnerStatement) {
-      formData.append("sample_owner_statement", sampleOwnerStatement);
-    }
 
     const expectationData = {};
     for (let [key, value] of formData.entries()) {
@@ -157,25 +165,35 @@ const ExpectationForm = () => {
     }
     console.log(finalPayload);
     try {
-      const res = await putData("/auth/property-manager/profile", apiFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      toast.success("Form submitted successfully!");
-      localStorage.removeItem("token");
-      navigate(ROUTES.SUBMITTING);
+      const response = await putData(
+        "/auth/property-manager/profile",
+        apiFormData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      const user = response?.payload;
+      const userRoleId = response?.payload?.role_id;
+      setUser(user);
+      setRoleId(userRoleId);
+      toast.success("Profile submitted successfully!");
+      const res = await postData("/payment/create-checkout-session");
+      if (res.success && res.payload.checkoutUrl) {
+        window.location.href = res.payload.checkoutUrl;
+        localStorage.setItem("sessionId", res.payload.sessionId);
+      } else {
+        navigate(ROUTES.SUBMITTING);
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to submit form. Try again!");
+      console.error("Error during form submission:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleFileUpload = (setter) => (files) => {
-    const file = files[0];
-    setter(file);
-  };
   return (
     <div>
-      <form className="md:px-0 px-2.5" onSubmit={handleSubmit}>
+      <form className="md:px-0 px-2.5" onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Average Review Rating (Airbnb/Vrbo)"
           id="reviewRating"
@@ -253,9 +271,30 @@ const ExpectationForm = () => {
           onChange={(e) => setOwnerRetentionRate(e.target.value)}
         />
 
-        <FileUpload
-          label="Upload Sample Mgmt Contract"
-          onChange={handleFileUpload(setSampleMgmtContract)}
+        <Controller
+          name="files"
+          control={control}
+          render={({ field }) => {
+            const handleFileChange = (selectedFiles) => {
+              field.onChange(selectedFiles);
+            };
+
+            return (
+              <div className="flex-1">
+                <FileUpload
+                  label="Upload Sample Mgmt Contract"
+                  value={field.value}
+                  onChange={handleFileChange}
+                />
+
+                {errors.files && (
+                  <p className="text-red-500 text-sm -mt-5 mb-2">
+                    {errors.files.message}
+                  </p>
+                )}
+              </div>
+            );
+          }}
         />
 
         <MultiCheckboxDropdown
@@ -304,13 +343,55 @@ const ExpectationForm = () => {
         </div>
 
         <div className="flex md:flex-nowrap flex-wrap md:gap-5 ">
-          <FileUpload
-            label="Upload Logo"
-            onChange={handleFileUpload(setLogo)}
+          <Controller
+            name="logo"
+            control={control}
+            render={({ field }) => {
+              const handleFileChange = (selectedFiles) => {
+                field.onChange(selectedFiles);
+              };
+
+              return (
+                <div className="flex-1">
+                  <FileUpload
+                    label="Upload Logo"
+                    value={field.value}
+                    onChange={handleFileChange}
+                  />
+
+                  {errors.logo && (
+                    <p className="text-red-500 text-sm -mt-5 mb-2">
+                      {errors.logo.message}
+                    </p>
+                  )}
+                </div>
+              );
+            }}
           />
-          <FileUpload
-            label="Upload Welcome Video"
-            onChange={handleFileUpload(setWelcomeVideo)}
+          <Controller
+            name="video"
+            control={control}
+            render={({ field }) => {
+              const handleFileChange = (selectedFiles) => {
+                field.onChange(selectedFiles);
+              };
+
+              return (
+                <div className="flex-1">
+                  <FileUpload
+                    label="Upload Welcome Video"
+                    value={field.value}
+                    onChange={handleFileChange}
+                  />
+
+                  {errors.video && (
+                    <p className="text-red-500 text-sm -mt-5 mb-2">
+                      {errors.video.message}
+                    </p>
+                  )}
+                </div>
+              );
+            }}
           />
         </div>
 
@@ -477,9 +558,30 @@ const ExpectationForm = () => {
           onChange={(e) => setServiceLevelGuarantees(e.target.value)}
         />
 
-        <FileUpload
-          label="Upload Sample Owner Statement / Reviews"
-          onChange={handleFileUpload(setSampleOwnerStatement)}
+        <Controller
+          name="sample"
+          control={control}
+          render={({ field }) => {
+            const handleFileChange = (selectedFiles) => {
+              field.onChange(selectedFiles);
+            };
+
+            return (
+              <div className="flex-1">
+                <FileUpload
+                  label="Upload Sample Owner Statement/Reviews"
+                  value={field.value}
+                  onChange={handleFileChange}
+                />
+
+                {errors.sample && (
+                  <p className="text-red-500 text-sm -mt-5 mb-2">
+                    {errors.sample.message}
+                  </p>
+                )}
+              </div>
+            );
+          }}
         />
 
         <div className="flex md:gap-4 gap-2">
@@ -491,9 +593,9 @@ const ExpectationForm = () => {
           </Link>
           <button
             type="submit"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
+            className="mb-5 md:w-[70%] cursor-pointer w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#0050B3]"
           >
-            Submit
+            {submitting ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>
