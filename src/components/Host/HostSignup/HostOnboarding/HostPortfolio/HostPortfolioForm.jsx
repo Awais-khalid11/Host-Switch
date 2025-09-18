@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import HostScopeBox from "./HostScopeBox";
@@ -11,8 +11,10 @@ import CheckBox from "../../../../CheckBox/CheckBox";
 import MultiCheckboxDropdown from "../../../../Auths/Onboarding/Portfolio/MultiCheckboxDropdown";
 import useHostForm from "../../../../../store/useHostForm";
 import useRoleStore from "../../../../../store/useRoleIdStore";
-import { toast } from "react-toastify";
+
 import FileUpload from "../../../../UploadFile/UploadFile";
+import { AddressAutofill } from "@mapbox/search-js-react";
+import AddressInput from "../../../../InputField/AddressInput";
 
 const HostPortfolioForm = () => {
   const navigate = useNavigate();
@@ -24,8 +26,10 @@ const HostPortfolioForm = () => {
   const {
     control,
     handleSubmit,
+    register,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     defaultValues: {
       address: "",
@@ -62,36 +66,45 @@ const HostPortfolioForm = () => {
       reason_switching: data.reasons_switching,
     };
 
-    if (property === "Multiple Properties/ Portfolio") {
+    if (property === "multiple") {
       Object.assign(payload, {
         number_of_rental_properties: data.number_rental,
-        address: data.property_location,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zip_code: data.zipcode,
+        country: data.country,
         active_str_properties: data.str_active,
         property_type: data.property_types,
         managed_by_pm: data.currently_managed,
-        current_pm_company_name: data.pm_company_name,
+        ...(watchedCurrentlyManaged && {
+          current_pm_company_name: data.pm_company_name,
+        }),
         work_duration: data.work_duration,
-        contract_photo: data.contract_photo,
-        files: data.files,
         under_contract: data.under_contract,
         current_provided_services_pm: data.pm_services,
         preference_future_pm: data.pm_preference,
-        rented_out: data.rented_out,
+        rented_out: data.rented_out[0],
       });
     } else {
       Object.assign(payload, {
-        rented_out: data.rented_out,
+        rented_out: data.rented_out[0],
         type: data.property_types,
         hostingTypes: data.hosting_preference,
         cleanTypes: data.cleaning_preference,
         accountManager: data.account_manager,
         address: data.address,
+        city: data.city,
+        state: data.state,
+        zip_code: data.zipcode,
+        country: data.country,
         unit_apt: data.unit_apt,
         link: data.link,
       });
     }
 
     updatePortfolio(payload);
+    console.log(payload);
     navigate(ROUTES.HOSTEXPECTATIONS);
     setIsLoading(false);
   };
@@ -124,32 +137,16 @@ const HostPortfolioForm = () => {
                 </div>
               )}
             />
-
-            <Controller
+            <AddressInput
               control={control}
-              name="property_location"
-              rules={{ required: "Property location is required" }}
-              render={({ field }) => (
-                <div>
-                  <InputField
-                    label="Property Location"
-                    id="property_location"
-                    name="property_location"
-                    type="text"
-                    fieldName="w-full"
-                    placeholder="Type and select location..."
-                    icon={MdAddLocation}
-                    asterisk="true"
-                    {...field}
-                  />
-                  {errors.property_location && (
-                    <p className="text-red-500 text-sm -mt-6">
-                      {errors.property_location.message}
-                    </p>
-                  )}
-                </div>
-              )}
+              setValue={setValue}
+              errors={errors}
             />
+
+            <input type="hidden" {...register("city", { value: "" })} />
+            <input type="hidden" {...register("state", { value: "" })} />
+            <input type="hidden" {...register("country", { value: "" })} />
+            <input type="hidden" {...register("zipcode", { value: "" })} />
 
             <div className="my-4 space-y-3">
               <h3 className="text-sm font-bold">
@@ -410,59 +407,6 @@ const HostPortfolioForm = () => {
               )}
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4">
-              <Controller
-                name="contract_photo"
-                control={control}
-                render={({ field }) => {
-                  const handleFileChange = (selectedFiles) => {
-                    field.onChange(selectedFiles);
-                  };
-
-                  return (
-                    <div className="flex-1">
-                      <FileUpload
-                        label="Upload Photo of contract"
-                        value={field.value}
-                        onChange={handleFileChange}
-                      />
-
-                      {errors.files && (
-                        <p className="text-red-500 text-sm -mt-5 mb-2">
-                          {errors.files.message}
-                        </p>
-                      )}
-                    </div>
-                  );
-                }}
-              />
-              <Controller
-                name="files"
-                control={control}
-                render={({ field }) => {
-                  const handleFileChange = (selectedFiles) => {
-                    field.onChange(selectedFiles);
-                  };
-
-                  return (
-                    <div className="flex-1 ">
-                      <FileUpload
-                        label="Upload Multiple Property Files"
-                        value={field.value}
-                        onChange={handleFileChange}
-                      />
-
-                      {errors.files && (
-                        <p className="text-red-500 text-sm -mt-5 mb-2">
-                          {errors.files.message}
-                        </p>
-                      )}
-                    </div>
-                  );
-                }}
-              />
-            </div>
-
             <div>
               <Controller
                 control={control}
@@ -557,31 +501,16 @@ const HostPortfolioForm = () => {
         ) : (
           <>
             <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-              <Controller
+              <AddressInput
                 control={control}
-                name="address"
-                rules={{ required: "Property address is required" }}
-                render={({ field }) => (
-                  <div className="md:w-1/2 w-full">
-                    <InputField
-                      label="Property Address"
-                      id="address"
-                      name="address"
-                      type="text"
-                      fieldName="w-full"
-                      placeholder="Type and select location..."
-                      icon={MdAddLocation}
-                      asterisk="true"
-                      {...field}
-                    />
-                    {errors.address && (
-                      <p className="text-red-500 text-sm">
-                        {errors.address.message}
-                      </p>
-                    )}
-                  </div>
-                )}
+                setValue={setValue}
+                errors={errors}
               />
+
+              <input type="hidden" {...register("city", { value: "" })} />
+              <input type="hidden" {...register("state", { value: "" })} />
+              <input type="hidden" {...register("country", { value: "" })} />
+              <input type="hidden" {...register("zipcode", { value: "" })} />
 
               <Controller
                 control={control}
@@ -835,7 +764,7 @@ const HostPortfolioForm = () => {
           <button
             disabled={isLoading}
             type="submit"
-            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-70"
+            className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] cursor-pointer bg-[#4D72FF] disabled:opacity-70"
           >
             {isLoading ? "Processing..." : "Next"}
           </button>

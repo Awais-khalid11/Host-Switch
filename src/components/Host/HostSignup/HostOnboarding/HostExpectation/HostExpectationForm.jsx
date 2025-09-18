@@ -12,6 +12,7 @@ import useHostForm from "../../../../../store/useHostForm";
 import { postData } from "../../../../../api/apiClient";
 import { Controller, useForm } from "react-hook-form";
 import useRoleStore from "../../../../../store/useRoleIdStore";
+import { buildFormData } from "../../../../../utils";
 
 const HostExpectationForm = () => {
   const navigate = useNavigate();
@@ -54,13 +55,10 @@ const HostExpectationForm = () => {
   const [openToPMUpgrades, setOpenToPMUpgrades] = useState("");
   const [willingToInvest, setWillingToInvest] = useState("");
   const [furniturePhotoReady, setFurniturePhotoReady] = useState("");
-  const [pmContractFiles, setPmContractFiles] = useState([]);
-  const [listingFiles, setListingFiles] = useState([]);
-  const [revenueFiles, setRevenueFiles] = useState([]);
-  const [propertyPhotos, setPropertyPhotos] = useState([]);
+
   const [additionalNote, setAdditionalNote] = useState("");
 
-  const { getFinalPayload, portfolioData, updateExpectation } = useHostForm();
+  const { getFinalPayload, updateExpectation } = useHostForm();
   const [desc, setDesc] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { property } = useRoleStore();
@@ -69,7 +67,6 @@ const HostExpectationForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm({
     defaultValues: {
       address: "",
@@ -104,38 +101,37 @@ const HostExpectationForm = () => {
     "Smart devices",
   ];
 
-  const handleUpgradeToggle = (upgrade) => {
-    setSelectedUpgrades((prev) => {
-      if (prev.includes(upgrade)) {
-        return prev.filter((item) => item !== upgrade);
-      } else if (prev.length < 3) {
-        return [...prev, upgrade];
-      }
-      return prev;
-    });
-  };
-
   const submitHandle = async (data) => {
     setIsLoading(true);
 
     if (property === "multiple") {
       // Handle multiple property submission
       const payload = {
-        priorities: propertyTypes,
-        service_type: ticket,
-        co_hosting_consideration: cohosting,
+        top_priorities: propertyTypes,
+        co_hosting: cohosting,
         involvement_level: involvementLevel,
         property_condition: propertyCondition,
-        recent_upgrades: selectedUpgrades,
+        renovations: selectedUpgrades,
         open_to_pm_upgrades: openToPMUpgrades,
         willing_to_invest: willingToInvest,
         furniture_photo_ready: furniturePhotoReady,
-        pm_contract_files: pmContractFiles,
-        listing_files: listingFiles,
-        revenue_files: revenueFiles,
-        property_photos: propertyPhotos,
+        pm_contract_file: Array.from(data.pm_contract || []).map((file) => ({
+          file,
+        })),
+        listing_links_portfolio_file: Array.from(data.listing_link || []).map(
+          (file) => ({
+            file,
+          })
+        ),
+        revenue_reports_file: Array.from(data.revenue_report || []).map(
+          (file) => ({
+            file,
+          })
+        ),
+        files: Array.from(data.files || []).map((file) => ({
+          file,
+        })),
         additional_note: additionalNote,
-        terms_accepted: data.condition,
       };
 
       updateExpectation(payload);
@@ -199,12 +195,17 @@ const HostExpectationForm = () => {
     }
 
     const finalPayload = getFinalPayload();
+
     try {
-      const res = await postData("/property", finalPayload);
-      console.log("API Success:", res);
+      const formData = buildFormData(finalPayload);
+
+      await postData("/property", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       navigate(ROUTES.HOSTDASHBOARD);
     } catch (error) {
-      console.error(" API Error:", error);
+      console.error("API Error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -475,25 +476,107 @@ const HostExpectationForm = () => {
 
             {/* File Upload Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-              <FileUpload
-                label="Upload PM Contract(s)"
-                value={pmContractFiles}
-                onChange={setPmContractFiles}
+              <Controller
+                name="pm_contract"
+                control={control}
+                render={({ field }) => {
+                  const handleFileChange = (selectedFiles) => {
+                    field.onChange(selectedFiles);
+                  };
+
+                  return (
+                    <div className="flex-1">
+                      <FileUpload
+                        label="Upload PM Contract(s)"
+                        value={field.value}
+                        onChange={handleFileChange}
+                        type="doc"
+                      />
+
+                      {errors.pm_contract && (
+                        <p className="text-red-500 text-sm -mt-5 mb-2">
+                          {errors.pm_contract.message}
+                        </p>
+                      )}
+                    </div>
+                  );
+                }}
               />
-              <FileUpload
-                label="Upload Listing Links or Portfolio"
-                value={listingFiles}
-                onChange={setListingFiles}
+              <Controller
+                name="listing_link"
+                control={control}
+                render={({ field }) => {
+                  const handleFileChange = (selectedFiles) => {
+                    field.onChange(selectedFiles);
+                  };
+
+                  return (
+                    <div className="flex-1">
+                      <FileUpload
+                        label="Upload Listing Links or Portfolio"
+                        value={field.value}
+                        onChange={handleFileChange}
+                      />
+
+                      {errors.listing_link && (
+                        <p className="text-red-500 text-sm -mt-5 mb-2">
+                          {errors.listing_link.message}
+                        </p>
+                      )}
+                    </div>
+                  );
+                }}
               />
-              <FileUpload
-                label="Upload Revenue Reports"
-                value={revenueFiles}
-                onChange={setRevenueFiles}
+              <Controller
+                name="revenue_report"
+                control={control}
+                render={({ field }) => {
+                  const handleFileChange = (selectedFiles) => {
+                    field.onChange(selectedFiles);
+                  };
+
+                  return (
+                    <div className="flex-1">
+                      <FileUpload
+                        label="Upload Revenue Reports"
+                        value={field.value}
+                        onChange={handleFileChange}
+                        type="doc"
+                      />
+
+                      {errors.revenue_report && (
+                        <p className="text-red-500 text-sm -mt-5 mb-2">
+                          {errors.revenue_report.message}
+                        </p>
+                      )}
+                    </div>
+                  );
+                }}
               />
-              <FileUpload
-                label="Upload Property Photos"
-                value={propertyPhotos}
-                onChange={setPropertyPhotos}
+              <Controller
+                name="files"
+                control={control}
+                render={({ field }) => {
+                  const handleFileChange = (selectedFiles) => {
+                    field.onChange(selectedFiles);
+                  };
+
+                  return (
+                    <div className="flex-1">
+                      <FileUpload
+                        label="Upload Property Images"
+                        value={field.value}
+                        onChange={handleFileChange}
+                      />
+
+                      {errors.files && (
+                        <p className="text-red-500 text-sm -mt-5 mb-2">
+                          {errors.files.message}
+                        </p>
+                      )}
+                    </div>
+                  );
+                }}
               />
             </div>
 
@@ -1235,9 +1318,9 @@ const HostExpectationForm = () => {
             Back
           </Link>
           <Button
-            loading={isLoading}
+            // loading={isLoading}
             type="submit"
-            disabled={isLoading}
+            // disabled={isLoading}
             className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] bg-[#4D72FF] disabled:opacity-50"
           >
             {isLoading ? "Submitting..." : "Next"}

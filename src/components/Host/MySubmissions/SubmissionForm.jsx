@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../../api/apiClient";
+import AddressInput from "../../InputField/AddressInput";
 
 const schema = z.object({
   address: z.string().min(1, "Address is required"),
@@ -56,7 +57,10 @@ const schema = z.object({
   cleanTypes: z.array(z.string()).min(1, "Select at least one"),
   desc: z.string().optional(),
   message: z.string().optional(),
-
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  zipcode: z.string().min(1, "Zipcode is required"),
+  country: z.string().min(1, "Country is required"),
   current_pm_company_name: z.string().min(1, "Company Name is required"),
   pm_charge_percentage: z.array(z.string()).min(1, "Select at least one"),
   yearly_revenue: z.string().min(1, "Revenue is required"),
@@ -121,6 +125,8 @@ const SubmissionForm = () => {
   const {
     control,
     handleSubmit,
+    setValue,
+    register,
     formState: { errors },
     reset,
   } = useForm({
@@ -167,6 +173,7 @@ const SubmissionForm = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    console.log(data);
 
     try {
       const renovations = data.renovations || [];
@@ -174,10 +181,17 @@ const SubmissionForm = () => {
 
       const payload = {
         address: data.address,
+        city: data.city,
+        state: data.state,
+        zip_code: data.zipcode,
+        country: data.country,
         unit_apt: data.unit_apt,
         link: data.link,
         rented_out: data.rented_out?.[0] || "",
-        type: data.type?.[0] || "",
+        ...data.type?.reduce((acc, item, index) => {
+          acc[`type[${index}]`] = item;
+          return acc;
+        }, {}),
         hostingTypes: data.hostingTypes?.[0] || "",
         cleanTypes: data.cleanTypes?.[0] || "",
         ...data.scope_service.reduce((acc, item, index) => {
@@ -251,7 +265,6 @@ const SubmissionForm = () => {
       reset();
     } catch (error) {
       console.error("API Error:", error);
-      toast.error(error.message || "Submission failed");
     } finally {
       setIsLoading(false);
     }
@@ -260,29 +273,13 @@ const SubmissionForm = () => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
-          <Controller
-            name="address"
-            control={control}
-            render={({ field }) => (
-              <div className="md:w-1/2 w-full">
-                <InputField
-                  label="Property Address"
-                  id="address"
-                  name="address"
-                  type="text"
-                  fieldName="w-full"
-                  placeholder="Type and select location..."
-                  asterisk="true"
-                  {...field}
-                />
-                {errors.address && (
-                  <p className="text-red-500 text-sm -mt-7 mb-2">
-                    {errors.address.message}
-                  </p>
-                )}
-              </div>
-            )}
-          />
+          <AddressInput control={control} setValue={setValue} errors={errors} />
+
+          <input type="hidden" {...register("city", { value: "" })} />
+          <input type="hidden" {...register("state", { value: "" })} />
+          <input type="hidden" {...register("country", { value: "" })} />
+          <input type="hidden" {...register("zipcode", { value: "" })} />
+
           <Controller
             name="unit_apt"
             control={control}
@@ -380,7 +377,7 @@ const SubmissionForm = () => {
                   dropdownKey="type"
                   isOpen={openDropdown === "type"}
                   setOpenDropdown={setOpenDropdown}
-                  isMulti={false}
+                  isMulti={true}
                 />
                 {errors.type && (
                   <p className="text-red-500 text-sm">{errors.type.message}</p>
@@ -681,7 +678,7 @@ const SubmissionForm = () => {
                 <MultiCheckboxDropdown
                   label="What % does your current PM charge?"
                   placeholder="Select percentage range"
-                  options={["<10%", "10–15%", ">15%"]}
+                  options={["10%", "15%", "20%", "25%", "30%", "35%", "40%"]}
                   selectedValues={field.value}
                   setSelectedValues={(values) => field.onChange(values)}
                   dropdownKey="charge"

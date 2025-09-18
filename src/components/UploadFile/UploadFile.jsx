@@ -1,13 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { UploadPNG } from "../../constants/Imgs";
 
 const FileUpload = ({
   label = "Upload Files",
   id,
   nodetail,
-  btn = false,
   value = [],
   onChange = () => {},
+  type = "all",
 }) => {
   const fileInputRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -17,7 +17,7 @@ const FileUpload = ({
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
     if (newFiles.length > 0) {
-      onChange([...value, ...newFiles]); // parent stores everything
+      onChange([...value, ...newFiles]);
     }
     event.target.value = "";
   };
@@ -35,70 +35,103 @@ const FileUpload = ({
     onChange(value.filter((_, index) => index !== indexToRemove));
   };
 
+  // 👇 helper to set accepted file types
+  const getAcceptTypes = () => {
+    switch (type) {
+      case "image":
+        return "image/*";
+      case "video":
+        return "video/*";
+      case "doc":
+        return ".pdf,.doc,.docx";
+      default:
+        return "image/*,video/*,.pdf,.doc,.docx";
+    }
+  };
+
   const renderFilePreviews = () => {
     if (value.length === 0) return null;
 
     return (
       <div className="flex flex-wrap gap-2 mt-3 justify-center">
         {value.map((file, index) => {
-          if (file.path) {
+          const isServerFile = file.path;
+          const isNewFile = file instanceof File;
+          const key = isServerFile ? `server-${index}` : `new-${index}`;
+
+          let previewContent = null;
+
+          if (isServerFile) {
             const isImage = file.path.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-            return (
-              <div key={`server-${index}`} className="relative">
-                {isImage ? (
-                  <img
-                    src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
-                    alt="uploaded"
-                    className="w-16 h-16 object-cover rounded border"
-                  />
-                ) : (
-                  <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs p-1">
-                    {file.originalname || "File"}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFile(index);
-                  }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                >
-                  ×
-                </button>
-              </div>
-            );
+            const isVideo = file.path.match(/\.(mp4|webm|ogg)$/i);
+            const isDoc = file.path.match(/\.(pdf|docx?|txt)$/i);
+
+            if (isImage) {
+              previewContent = (
+                <img
+                  src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
+                  alt="uploaded"
+                  className="w-16 h-16 object-cover rounded border"
+                />
+              );
+            } else if (isVideo) {
+              previewContent = (
+                <video
+                  src={`${import.meta.env.VITE_IMG_URL}${file.path}`}
+                  className="w-16 h-16 object-cover rounded border"
+                  controls
+                />
+              );
+            } else if (isDoc) {
+              previewContent = (
+                <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-[10px] p-1 text-center">
+                  {file.originalname || "Document"}
+                </div>
+              );
+            }
           }
 
-          if (file instanceof File) {
-            return (
-              <div key={`new-${index}`} className="relative">
-                {file.type?.startsWith("image/") ? (
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt="preview"
-                    className="w-16 h-16 object-cover rounded border"
-                  />
-                ) : (
-                  <div className="w-16 h-16 flex items-center justify-center bg-gray-100 border rounded text-xs p-1">
-                    {file.name}
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFile(index);
-                  }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                >
-                  ×
-                </button>
-              </div>
-            );
+          if (isNewFile) {
+            if (file.type?.startsWith("image/")) {
+              previewContent = (
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="preview"
+                  className="w-16 h-16 object-cover rounded border"
+                />
+              );
+            } else if (file.type?.startsWith("video/")) {
+              previewContent = (
+                <video
+                  src={URL.createObjectURL(file)}
+                  className="w-16 h-16 object-cover rounded border"
+                  controls
+                />
+              );
+            } else {
+              previewContent = (
+                <div className="w-24 h-20 flex items-center justify-center bg-gray-100 border rounded text-[10px] p-1 text-center">
+                  {file.name}
+                </div>
+              );
+            }
           }
 
-          return null;
+          return (
+            <div key={key} className="relative">
+              {previewContent}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeFile(index);
+                }}
+                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+              >
+                ×
+              </button>
+            </div>
+          );
         })}
       </div>
     );
@@ -120,7 +153,7 @@ const FileUpload = ({
         onChange={handleFileChange}
         className="hidden"
         multiple
-        accept="image/*,video/*,.pdf,.doc,.docx"
+        accept={getAcceptTypes()} // 👈 controlled by type prop
       />
 
       <div
