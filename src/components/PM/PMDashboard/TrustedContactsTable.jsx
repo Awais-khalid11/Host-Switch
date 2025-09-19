@@ -2,50 +2,50 @@ import React, { useState, useEffect } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import Table from "../../Table/Table";
 import Skeleton from "../../Skeleton/SkeletonCard";
+import { getData } from "../../../api/apiClient";
+import { formatDate } from "../../../utils";
+import { EyeSVG, ImportSVG, PaySVG } from "../../../constants/Icons";
+import ActionMenu from "../../DropDown/Dropdown";
 
 const TrustedContactsTable = () => {
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true); // 👈 loading state
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [activePage, setActivePage] = useState(false);
 
-  // Simulate API call
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setData([
-        {
-          id: "#INV-20-1012",
-          property: "3BR Apartment",
-          name: "Sarah Ali",
-          amount: "$1899.09",
-          status: "Paid",
-          date: "12-02-2025",
-        },
-        {
-          id: "#INV-20-1013",
-          property: "2BR Condo",
-          name: "Ahmed Khan",
-          amount: "$1450.00",
-          status: "Unpaid",
-          date: "15-03-2025",
-        },
-        {
-          id: "#INV-20-1014",
-          property: "1BR Studio",
-          name: "Ayesha Noor",
-          amount: "$999.99",
-          status: "Overdue",
-          date: "01-01-2025",
-        },
-      ]);
+  const fetchInvoices = async () => {
+    setLoading(true);
+    try {
+      let url = "/payment/invoices";
+
+      const response = await getData(url);
+
+      const mappedData = response?.payload?.invoices?.map((inv) => ({
+        id: inv.number,
+        amount: `$${inv.amount_paid} ${inv.currency.toUpperCase()}`,
+        status:
+          inv.status === "paid"
+            ? "Paid"
+            : inv.status === "unpaid"
+            ? "Draft"
+            : "Overdue",
+        date: inv.paid_at ? formatDate(inv.paid_at) : "—",
+      }));
+
+      setData(mappedData);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    } finally {
       setLoading(false);
-    }, 2000); // 👈 simulate 2s delay
-    return () => clearTimeout(timer);
+    }
+  };
+
+  useEffect(() => {
+    fetchInvoices();
   }, []);
 
   const columns = [
     { header: "Invoice ID", accessor: "id", showSort: true },
-    { header: "Property", accessor: "property", showSort: true },
-    { header: "Host Name", accessor: "name", showSort: true },
     { header: "Amount", accessor: "amount", showSort: true },
     {
       header: "Status",
@@ -72,9 +72,39 @@ const TrustedContactsTable = () => {
     { header: "Due Date", accessor: "date", showSort: true },
   ];
 
-  const rowActions = () => (
-    <HiDotsVertical className="text-xl text-gray-500 cursor-pointer" />
-  );
+  const rowActions = (rowData) => {
+    const isPaid = rowData.status === "Paid";
+
+    const actions = [
+      {
+        label: "View",
+        icon: <img src={EyeSVG} alt="view" className="w-4 h-4" />,
+        onClick: () =>
+          setActivePage(
+            rowData?.status === "PAID" || rowData?.status === "OVERDUE" ? (
+              <PaidInvoice setClose={setActivePage} />
+            ) : (
+              <InvoiceView setClose={setActivePage} />
+            )
+          ),
+      },
+      {
+        label: "Download",
+        icon: <img src={ImportSVG} alt="download" className="w-4 h-4" />,
+        onClick: () => console.log("Download", rowData),
+      },
+    ];
+
+    if (isPaid) {
+      actions.push({
+        label: "Pay",
+        icon: <img src={PaySVG} alt="Pay" className="w-4 h-4" />,
+        onClick: () => setActivePage(<Pay setClose={setActivePage} />),
+      });
+    }
+
+    return <ActionMenu actions={actions} />;
+  };
 
   return (
     <div className="rounded-[12px]">
@@ -86,7 +116,6 @@ const TrustedContactsTable = () => {
         </div>
 
         {loading ? (
-          // 👇 show Skeleton instead of table
           <div className="p-5">
             <Skeleton variant="table" count={5} />
           </div>
@@ -98,6 +127,7 @@ const TrustedContactsTable = () => {
             actions={rowActions}
             search={search}
             rowStyle="full-border"
+            loading={loading}
           />
         )}
       </div>

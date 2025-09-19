@@ -68,6 +68,7 @@ const PMDashboard = () => {
         };
         await postData("payment/confirm", params);
         paymentStatus();
+        localStorage.removeItem("sessionId");
       } catch (err) {
         console.error("Failed to fetch PM dashboard summary:", err);
       }

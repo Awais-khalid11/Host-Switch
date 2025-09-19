@@ -43,7 +43,7 @@ const AddressInput = ({ control, setValue, errors }) => {
                       value
                     )}.json?access_token=${
                       import.meta.env.VITE_MAPBOX_TOKEN
-                    }&country=ca&types=address&limit=5`
+                    }&types=address&limit=5`
                   )
                     .then((res) => res.json())
                     .then((data) => {

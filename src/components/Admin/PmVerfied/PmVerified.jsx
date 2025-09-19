@@ -79,15 +79,15 @@ const PmVerified = () => {
           <Button
             variant="borderbtn"
             className={`text-[12px] max-w-[157px] ${
-              isVerified
+              !isVerified
                 ? "border-green-600 text-green-600"
                 : "border-red-600 text-red-600"
             }`}
-            prefixImg={!isVerified && SlashSVG}
+            prefixImg={isVerified && SlashSVG}
             disabled={updating}
             onClick={toggleVerification}
           >
-            {updating ? "Updating..." : isVerified ? "Verified PM" : "Flag PM"}
+            {updating ? "Updating..." : !isVerified ? "Verified PM" : "Flag PM"}
           </Button>
         </div>
       </div>

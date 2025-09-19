@@ -56,6 +56,7 @@ const HostPortfolioForm = () => {
   });
 
   const watchedCurrentlyManaged = watch("currently_managed");
+  const watchedCurrentlyAgent = watch("referred_agent");
 
   const submitHandle = (data) => {
     setIsLoading(true);
@@ -80,11 +81,17 @@ const HostPortfolioForm = () => {
         ...(watchedCurrentlyManaged && {
           current_pm_company_name: data.pm_company_name,
         }),
-        work_duration: data.work_duration,
+        ...(watchedCurrentlyManaged && {
+          work_duration: data.work_duration[0],
+        }),
+        ...(watchedCurrentlyAgent && {
+          agent_name: data.agent_name,
+        }),
+        ...(watchedCurrentlyAgent && { agent_number: data.agent_number }),
         under_contract: data.under_contract,
         current_provided_services_pm: data.pm_services,
         preference_future_pm: data.pm_preference,
-        rented_out: data.rented_out[0],
+        rented_out: data.rented_out,
       });
     } else {
       Object.assign(payload, {
@@ -216,7 +223,7 @@ const HostPortfolioForm = () => {
                       dropdownKey="region"
                       isOpen={openDropdown === "region"}
                       setOpenDropdown={setOpenDropdown}
-                      isMulti={false}
+                      isMulti={true}
                       className="mb-5"
                     />
                     {errors.property_types && (
@@ -357,6 +364,92 @@ const HostPortfolioForm = () => {
                       {errors.work_duration && (
                         <p className="text-red-500 text-sm -mt-3">
                           {errors.work_duration.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+            )}
+
+            <div className="mb-5 space-y-3">
+              <h3 className="text-sm font-bold">Referred by Agent</h3>
+              <Controller
+                control={control}
+                name="referred_agent"
+                rules={{ required: "This field is required" }}
+                render={({ field }) => (
+                  <div className="flex items-center gap-5">
+                    <RadioField
+                      id="yes"
+                      name="referred_agent"
+                      value="Yes"
+                      label="Yes"
+                      checked={field.value === "Yes"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <RadioField
+                      id="no"
+                      name="referred_agent"
+                      value="No"
+                      label="No"
+                      checked={field.value === "No"}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                  </div>
+                )}
+              />
+              {errors.referred_agent && (
+                <p className="text-red-500 text-sm">
+                  {errors.referred_agent.message}
+                </p>
+              )}
+            </div>
+
+            {watchedCurrentlyAgent === "Yes" && (
+              <div className="flex md:flex-nowrap flex-wrap items-center gap-5">
+                <Controller
+                  control={control}
+                  name="agent_name"
+                  rules={{ required: "name is required" }}
+                  render={({ field }) => (
+                    <div className="w-full md:w-1/2">
+                      <InputField
+                        label="Agent Name"
+                        id="agent_name"
+                        name="agent_name"
+                        type="text"
+                        fieldName="w-full"
+                        placeholder="Enter Agent Name"
+                        {...field}
+                      />
+                      {errors.agent_name && (
+                        <p className="text-red-500 text-sm">
+                          {errors.agent_name.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="agent_number"
+                  rules={{ required: "number is required" }}
+                  render={({ field }) => (
+                    <div className="w-full md:w-1/2">
+                      <InputField
+                        label="Agent Number"
+                        id="agent_number"
+                        name="agent_number"
+                        type="text"
+                        fieldName="w-full"
+                        placeholder="Enter Agent Number"
+                        {...field}
+                      />
+                      {errors.agent_number && (
+                        <p className="text-red-500 text-sm -mt-3">
+                          {errors.agent_number.message}
                         </p>
                       )}
                     </div>
@@ -607,7 +700,7 @@ const HostPortfolioForm = () => {
                       dropdownKey="region"
                       isOpen={openDropdown === "region"}
                       setOpenDropdown={setOpenDropdown}
-                      isMulti={false}
+                      isMulti={true}
                       className="mb-5"
                     />
                     {errors.property_types && (
@@ -762,7 +855,7 @@ const HostPortfolioForm = () => {
             Back
           </Link>
           <button
-            disabled={isLoading}
+            // disabled={isLoading}
             type="submit"
             className="mb-5 md:w-[70%] w-full md:py-[16px] py-2.5 text-center text-white text-base font-bold rounded-[8px] cursor-pointer bg-[#4D72FF] disabled:opacity-70"
           >

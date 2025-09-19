@@ -328,6 +328,7 @@ const SendForm = () => {
               label="Upload Client Property Proposal"
               value={field.value}
               onChange={(files) => field.onChange(files)}
+              type="doc"
             />
           )}
         />
@@ -340,6 +341,7 @@ const SendForm = () => {
               label="Upload sample management contract (PDF)"
               value={field.value}
               onChange={(files) => field.onChange(files)}
+              type="doc"
             />
           )}
         />

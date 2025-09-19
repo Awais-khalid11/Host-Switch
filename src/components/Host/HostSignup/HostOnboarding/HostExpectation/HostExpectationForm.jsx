@@ -115,6 +115,7 @@ const HostExpectationForm = () => {
         open_to_pm_upgrades: openToPMUpgrades,
         willing_to_invest: willingToInvest,
         furniture_photo_ready: furniturePhotoReady,
+        desc: additionalNote,
         pm_contract_file: Array.from(data.pm_contract || []).map((file) => ({
           file,
         })),
@@ -133,6 +134,7 @@ const HostExpectationForm = () => {
         })),
         additional_note: additionalNote,
       };
+      console.log(payload);
 
       updateExpectation(payload);
     } else {
@@ -160,6 +162,7 @@ const HostExpectationForm = () => {
       const payload = {
         current_pm_company_name: currentPMCompany,
         seeking_pm_host: ticket,
+        pm_top_priority: propertyTypes,
         co_hosting: cohosting,
         involvement_level: day,
         "condition[Flooring]": floor,
@@ -185,15 +188,15 @@ const HostExpectationForm = () => {
           return acc;
         }, {}),
         pm_charge_percentage: pmTypes[0],
-        type: propertyTypes[0],
         yearly_revenue: revenueExpectation,
-        files: data.files,
+        contract_photo: Array.from(data.files || []).map((file) => ({
+          file,
+        })),
         desc,
       };
 
       updateExpectation(payload);
     }
-
     const finalPayload = getFinalPayload();
 
     try {
@@ -605,29 +608,29 @@ const HostExpectationForm = () => {
               />
             </div>
             <div className="flex md:flex-nowrap flex-wrap gap-5">
-              {/* <MultiCheckboxDropdown
-            label="Type of Property"
-            options={[
-              "Revenue optimization",
-              "Trust & communication",
-              "Transparency & reporting",
-              "Cleaning quality",
-              "Maintenance responsiveness",
-              "Pricing strategy",
-              "Guest experience",
-              "Tech & automation",
-              "Local knowledge",
-              "Other",
-            ]}
-            selectedValues={propertyTypes}
-            placeholder="Select what you prefer "
-            setSelectedValues={setPropertyTypes}
-            dropdownKey="prop"
-            isOpen={openDropdown === "prop"}
-            setOpenDropdown={setOpenDropdown}
-            isMulti={false}
-            className="mb-5"
-          /> */}
+              <MultiCheckboxDropdown
+                label="Top Priorities in New PM"
+                options={[
+                  "Revenue optimization",
+                  "Trust & communication",
+                  "Transparency & reporting",
+                  "Cleaning quality",
+                  "Maintenance responsiveness",
+                  "Pricing strategy",
+                  "Guest experience",
+                  "Tech & automation",
+                  "Local knowledge",
+                  "Other",
+                ]}
+                selectedValues={propertyTypes}
+                placeholder="Select what you prefer "
+                setSelectedValues={setPropertyTypes}
+                dropdownKey="prop"
+                isOpen={openDropdown === "prop"}
+                setOpenDropdown={setOpenDropdown}
+                isMulti={false}
+                className="mb-5"
+              />
               <MultiCheckboxDropdown
                 label="What % does your current PM charge?"
                 placeholder="How Often Is Your Property Rented Out?"

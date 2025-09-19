@@ -1,12 +1,12 @@
-import React from 'react'
-import Invoices from '../../components/PM/Invoices/Invoices'
+import React from "react";
+import Invoices from "../../components/PM/Invoices/Invoices";
 
 const InvoicesPage = () => {
   return (
     <div>
-      <Invoices/>
+      <Invoices />
     </div>
-  )
-}
+  );
+};
 
-export default InvoicesPage
+export default InvoicesPage;

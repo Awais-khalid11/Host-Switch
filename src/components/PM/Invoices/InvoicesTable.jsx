@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActionMenu from "../../DropDown/Dropdown";
 import FilterDropdown from "../../FilterDropdown/FilterDropdown";
 import Button from "../../Button/Button";
@@ -18,105 +18,63 @@ import {
 import PaidInvoice from "../../PaidInvoice/PaidInvoice";
 import InvoiceView from "../../InvoiceView/InvoiceView";
 import Pay from "../../Pay/Pay";
+import { getData } from "../../../api/apiClient";
+import { formatDate } from "../../../utils";
 
 const InvoicesTable = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState(""); // NEW: filter state
+  const [filterStatus, setFilterStatus] = useState("");
   const [activePage, setActivePage] = useState(false);
+  const [tab, setTab] = useState("leads");
 
-  const allData = [
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Unpaid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Unpaid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Overdue",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Unpaid",
-      date: "01-01-2025",
-    },
-    {
-      id: "#INV-20-1012",
-      property: "3BR Apartment",
-      name: "Harry Gorge",
-      amount: "$1899.09",
-      status: "Paid",
-      date: "01-01-2025",
-    },
-  ];
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // NEW: Filter the data based on selected status
-  const filteredData = filterStatus
-    ? allData.filter((item) => item.status === filterStatus)
-    : allData;
+  const fetchInvoices = async () => {
+    setLoading(true);
+    try {
+      let url = "/payment/invoices";
+      if (filterStatus) {
+        const apiStatus =
+          filterStatus === "paid"
+            ? "paid"
+            : filterStatus === "draft"
+            ? "draft"
+            : "";
+        if (apiStatus) url += `?status=${apiStatus}`;
+      }
+
+      const response = await getData(url);
+
+      const mappedData = response?.payload?.invoices?.map((inv) => ({
+        id: inv.number,
+        amount: `$${inv.amount_paid} ${inv.currency.toUpperCase()}`,
+        status:
+          inv.status === "paid"
+            ? "Paid"
+            : inv.status === "unpaid"
+            ? "Draft"
+            : "Overdue",
+        date: inv.paid_at ? formatDate(inv.paid_at) : "—",
+      }));
+
+      setData(mappedData);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInvoices();
+  }, [filterStatus, tab]);
 
   const columns = [
     { header: "Invoice ID", accessor: "id", showSort: true },
-    { header: "Property", accessor: "property", showSort: true },
-    { header: "Host Name", accessor: "name", showSort: true },
+    // { header: "Property", accessor: "property", showSort: true },
+    // { header: "Host Name", accessor: "name", showSort: true },
     { header: "Amount", accessor: "amount", showSort: true },
     {
       header: "Status",
@@ -211,30 +169,47 @@ const InvoicesTable = () => {
                   },
                   {
                     label: "Unpaid",
-                    value: "Unpaid",
-                    icon: <img src={ClockSVG} alt="Awaiting" />,
+                    value: "draft",
+                    icon: <img src={ClockSVG} alt="Draft" />,
                   },
                   {
                     label: "Paid",
-                    value: "Paid",
-                    icon: <img src={ClockSVG} alt="Accepted" />,
-                  },
-                  {
-                    label: "Overdue",
-                    value: "Overdue",
-                    icon: <img src={ClockSVG} alt="Rejected" />,
+                    value: "paid",
+                    icon: <img src={ClockSVG} alt="Paid" />,
                   },
                 ]}
               />
             </div>
-
+            <div className="flex mx-4 mb-3 gap-6  border-gray-200">
+              <button
+                onClick={() => setTab("registration")}
+                className={`py-3 px-1 text-sm font-medium border-b-2 transition-colors duration-200 ${
+                  tab === "registration"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Registration Fee
+              </button>
+              <button
+                onClick={() => setTab("leads")}
+                className={`py-3 px-1 text-sm font-medium border-b-2 transition-colors duration-200 ${
+                  tab === "leads"
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Leads Fee
+              </button>
+            </div>
             <Table
               columns={columns}
-              data={filteredData}
+              data={data}
               showActions
               actions={rowActions}
               search={search}
               rowStyle="full-border"
+              loading={loading}
             />
           </div>
         </div>
