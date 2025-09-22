@@ -162,7 +162,7 @@ const HostExpectationForm = () => {
       const payload = {
         current_pm_company_name: currentPMCompany,
         seeking_pm_host: ticket,
-        pm_top_priority: propertyTypes,
+        pm_top_priority: propertyTypes[0],
         co_hosting: cohosting,
         involvement_level: day,
         "condition[Flooring]": floor,
